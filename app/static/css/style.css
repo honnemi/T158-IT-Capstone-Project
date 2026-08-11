@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+/*<!DOCTYPE html>
 <html>
 <body>
 
@@ -7,4 +7,13 @@
 <p style="color:MediumBlue;">Example Text</p>
 
 </body>
-</html>
+</html>*/
+
+/* Padding to push content below the navbar */
+body {
+    padding-top: 75px;
+}
+/* To remove visible scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
