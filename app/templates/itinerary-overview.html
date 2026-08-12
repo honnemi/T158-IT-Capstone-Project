@@ -1,56 +1,109 @@
-{% extends 'base.html' %}
-{% block title %} Itinerary - Overview {% endblock %}
-
+{% extends 'base.html' %} {% block title %} Itinerary - Overview {% endblock %}
 {% block content %}
 
 <!--Page header-->
-<header>
-    <div class="container">
+<div class="container py-4">
+  <!--Trip name-->
+  <div class="row mb-4 text-center text-md-start">
+    <div class="col">
+      <h1 class="display-6 fw-bold">Trip to Korea</h1>
+    </div>
+  </div>
 
-        <!--Trip name-->
-        <div class="row mb-4">
-            <h1>Trip to Korea</h1>
+  <!--Navigate between weeks-->
+  <div class="row mb-4 gy-3 align-items-center">
+    <!--Clicking this will open up a calendar modal eventually. Also needs JS to update displayed text.-->
+    <div
+      class="col-12 col-md-8 d-flex justify-content-center justify-content-md-start"
+    >
+      <div
+        class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2"
+      >
+        <button
+          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          aria-label="Previous Week"
+        >
+          <svg
+            xmlns="http://w3.org"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-caret-left-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+            />
+          </svg>
+        </button>
+        <div class="d-flex flex-column text-center">
+          <h5 class="mb-0 fs-6 fs-sm-5 fw-bold">Week 1</h5>
+          <div class="text-muted" style="font-size: 0.85rem">
+            6 Jul - 12 Jul 2026
+          </div>
         </div>
+        <button
+          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          aria-label="Next Week"
+        >
+          <svg
+            xmlns="http://w3.org"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-caret-right-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
 
-        <!--Navigate between weeks-->
-        <div class="row mb-4">
-            <!--Clicking this will open up a calendar modal eventually. Also needs JS to update displayed text.-->
-            <div class="col-12 d-flex justify-content-center">
-                <div class="d-flex align-items-center gap-4 border rounded" style="padding: 10px;">
-                    <button class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center">
-                        <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                        <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                        </svg>
-                    </button>
-                    <div class="d-flex flex-column text-center">
-                        <h5>Week 1</h5>
-                        <div class="text-muted" style="font: size 0.85rem;">6 Jul - 12 Jul 2026</div>
-                    </div>
-                    <button class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center">
-                        <svg xmlns="http://w3.org" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+    <!--Navigate to daily view (detailed itinerary)-->
+    <div
+      class="col-12 col-md-4 d-flex justify-content-center justify-content-md-end"
+    >
+      <a
+        href="{{ url_for('main.show_itinerary_detailed') }}"
+        class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto"
+      >
+        Switch to Daily View
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-calendar4-event"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"
+          />
+          <path
+            d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
 
-            <!--Navigate to daily view (detailed itinerary)-->
-            <div class="col-12 d-flex justify-content-end">
-                <button class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center gap-3">
-                    Switch to Daily View
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar4-event" viewBox="0 0 16 16">
-                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
-                    <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
-                    </svg>
-                </button>
+  <main>
+    <div class="card shadow-sm overflow-hidden">
+      <div class="overflow-x-auto">
+        <div style="min-width: 720px">
+          <!--Calendar Header-->
+          <div
+            class="row text-center border-bottom pb-2 pt-3 mb-0 fw-bold overflow-y-hidden m-0 bg-light"
+          >
+            <div
+              class="col-auto text-end text-nowrap pe-3 text-muted"
+              style="width: 90px"
+            >
+              <h6>Time</h6>
             </div>
-        </div>
-</header>
-        
-<main>
-        <!--Calendar Header-->
-        <div class="row text-center border-bottom pb-2 mb-0 fw-bold overflow-y-hidden m-0">
-            <div class="col-auto text-end pe-4 text-muted" style="width: 100px;"><h6>Time</h6></div>
             <!--Can write a loop to optimise this-->
             <div class="col"><h6>Sun</h6></div>
             <div class="col"><h6>Mon</h6></div>
@@ -59,30 +112,80 @@
             <div class="col"><h6>Thu</h6></div>
             <div class="col"><h6>Fri</h6></div>
             <div class="col"><h6>Sat</h6></div>
-        </div>
+          </div>
 
-        <!--Calendar Body-->
+          <!--Calendar Body-->
 
-        <!--Times (y-axis)-->
-        <div class="overflow-y-auto no-scrollbar border-bottom" style="max-height:600px;">
-            <div class="row m-0" style="height: 3000px;">
-                <div class="col-auto d-flex flex-column justify-content-around text-end pe-4 text-muted border-end" style="width: 100px; height: 100%; line-height: 1; font-size: 0.85rem;">
-                    <!--Can write a loop to optimise this-->
-                    <div>12:00AM</div><div>01:00AM</div><div>02:00AM</div><div>03:00AM</div><div>04:00AM</div><div>05:00AM</div>
-                    <div>06:00AM</div><div>07:00AM</div><div>08:00AM</div><div>09:00AM</div><div>10:00AM</div><div>11:00AM</div>
-                    <div>12:00PM</div><div>01:00PM</div><div>02:00PM</div><div>03:00PM</div><div>04:00PM</div><div>05:00PM</div>
-                    <div>06:00PM</div><div>07:00PM</div><div>08:00PM</div><div>09:00PM</div><div>10:00PM</div><div>11:00PM</div>
+          <!--Times (y-axis)-->
+          <div
+            class="overflow-y-auto no-scrollbar border-bottom"
+            style="max-height: 500px"
+          >
+            <div class="row m-0" style="height: 3000px">
+              <div
+                class="col-auto d-flex flex-column justify-content-around text-end text-nowrap pe-3 text-muted border-end"
+                style="
+                  width: 90px;
+                  height: 100%;
+                  line-height: 1;
+                  font-size: 0.8rem;
+                "
+              >
+                <!--Can write a loop to optimise this-->
+                <div>12:00AM</div>
+                <div>01:00AM</div>
+                <div>02:00AM</div>
+                <div>03:00AM</div>
+                <div>04:00AM</div>
+                <div>05:00AM</div>
+                <div>06:00AM</div>
+                <div>07:00AM</div>
+                <div>08:00AM</div>
+                <div>09:00AM</div>
+                <div>10:00AM</div>
+                <div>11:00AM</div>
+                <div>12:00PM</div>
+                <div>01:00PM</div>
+                <div>02:00PM</div>
+                <div>03:00PM</div>
+                <div>04:00PM</div>
+                <div>05:00PM</div>
+                <div>06:00PM</div>
+                <div>07:00PM</div>
+                <div>08:00PM</div>
+                <div>09:00PM</div>
+                <div>10:00PM</div>
+                <div>11:00PM</div>
+              </div>
+              <!--Days (x-axis)-->
+              <div class="col position-relative border-end py-2"></div>
+              <div class="col position-relative border-end py-2">
+                <!--Example activity card-->
+                <div
+                  class="card position-absolute w-100 bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden"
+                  style="top: 31.25%; height: 4.167%; left: 0; z-index: 10"
+                >
+                <!--Activity name-->
+                  <div class="fw-bold small text-truncate">Flight Arrival</div>
+                  <!--Activity duration-->
+                  <div
+                    style="font-size: 0.7rem"
+                    class="text-white-50 text-truncate"
+                  >
+                    7:00 - 8:00 AM
+                  </div>
                 </div>
-                <!--Days (x-axis)-->
-                <div class="col position-relative border-end py-2"></div>
-                <div class="col position-relative border-end py-2"></div>
-                <div class="col position-relative border-end py-2"></div>
-                <div class="col position-relative border-end py-2"></div>
-                <div class="col position-relative border-end py-2"></div>
-                <div class="col position-relative border-end py-2"></div>
-                <div class="col position-relative py-2"></div> 
+              </div>
+              <div class="col position-relative border-end py-2"></div>
+              <div class="col position-relative border-end py-2"></div>
+              <div class="col position-relative border-end py-2"></div>
+              <div class="col position-relative border-end py-2"></div>
+              <div class="col position-relative py-2"></div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</main>
+  </main>
+</div>
 {% endblock %}

@@ -1,0 +1,301 @@
+{% extends 'base.html' %} {% block title %} Itinerary - Detailed {% endblock %}
+{% block content %}
+<div class="container py-4">
+  <!-- Trip name -->
+  <div class="row mb-4 text-center text-md-start">
+    <div class="col-12">
+      <!--Back button-->
+      <div class="d-flex flex-row align-items-center gap-4">
+        <a href="{{ url_for('main.show_itinerary_overview') }}">
+          <button
+            class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+            aria-label="Back to Overview"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-left-short"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"
+              />
+            </svg>
+          </button>
+        </a>
+        <h1 class="display-6 fw-bold">Trip to Korea</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigate between days -->
+  <div class="row mb-4">
+    <div class="col-12 d-flex justify-content-center">
+      <div
+        class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2"
+      >
+        <button
+          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          aria-label="Previous Day"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-caret-left-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"
+            />
+          </svg>
+        </button>
+        <div class="d-flex flex-column text-center">
+          <h5 class="mb-0 fs-6 fs-sm-5 fw-bold">Day 1</h5>
+          <div class="text-muted" style="font-size: 0.85rem">6 Jul 2026</div>
+        </div>
+        <button
+          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          aria-label="Next Day"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-caret-right-fill"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="row g-4 mb-4">
+      <!--Daily itinerary-->
+      <div class="col-12 col-lg-8">
+        <div
+          class="border rounded p-3 p-md-4 text-muted text-center overflow-auto no-scrollbar"
+          style="min-height: 400px; height: 600px"
+        >
+          <div class="row m-0" style="height: 3000px">
+            <!--Times (y-axis)-->
+            <div
+              class="col-auto d-flex flex-column justify-content-around text-end text-nowrap pe-3 text-muted border-end"
+              style="
+                width: 90px;
+                height: 100%;
+                line-height: 1;
+                font-size: 0.8rem;
+              "
+            >
+              <div>12:00AM</div>
+              <div>01:00AM</div>
+              <div>02:00AM</div>
+              <div>03:00AM</div>
+              <div>04:00AM</div>
+              <div>05:00AM</div>
+              <div>06:00AM</div>
+              <div>07:00AM</div>
+              <div>08:00AM</div>
+              <div>09:00AM</div>
+              <div>10:00AM</div>
+              <div>11:00AM</div>
+              <div>12:00PM</div>
+              <div>01:00PM</div>
+              <div>02:00PM</div>
+              <div>03:00PM</div>
+              <div>04:00PM</div>
+              <div>05:00PM</div>
+              <div>06:00PM</div>
+              <div>07:00PM</div>
+              <div>08:00PM</div>
+              <div>09:00PM</div>
+              <div>10:00PM</div>
+              <div>11:00PM</div>
+            </div>
+            <!--Day (x-axis)-->
+            <div class="col position-relative py-2">
+              <!--Example activity card (in timeline)-->
+              <div
+                class="card position-absolute w-100 bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start"
+                style="top: 31.25%; height: 4.167%; left: 0; z-index: 10"
+              >
+                <div class="d-flex flex-row justify-content-between">
+                  <!--Activity name-->
+                  <div class="fw-bold small">Flight Arrival</div>
+                  <!--View notes link-->
+                  <a href="#" class="link-light text-decoration-none small"
+                    >View Notes</a
+                  >
+                </div>
+                <!--Activity duration-->
+                <div
+                  class="d-flex align-items-center text-white-50 small gap-2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-clock-history text-white-50 flex-shrink-0"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"
+                    />
+                    <path
+                      d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"
+                    />
+                    <path
+                      d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"
+                    />
+                  </svg>
+                  <span>7:00 - 8:00 AM</span>
+                </div>
+                <!--Activity location-->
+                <div
+                  class="d-flex align-items-center text-white-50 small gap-2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-geo-alt text-white-50 flex-shrink-0"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"
+                    />
+                    <path
+                      d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"
+                    />
+                  </svg>
+                  <span>Incheon Airport</span>
+                </div>
+                <!--Activity address-->
+                <div class="text-white-50 small">
+                  영종, 272 Gonghang-ro, 구, Incheon, South Korea
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Activities header-->
+      <div class="col-12 col-lg-4">
+        <div
+          class="card shadow-sm border overflow-hidden d-flex flex-column"
+          style="min-height: 400px; height: 600px"
+        >
+          <div
+            class="card-header bg-white d-flex align-items-center justify-content-between p-3 border-bottom flex-shrink-0"
+          >
+            <h5 class="mb-0">Activities</h5>
+
+            <!--Add activities button-->
+            <button
+              class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+              aria-label="Add activity"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus-lg"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!--Activities body-->
+          <div class="card-body overflow-y-auto p-3 d-flex flex-column gap-3">
+            <!--Example activity card-->
+            <div class="card w-100 shadow-sm border">
+              <div class="card-body">
+                <!--Activity name-->
+                <h6 class="card-title fw-bold mb-3">KBBQ Lunch</h6>
+                <div class="d-flex flex-column gap-2">
+                  <!--Activity duration-->
+                  <div class="d-flex flex-row align-items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-clock-history text-muted flex-shrink-0"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"
+                      />
+                      <path
+                        d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"
+                      />
+                      <path
+                        d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"
+                      />
+                    </svg>
+                    <small class="text-body-secondary">1hr 30 mins</small>
+                  </div>
+                  <!--Activity location-->
+                  <div class="d-flex flex-row align-items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-geo-alt text-muted flex-shrink-0"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"
+                      />
+                      <path
+                        d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"
+                      />
+                    </svg>
+                    <small class="text-body-secondary"
+                      >Myeongdong Korean BBQ Mongvely</small
+                    >
+                  </div>
+                  <!--Activity address-->
+                  <div class="d-flex flex-row align-items-center gap-2">
+                    <small class="text-body-secondary"
+                      >South Korea, Seoul, Jung District, Myeongdong 8na-gil, 9
+                      3층</small
+                    >
+                  </div>
+                </div>
+                <!--View notes link-->
+                <div class="d-flex flex-row justify-content-end mt-3">
+                  <a href="#" class="card-link text-decoration-none small"
+                    >View Notes</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
