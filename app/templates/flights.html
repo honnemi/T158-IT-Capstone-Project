@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Travel Planner{% endblock %}</title>
+
+    <!-- link to bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="app\static\css\style.css">
+</head>
+
+<body>
+
+    <!-- ======================================== -->
+    <!-- TOP NAVIGATION BAR -->
+    <!-- ======================================== -->
+    <nav class="top-nav d-flex align-items-center">
+
+        <!-- Hamburger menu -->
+        <button class="menu-btn">
+            <i class="bi bi-list"></i>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Main navigation tabs -->
+        <div class="nav-tabs-custom d-flex flex-grow-1">
+            <a href="#" class="nav-tab">Itinerary</a>
+            <a href="#" class="nav-tab active">Bookings</a>
+            <a href="#" class="nav-tab">Inspo</a>
+            <a href="#" class="nav-tab">Budget</a>
+        </div>
+    </nav>
+
+    <!-- ======================================== -->
+    <!-- MAIN PAGE LAYOUT -->
+    <!-- ======================================== -->
+    <div class="container-fluid main-layout">
+        <div class="row g-0">
+
+            <!-- ======================================== -->
+            <!-- LEFT SIDEBAR / TIMELINE -->
+            <!-- ======================================== -->
+            <aside class="col-lg-3 timeline-sidebar">
+
+                <!-- Day group -->
+                <div class="day-group">
+                    <h5>Saturday 4 Jul</h5>
+
+                    <div class="timeline-item red">
+                        <div>
+                            <strong>BNE → ICN Departure</strong>
+                            <small>10:20 AEST</small>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item red">
+                        <div>
+                            <strong>BNE → ICN Arrival</strong>
+                            <small>19:00 KST</small>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item orange">
+                        <div>
+                            <strong>Ocean Park 9 Check-in</strong>
+                            <small>TBD</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day group -->
+                <div class="day-group">
+                    <h5>Monday 6 Jul</h5>
+
+                    <div class="timeline-item red">
+                        <div>
+                            <strong>BNE → ICN Departure</strong>
+                            <small>23:00 AEST</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day group -->
+                <div class="day-group">
+                    <h5>Tuesday 7 Jul</h5>
+
+                    <div class="timeline-item red">
+                        <div>
+                            <strong>BNE → ICN Arrival</strong>
+                            <small>07:40 KST</small>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item orange">
+                        <div>
+                            <strong>Ocean Park 9 Check-out</strong>
+                            <small>10:00AM</small>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item orange">
+                        <div>
+                            <strong>LOTTE City Hotel Check-in</strong>
+                            <small>TBD</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day group -->
+                <div class="day-group">
+                    <h5>Friday 10 Jul</h5>
+
+                    <div class="timeline-item blue">
+                        <div>
+                            <strong>DMZ History Tour</strong>
+                            <small>10:00-15:00</small>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- ======================================== -->
+            <!-- MAIN CONTENT AREA -->
+            <!-- ======================================== -->
+            <main class="col-lg-9 content-area">
+
+                <!-- ======================================== -->
+                <!-- SECONDARY BOOKING TABS -->
+                <!-- ======================================== -->
+                <div class="booking-tabs d-flex flex-wrap">
+
+                    <a href="#" class="booking-tab active text-decoration-none">
+                        <i class="bi bi-airplane-fill"></i>
+                        Flights
+                        <!-- <span class="badge-circle">1</span> -->
+                    </a>
+                    <a href="#" class="booking-tab text-decoration-none">
+                        <i class="bi bi-bed-fill"></i>
+                        Accommodations
+                        <!-- <span class="badge-circle">1</span> -->
+                    </a>
+                    <a href="#" class="booking-tab text-decoration-none">
+                        <i class="bi bi-ticket-perforated-fill"></i>
+                        Bookings
+                        <!-- <span class="badge-circle">1</span> -->
+                    </a>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- FLIGHT CARD 1 -->
+                <!-- ======================================== -->
+                <div class="flight-card">
+
+                    <!-- Card header -->
+                    <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
+                        <div>
+                            <h2>BNE → ICN</h2>
+                            <span class="airline">Qantas QF25</span>
+                        </div>
+
+                        <span class="booked-by">Booked by Jamie H.</span>
+                    </div>
+
+                    <!-- Flight details -->
+                    <div class="flight-detail">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Saturday 4 Jul</span>
+                    </div>
+
+                    <div class="flight-detail">
+                        <i class="bi bi-clock"></i>
+                        <span>10:20-20:00 AEST (9h 40m)</span>
+                    </div>
+
+                    <div class="flight-detail">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>3A ECONOMY SAVER</span>
+                    </div>
+
+                    <div class="flight-detail">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Me</span>
+                    </div>
+
+                    <!-- Edit button -->
+                    <div class="text-end mt-3">
+                        <button class="edit-btn">
+                            <i class="bi bi-paperclip"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ======================================== -->
+                <!-- FLIGHT CARD 2 -->
+                <!-- ======================================== -->
+                <div class="flight-card">
+
+                    <!-- Card header -->
+                    <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
+                        <div>
+                            <h2>BNE → ICN</h2>
+                            <span class="airline">Qantas QF78</span>
+                        </div>
+
+                        <span class="booked-by">Booked by Jamie H.</span>
+                    </div>
+
+                    <!-- Flight details -->
+                    <div class="flight-detail">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Monday 6 Jul</span>
+                    </div>
+
+                    <div class="flight-detail">
+                        <i class="bi bi-clock"></i>
+                        <span>23:00-08:40 AEST (9h 40m)</span>
+                    </div>
+
+                    <div class="flight-detail">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>10C ECONOMY FLEX</span>
+                    </div>
+
+                    <div class="flight-detail">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Annette C.</span>
+                    </div>
+
+                    <!-- Edit button -->
+                    <div class="text-end mt-3">
+                        <button class="edit-btn">
+                            <i class="bi bi-paperclip"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
