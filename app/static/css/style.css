@@ -17,3 +17,277 @@ body {
 .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
+
+/* ======================================== */
+/* GLOBAL STYLES */
+/* ======================================== */
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f4f4f4;
+    color: #111;
+}
+
+/* ======================================== */
+/* TOP NAVIGATION BAR */
+/* ======================================== */
+.top-nav {
+    background: #b61010;
+    height: 92px;
+    padding: 10px 24px 0px 24px;
+}
+
+/* Hamburger button */
+.menu-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgb(0, 0, 0);
+    color: #ffffff;
+    font-size: 2rem;
+    margin-right: 20px;
+}
+
+.navbar-toggler-icon{
+    color: #ffffff;
+    background-color: white;
+}
+
+/* Container for the top tabs */
+.nav-tabs-custom {
+    gap: 12px;
+}
+
+/* Individual top tab */
+.nav-tab {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    background: #8f8f8f;
+    color: #111;
+    padding: 28px 0;
+    border-radius: 12px 12px 0 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: 0.2s ease;
+}
+
+/* Active top tab */
+.nav-tab.active {
+    background: #f5f5f5;
+}
+
+/* ======================================== */
+/* MAIN LAYOUT */
+/* ======================================== */
+.main-layout {
+    padding: 0;
+}
+
+/* ======================================== */
+/* LEFT TIMELINE SIDEBAR */
+/* ======================================== */
+.timeline-sidebar {
+    background: #fff;
+    min-height: calc(100vh - 112px);
+    padding: 28px 24px;
+    border-right: 1px solid #e5e5e5;
+}
+
+/* Day section */
+.day-group {
+    margin-bottom: 28px;
+}
+
+/* Day heading */
+.day-group h5 {
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+/* Timeline item */
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+    position: relative;
+}
+
+/* Colored dot */
+.timeline-item::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+/* Timeline colors */
+.timeline-item.red::before {
+    background: #b32020;
+}
+
+.timeline-item.orange::before {
+    background: #e8893c;
+}
+
+.timeline-item.blue::before {
+    background: #5b7db8;
+}
+
+/* Timeline text */
+.timeline-item strong {
+    display: block;
+    font-size: 0.95rem;
+}
+
+.timeline-item small {
+    color: #8b8b8b;
+}
+
+/* ======================================== */
+/* MAIN CONTENT AREA */
+/* ======================================== */
+.content-area {
+    padding: 28px 32px 40px;
+}
+
+/* ======================================== */
+/* SECONDARY BOOKING TABS */
+/* ======================================== */
+.booking-tabs {
+    gap: 40px;
+    margin-bottom: 28px;
+    align-items: center;
+}
+
+/* Individual booking tab */
+.booking-tab {
+    border: none;
+    background: transparent;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #222;
+    padding-bottom: 12px;
+    position: relative;
+}
+
+/* Active booking tab underline */
+.booking-tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: #b32020;
+    border-radius: 2px;
+}
+
+/* Small circular badge */
+.badge-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #999;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    margin-left: 6px;
+    color: #666;
+}
+
+/* ======================================== */
+/* FLIGHT CARDS */
+/* ======================================== */
+.flight-card {
+    background: #fff;
+    border: 1px solid #d90a0a;
+    border-radius: 16px;
+    padding: 10px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Flight route title */
+.flight-card h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+/* Airline text */
+.airline {
+    color: #777;
+    font-size: 1.15rem;
+    margin-left: 12px;
+}
+
+/* Booked by text */
+.booked-by {
+    color: #8b8b8b;
+    font-size: 0.95rem;
+    margin-top: 8px;
+}
+
+/* ======================================== */
+/* FLIGHT DETAILS ROWS */
+/* ======================================== */
+.flight-detail {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    font-size: 1.15rem;
+    color: #666;
+}
+
+/* Detail icons */
+.flight-detail i {
+    font-size: 1.35rem;
+    color: #111;
+    width: 26px;
+}
+
+/* ======================================== */
+/* EDIT BUTTON */
+/* ======================================== */
+.edit-btn {
+    border: none;
+    background: rgb(0, 255, 119);
+    color: #111;
+    font-size: 5rem;
+    padding: 12px;
+}
+
+/* ======================================== */
+/* RESPONSIVE ADJUSTMENTS */
+/* ======================================== */
+@media (max-width: 991px) {
+
+    /* Stack the main layout */
+    .timeline-sidebar {
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    /* Reduce content padding */
+    .content-area {
+        padding: 24px 20px 32px;
+    }
+
+    /* Make top tabs smaller */
+    .nav-tab {
+        font-size: 1rem;
+        padding: 22px 0;
+    }
+
+    /* Reduce gap between booking tabs */
+    .booking-tabs {
+        gap: 20px;
+    }
+}
