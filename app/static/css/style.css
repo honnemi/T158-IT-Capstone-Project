@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html>
-<body>
-
-<h3 style="color:Red;">Title</h3>
-<p style="color:AzureBlue;">Example text.</p>
-<p style="color:MediumBlue;">Example Text</p>
-
-</body>
-<<<<<<< HEAD
-</html>*/
-
 /* Padding to push content below the navbar */
 body {
     padding-top: 75px;
@@ -292,6 +280,3 @@ body {
         gap: 20px;
     }
 }
-=======
-</html>
->>>>>>> parent of 15902f1 (Merge branch 'itinerary')
