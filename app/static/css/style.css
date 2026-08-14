@@ -1,4 +1,4 @@
-/*<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <body>
 
@@ -7,6 +7,7 @@
 <p style="color:MediumBlue;">Example Text</p>
 
 </body>
+<<<<<<< HEAD
 </html>*/
 
 /* Padding to push content below the navbar */
@@ -291,3 +292,6 @@ body {
         gap: 20px;
     }
 }
+=======
+</html>
+>>>>>>> parent of 15902f1 (Merge branch 'itinerary')
