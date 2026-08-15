@@ -242,7 +242,7 @@
             <!--Add activities button-->
             <button
               class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
-              aria-label="Add activity"
+              aria-label="Add activity" data-bs-toggle="modal" data-bs-target="#addActivityModal"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -346,7 +346,65 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-        <button type="button" class="btn btn-primary" aria-label="Save changes">Save changes</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Save changes">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Activity Modal -->
+<div class="modal fade" id="addActivityModal" tabindex="-1" role="dialog" aria-labelledby="addActivityModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addActivityModalTitle">Add New Activity</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+      </div>
+      <div class="modal-body">
+        <div class="d-flex flex-column gap-4"> 
+          <div class="form-group">
+            <label class="mb-2">Name</label>
+            <input type="text" class="form-control" placeholder="Enter activity name">
+          </div>
+          <div class="form-group d-flex gap-4">
+            <label for="timeInput" class="form-label">Start Time</label>
+            <input type="time" class="form-control" id="timeInput">
+            <label for="timeInput" class="form-label">End Time</label>
+            <input type="time" class="form-control" id="timeInput">
+          </div>
+          <div class="form-group">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-geo-alt flex-shrink-0"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"
+              />
+              <path
+                d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"
+              />
+            </svg>
+            <label class="mb-2 ms-1">Location</label>
+            <div class="position-relative">
+              <input type="search" class="form-control" placeholder="Search location name">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="mb-2">Notes (Optional)</label>
+            <textarea class="form-control" aria-label="With textarea"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Save changes">Save changes</button>
       </div>
     </div>
   </div>
