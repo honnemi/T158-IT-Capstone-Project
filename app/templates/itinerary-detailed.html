@@ -38,7 +38,7 @@
         class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2"
       >
         <button
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          id="previous-day" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" 
           aria-label="Previous Day"
         >
           <svg
@@ -55,11 +55,11 @@
           </svg>
         </button>
         <div class="d-flex flex-column text-center">
-          <h5 class="mb-0 fs-6 fs-sm-5 fw-bold">Day 1</h5>
-          <div class="text-muted" style="font-size: 0.85rem">6 Jul 2026</div>
+          <h5 id="day-counter" class="mb-0 fs-6 fs-sm-5 fw-bold">Day 1</h5>
+          <div id="date" class="text-muted" style="font-size: 0.85rem">6 Jul 2026</div>
         </div>
         <button
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          id="next-day" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" 
           aria-label="Next Day"
         >
           <svg
@@ -345,8 +345,8 @@
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+        <button type="button" class="btn btn-primary" aria-label="Save changes">Save changes</button>
       </div>
     </div>
   </div>

@@ -20,7 +20,7 @@
         class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2"
       >
         <button
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          id="previous-week" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
           aria-label="Previous Week"
         >
           <svg
@@ -37,13 +37,13 @@
           </svg>
         </button>
         <div class="d-flex flex-column text-center">
-          <h5 class="mb-0 fs-6 fs-sm-5 fw-bold">Week 1</h5>
-          <div class="text-muted" style="font-size: 0.85rem">
+          <h5 id="week-counter" class="mb-0 fs-6 fs-sm-5 fw-bold">Week 1</h5>
+          <div id="week-dates" class="text-muted" style="font-size: 0.85rem">
             6 Jul - 12 Jul 2026
           </div>
         </div>
         <button
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          id="next-week" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
           aria-label="Next Week"
         >
           <svg
