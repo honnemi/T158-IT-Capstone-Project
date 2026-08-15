@@ -18,3 +18,6 @@ def show_itinerary_detailed():
 @main.route("/budget")
 def show_budget():
     return render_template("budget.html")
+@main.route("/flights")
+def show_flights():
+    return render_template("flights.html")
