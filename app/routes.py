@@ -30,3 +30,7 @@ def show_accommodations():
 @main.route("/other")
 def show_other():
     return render_template("other.html")
+
+@main.route("/login")
+def show_login():
+    return render_template("login.html")
