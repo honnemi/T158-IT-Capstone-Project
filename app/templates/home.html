@@ -1,0 +1,95 @@
+{% extends 'base.html' %} {% block title %} Home {% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/e57688c40b.js" crossorigin="anonymous"></script>
+<style>
+/* testing this div
+
+div {
+  justify-content: left;
+  align-items: center;
+  height: 270px;
+  border: 1px solid black;
+  border-radius: 20px;
+} */
+
+.homepage-container {
+  border-radius: 10px;
+  background-color: #F5F5F5;
+  width: 700px;
+  height: 300px;
+  align-content: center;
+  padding-left: 20px;
+  box-shadow: 5px 5px 5px #A9A9A9;
+  transition: transform .2s;
+  margin: 40px;
+  border-color: #A9A9A9;
+}
+
+.homepage-container:hover {
+-ms-transform: scale(1.1); /* IE 9 */
+  -webkit-transform: scale(1.1); /* Safari 3-8 */
+  transform: scale(1.05); 
+}
+
+.continue-planning-btn {
+  border-radius: 10px;
+  background-color: #e60000;
+  width: 180px;
+  height: 50px;
+  padding-left: 10px;
+  align-content: center;
+  text-align: center;
+  color: white;
+}
+
+.img {
+  width: 50%;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  /* float: right; */
+}
+
+</style>
+</head>
+
+
+
+<body>
+
+<h1 class="display-6 fw-bold">Home</h1>
+<h3>Planned Trips:</h3>
+
+<div class="main-container">
+<div class="homepage-container">
+                <h3>Trip to Korea</h3>
+                <span class="fa-calendar">
+                    <i class="fa-regular far-calendar"></i>
+                </span>
+8th Nov - 22nd Nov<br>
+
+<span class="fa-calendar">
+                    <i class="fas fa-user-alt"></i>
+                </span>
+People<br>
+                <div class="continue-planning-btn">
+                <p>Continue Planninng<p>
+                </div>
+                <img src="app/static/images/southkorea.jpg" alt="South Korea" style="width:50%">
+               
+            <!-- colour pick a dark grey then style the calendar dates to it -->
+            </div>
+  
+</div>
+
+
+
+</body>
+</html>
+
+
