@@ -280,3 +280,88 @@ body {
         gap: 20px;
     }
 }
+
+/* ======================================== */
+/* ACCOMMODATION CARDS */
+/* ======================================== */
+.accommodation-card {
+    background: #fff;
+    border: 1px solid #e8893c;
+    border-radius: 16px;
+    padding: 10px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+
+.accommodation-card h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+/* ======================================== */
+/* KEBAB MENU BUTTON + DROPDOWN */
+/* ======================================== */
+.kebab-btn {
+    border: none;
+    background: transparent;
+    font-size: 1.3rem;
+    color: #444;
+    padding: 4px 8px;
+}
+
+.accom-menu {
+    display: none;
+    position: absolute;
+    top: 44px;
+    right: 24px;
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    min-width: 190px;
+    overflow: hidden;
+}
+
+.accom-menu.open {
+    display: block;
+}
+
+.accom-menu-item {
+    display: block;
+    padding: 10px 16px;
+    color: #222;
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.accom-menu-item:last-child {
+    border-bottom: none;
+}
+
+.accom-menu-item:hover {
+    background: #f7f7f7;
+}
+
+/* ======================================== */
+/* OTHER BOOKING CARDS (Tours/Activities) */
+/* ======================================== */
+.other-card {
+    background: #fff;
+    border: 1px solid #5b7db8;
+    border-radius: 16px;
+    padding: 10px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+    max-width: 380px;
+}
+
+.other-card h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
