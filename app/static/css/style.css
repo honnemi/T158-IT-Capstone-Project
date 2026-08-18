@@ -365,3 +365,115 @@ body {
     font-size: 1.4rem;
     font-weight: 800;
 }
+
+/* ======================================== */
+/* AUTH PAGES (Login / Forgot / Reset) */
+/* ======================================== */
+.auth-body {
+    margin: 0;
+    padding: 0;
+}
+
+.auth-page {
+    min-height: 100vh;
+    width: 100%;
+    background: url('../images/boat.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Card */
+.auth-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px 36px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.auth-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 20px;
+    color: #111;
+}
+
+.auth-subtext {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+/* Form */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.auth-form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.auth-form input {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #b61010;
+}
+
+.auth-link {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #333;
+    text-decoration: underline;
+    margin-bottom: 18px;
+}
+
+/* Buttons */
+.auth-btn {
+    background: #b61010;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.auth-btn:hover {
+    background: #8f0c0c;
+}
+
+.auth-btn-secondary {
+    background: #e5e5e5;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.auth-btn-secondary:hover {
+    background: #d5d5d5;
+}
