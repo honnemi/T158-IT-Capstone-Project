@@ -31,6 +31,10 @@ def show_accommodations():
 def show_other():
     return render_template("other.html")
 
+@main.route("/inspo")
+def show_inspo():
+    return render_template("inspo.html")
+
 @main.route("/login")
 def show_login():
     return render_template("login.html")

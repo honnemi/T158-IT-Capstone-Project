@@ -1,11 +1,18 @@
 {% extends 'base.html' %} {% block title %} Flights {% endblock %}
+
+{% block active_tab %}
+<a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab">Itinerary</a>
+<a href="{{ url_for('main.show_flights') }}" class="nav-tab active">Bookings</a>
+<a href="{{ url_for('main.show_inspo') }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
+{% endblock %}
+
 {% block content %}
 <!-- ======================================== -->
 <!-- MAIN PAGE LAYOUT -->
 <!-- ======================================== -->
 <div class="container-fluid main-layout">
     <div class="row g-0">
-
         <!-- ======================================== -->
         <!-- LEFT SIDEBAR / TIMELINE -->
         <!-- ======================================== -->

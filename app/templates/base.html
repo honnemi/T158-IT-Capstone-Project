@@ -42,10 +42,12 @@
 
     <!-- Main navigation tabs -->
     <div class="nav-tabs-custom d-flex flex-grow-1">
+        {% block active_tab %}
         <a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab">Itinerary</a>
-        <a href="{{ url_for('main.show_flights') }}" class="nav-tab active">Bookings</a>
+        <a href="{{ url_for('main.show_flights') }}" class="nav-tab">Bookings</a>
         <a href="#" class="nav-tab">Inspo</a>
         <a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
+        {% endblock %}
     </div>
 </nav>
 
