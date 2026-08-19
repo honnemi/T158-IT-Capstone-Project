@@ -1,6 +1,6 @@
 /* Padding to push content below the navbar */
 body {
-    padding-top: 75px;
+    /* padding-top: 75px; */
 }
 /* To remove visible scrollbar */
 .no-scrollbar::-webkit-scrollbar {
@@ -20,10 +20,10 @@ body {
 /* ======================================== */
 /* TOP NAVIGATION BAR */
 /* ======================================== */
-.top-nav {
+.navbar {
     background: #b61010;
     height: 92px;
-    padding: 10px 24px 0px 24px;
+    padding: 10px 24px 10px 24px;
 }
 
 /* Hamburger button */

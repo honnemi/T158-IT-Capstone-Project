@@ -1,26 +1,5 @@
 {% extends 'base.html' %} {% block title %} Flights {% endblock %}
 {% block content %}
-
-<!-- ======================================== -->
-<!-- TOP NAVIGATION BAR -->
-<!-- ======================================== -->
-<nav class="top-nav d-flex align-items-center">
-
-    <!-- Hamburger menu -->
-    <button class="menu-btn">
-        <i class="bi bi-list"></i>
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Main navigation tabs -->
-    <div class="nav-tabs-custom d-flex flex-grow-1">
-        <a href="#" class="nav-tab">Itinerary</a>
-        <a href="#" class="nav-tab active">Bookings</a>
-        <a href="#" class="nav-tab">Inspo</a>
-        <a href="#" class="nav-tab">Budget</a>
-    </div>
-</nav>
-
 <!-- ======================================== -->
 <!-- MAIN PAGE LAYOUT -->
 <!-- ======================================== -->
@@ -30,7 +9,7 @@
         <!-- ======================================== -->
         <!-- LEFT SIDEBAR / TIMELINE -->
         <!-- ======================================== -->
-        <aside class="col-lg-3 timeline-sidebar">
+        <aside class="col-lg-3 timeline-sidebar overflow-scroll">
 
             <!-- Day group -->
             <div class="day-group">

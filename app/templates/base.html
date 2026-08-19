@@ -16,16 +16,42 @@
 </head>
 
 <body>
-<!-- Dark navbar--> 
-  <nav class="navbar bg-body-tertiary navbar-dark fixed-top">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+<!-- ======================================== -->
+<!-- TOP NAVIGATION BAR -->
+<!-- ======================================== -->
+<nav class="navbar d-flex align-items-center">
+
+    <!-- Hamburger menu -->
+     <button class="navbar-toggler" 
+        type="button" 
+        data-bs-toggle="offcanvas" 
+        data-bs-target="#offcanvasNavbar" 
+        aria-controls="offcanvasNavbar" 
+        aria-label="Toggle navigation">
+      <svg xmlns="http://www.w3.org/2000/svg" 
+        width="40" 
+        height="40" 
+        fill="currentColor" 
+        class="bi bi-list" 
+        viewBox="0 0 16 16">
+        <path 
+        fill-rule="evenodd" 
+        d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+      </svg>
     </button>
-    <a class="navbar-brand" href="#">Home</a>
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+
+    <!-- Main navigation tabs -->
+    <div class="nav-tabs-custom d-flex flex-grow-1">
+        <a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab">Itinerary</a>
+        <a href="{{ url_for('main.show_flights') }}" class="nav-tab active">Bookings</a>
+        <a href="#" class="nav-tab">Inspo</a>
+        <a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
+    </div>
+</nav>
+
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Interactive Planner</h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Interactive Planner</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
