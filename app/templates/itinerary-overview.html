@@ -1,4 +1,12 @@
 {% extends 'base.html' %} {% block title %} Itinerary - Overview {% endblock %}
+
+{% block active_tab %}
+<a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab active">Itinerary</a>
+<a href="{{ url_for('main.show_flights') }}" class="nav-tab">Bookings</a>
+<a href="{{ url_for('main.show_inspo') }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
+{% endblock %}
+
 {% block content %}
 
 <!--Page header-->

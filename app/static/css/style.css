@@ -1,6 +1,6 @@
 /* Padding to push content below the navbar */
 body {
-    padding-top: 75px;
+    /* padding-top: 75px; */
 }
 /* To remove visible scrollbar */
 .no-scrollbar::-webkit-scrollbar {
@@ -20,10 +20,10 @@ body {
 /* ======================================== */
 /* TOP NAVIGATION BAR */
 /* ======================================== */
-.top-nav {
+.navbar {
     background: #b61010;
     height: 92px;
-    padding: 10px 24px 0px 24px;
+    padding: 10px 24px 10px 24px;
 }
 
 /* Hamburger button */
@@ -279,4 +279,201 @@ body {
     .booking-tabs {
         gap: 20px;
     }
+}
+
+/* ======================================== */
+/* ACCOMMODATION CARDS */
+/* ======================================== */
+.accommodation-card {
+    background: #fff;
+    border: 1px solid #e8893c;
+    border-radius: 16px;
+    padding: 10px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+
+.accommodation-card h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+/* ======================================== */
+/* KEBAB MENU BUTTON + DROPDOWN */
+/* ======================================== */
+.kebab-btn {
+    border: none;
+    background: transparent;
+    font-size: 1.3rem;
+    color: #444;
+    padding: 4px 8px;
+}
+
+.accom-menu {
+    display: none;
+    position: absolute;
+    top: 44px;
+    right: 24px;
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    min-width: 190px;
+    overflow: hidden;
+}
+
+.accom-menu.open {
+    display: block;
+}
+
+.accom-menu-item {
+    display: block;
+    padding: 10px 16px;
+    color: #222;
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.accom-menu-item:last-child {
+    border-bottom: none;
+}
+
+.accom-menu-item:hover {
+    background: #f7f7f7;
+}
+
+/* ======================================== */
+/* OTHER BOOKING CARDS (Tours/Activities) */
+/* ======================================== */
+.other-card {
+    background: #fff;
+    border: 1px solid #5b7db8;
+    border-radius: 16px;
+    padding: 10px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: relative;
+    max-width: 380px;
+}
+
+.other-card h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+/* ======================================== */
+/* AUTH PAGES (Login / Forgot / Reset) */
+/* ======================================== */
+.auth-body {
+    margin: 0;
+    padding: 0;
+}
+
+.auth-page {
+    min-height: 100vh;
+    width: 100%;
+    background: url('../images/boat.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Card */
+.auth-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px 36px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.auth-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 20px;
+    color: #111;
+}
+
+.auth-subtext {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+/* Form */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.auth-form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.auth-form input {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #b61010;
+}
+
+.auth-link {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #333;
+    text-decoration: underline;
+    margin-bottom: 18px;
+}
+
+/* Buttons */
+.auth-btn {
+    background: #b61010;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.auth-btn:hover {
+    background: #8f0c0c;
+}
+
+.auth-btn-secondary {
+    background: #e5e5e5;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.auth-btn-secondary:hover {
+    background: #d5d5d5;
 }
