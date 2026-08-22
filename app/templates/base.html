@@ -15,7 +15,7 @@
 
 </head>
 
-<body>
+<body class="no-scrollbar">
 <!-- ======================================== -->
 <!-- TOP NAVIGATION BAR -->
 <!-- ======================================== -->
@@ -45,7 +45,7 @@
         {% block active_tab %}
         <a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab">Itinerary</a>
         <a href="{{ url_for('main.show_flights') }}" class="nav-tab">Bookings</a>
-        <a href="#" class="nav-tab">Inspo</a>
+        <a href="{{ url_for('main.show_inspo') }}" class="nav-tab">Inspo</a>
         <a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
         {% endblock %}
     </div>
@@ -75,7 +75,7 @@
                 </ul>
               </li>
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
+            <a class="nav-link active" aria-current="page" href="{{ url_for('main.home') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill me-2" viewBox="0 0 16 16">
                 <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
                 <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>

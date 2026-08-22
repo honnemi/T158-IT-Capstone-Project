@@ -38,3 +38,4 @@ def show_inspo():
 @main.route("/login")
 def show_login():
     return render_template("login.html")
+
