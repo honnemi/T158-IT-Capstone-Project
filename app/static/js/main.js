@@ -35,8 +35,10 @@ function setDateLimits() {
         startDate.getDate() + (maxDay - 1)
     );
 
-    nativeDate.min = formatDateForInput(startDate);
-    nativeDate.max = formatDateForInput(tripEndDate);
+    if (nativeDate) {
+        nativeDate.min = formatDateForInput(startDate);
+        nativeDate.max = formatDateForInput(tripEndDate);
+    }
 }
 
 function formatDateForInput(date) {
@@ -64,9 +66,14 @@ function updateWeek() {
     ); 
  
     // Update text elements 
-    weekCounter.textContent = `Week ${currentWeek}`; 
-    weekDate.textContent = 
-        `${formatDate(weekStart)} - ${formatDate(weekEnd)}`; 
+    if (weekCounter) {
+        weekCounter.textContent = `Week ${currentWeek}`; 
+    }
+
+    if (weekDate) {
+        weekDate.textContent = 
+            `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+    }
 } 
  
 function updateDay() { 
@@ -78,7 +85,9 @@ function updateDay() {
     ); 
  
     // Update text elements 
-    dayCounter.textContent = `Day ${currentDay}`; 
+    if (dayCounter) {
+        dayCounter.textContent = `Day ${currentDay}`; 
+    }
 
     if (dayDate) {
         dayDate.textContent = formatDate(currentDate); 

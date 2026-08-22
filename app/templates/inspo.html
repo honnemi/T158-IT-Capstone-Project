@@ -5,5 +5,45 @@
 <a href="{{ url_for('main.show_inspo') }}" class="nav-tab active">Inspo</a>
 <a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
 {% endblock %}
+
 {% block content %}
+
+<div class="container py-4 mt-3" style="margin: 0px !important;">
+ <div class="row mb-2">
+    <div class="col-2 d-flex justify-content-center align-items-center">
+        <div class="toolbar d-flex flex-column align-items-center gap-2">
+            <button id="pen" class="tool btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                </svg>
+            </button>
+            <button id="eraser" class="tool btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
+                <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293z"/>
+                </svg>
+            </button>
+            <button id="shape" class="tool btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2z"/>
+                </svg>
+            </button>
+            <button id="text" class="tool btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fonts" viewBox="0 0 16 16">
+                <path d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="col-10 d-flex justify-content-center align-items-center">
+        <div class="whiteboard-container border border-2 rounded">
+            <canvas id="whiteboard"></canvas>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/fabric@6.4.3/dist/index.js"></script>
+<script src="{{ url_for('static', filename='js/whiteboard.js') }}"></script>
 {% endblock %}
