@@ -1,31 +1,18 @@
 {% extends 'base.html' %} {% block title %} Bookings {% endblock %}
+
+{% block active_tab %}
+<a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab">Itinerary</a>
+<a href="{{ url_for('main.show_flights') }}" class="nav-tab active">Bookings</a>
+<a href="{{ url_for('main.show_inspo') }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
+{% endblock %}
+
 {% block content %}
-
-<!-- ======================================== -->
-<!-- TOP NAVIGATION BAR -->
-<!-- ======================================== -->
-<nav class="top-nav d-flex align-items-center">
-
-    <!-- Hamburger menu -->
-    <button class="menu-btn">
-        <i class="bi bi-list"></i>
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Main navigation tabs -->
-    <div class="nav-tabs-custom d-flex flex-grow-1">
-        <a href="#" class="nav-tab">Itinerary</a>
-        <a href="#" class="nav-tab active">Bookings</a>
-        <a href="#" class="nav-tab">Inspo</a>
-        <a href="#" class="nav-tab">Budget</a>
-    </div>
-</nav>
-
 <!-- ======================================== -->
 <!-- MAIN PAGE LAYOUT -->
 <!-- ======================================== -->
 <div class="container-fluid main-layout">
-    <div class="row g-0">
+    <div class="row g-4">
 
         <!-- ======================================== -->
         <!-- LEFT SIDEBAR / TIMELINE -->
@@ -120,24 +107,27 @@
             <!-- ======================================== -->
             <div class="booking-tabs d-flex flex-wrap">
 
-                <a href="#" class="booking-tab text-decoration-none">
+                <a href="{{ url_for('main.show_flights')}}" class="booking-tab active text-decoration-none">
                     <i class="bi bi-airplane-fill"></i>
                     Flights
+                    <!-- <span class="badge-circle">1</span> -->
                 </a>
-                <a href="#" class="booking-tab text-decoration-none">
+                <a href="{{ url_for('main.show_accommodations')}}" class="booking-tab text-decoration-none">
                     <i class="bi bi-bed-fill"></i>
                     Accommodations
+                    <!-- <span class="badge-circle">1</span> -->
                 </a>
-                <a href="#" class="booking-tab active text-decoration-none">
-                    <i class="bi bi-flag-fill"></i>
-                    Bookings
+                <a href="{{ url_for('main.show_other')}}" class="booking-tab text-decoration-none">
+                    <i class="bi bi-ticket-perforated-fill"></i>
+                    Other
+                    <!-- <span class="badge-circle">1</span> -->
                 </a>
             </div>
 
             <!-- ======================================== -->
             <!-- OTHER BOOKING CARD 1 -->
             <!-- ======================================== -->
-            <div class="other-card">
+            <div class="flight-card">
 
                 <!-- Card header -->
                 <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
