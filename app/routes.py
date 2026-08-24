@@ -39,3 +39,10 @@ def show_inspo():
 def show_login():
     return render_template("login.html")
 
+@main.route("/forgot-password")
+def show_forgot_password():
+    return render_template("forgot-password.html")
+
+@main.route("/reset-password")
+def show_reset_password():
+    return render_template("reset-password.html")
