@@ -3,7 +3,7 @@ from flask_login import login_required
 
 inspo_bp = Blueprint("inspo", __name__)
 
-@inspo_bp.route("/inspo")
+@inspo_bp.route("/inspo", methods=["GET", "POST"])
 @login_required
 def show_inspo():
     return render_template("inspo.html")

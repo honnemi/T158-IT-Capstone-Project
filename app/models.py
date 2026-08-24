@@ -1,5 +1,6 @@
+from werkzeug.security import check_password_hash
+
 from . import db
-from datetime import datetime
 from flask_login import UserMixin
 
 user_trip = db.Table('user_trip',
@@ -13,8 +14,12 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     name = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    password_changed = db.Column(db.Boolean, default=True, nullable=False)
 
     trips = db.relationship('Trip', secondary=user_trip, back_populates='users')
+    
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 class Trip(db.Model):
     __tablename__ = "trips"

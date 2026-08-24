@@ -21,15 +21,23 @@
         <form
           class="auth-form"
           method="POST"
-          action="{{ url_for('auth.show_login') }}"
+          action=""
         >
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required />
+          {{ form.hidden_tag() }}
 
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
+          {{ form.email.label }}
+          {{ form.email(class="form-control") }}
+          {% for error in form.email.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
 
-          <button type="submit" class="auth-btn">Sign In</button>
+          {{ form.password.label }}
+          {{ form.password(class="form-control") }}
+          {% for error in form.password.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+
+          {{ form.submit(class="auth-btn") }}
         </form>
       </div>
     </div>
