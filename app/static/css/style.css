@@ -18,7 +18,7 @@ body {
 /* ======================================== */
 .navbar {
     background: #BF0010;
-    height: 60px;
+    height: 80px;
 }
 
 /* Hamburger button */
@@ -81,7 +81,7 @@ body {
     font-weight: 700;
     font-size: 1.1rem;
     transition: 0.2s ease;
-    height: 52px;
+    height: 72px;
 }
 
 /* Active top tab */
@@ -91,7 +91,7 @@ body {
 
 /* Sidebar */
 #offcanvasNavbar {
-    width: 300px;
+    width: 250px;
     transition: transform 0.35s ease-in-out !important;
 }
 
