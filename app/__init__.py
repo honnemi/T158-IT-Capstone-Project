@@ -18,6 +18,12 @@ def create_app():
     
     login_manager.init_app(app)
     login_manager.login_view = 'auth.show_login'
+    
+    from .models import User
+    @login_manager.user_loader
+    def load_user(user_id):
+       print("LOAD USER CALLED:", user_id)
+       return db.session.scalar(db.select(User).where(User.id==user_id))
 
     from . import home, auth, itinerary, bookings, inspo, budget
     app.register_blueprint(home.home_bp)
