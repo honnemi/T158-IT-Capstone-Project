@@ -17,7 +17,12 @@ def create_app():
     db.init_app(app)
     #login_manager.init_app(app)
 
-    from app.routes import main
-    app.register_blueprint(main)
+    from . import home, auth, itinerary, bookings, inspo, budget
+    app.register_blueprint(home.home_bp)
+    app.register_blueprint(auth.auth_bp)
+    app.register_blueprint(itinerary.itinerary_bp)
+    app.register_blueprint(bookings.bookings_bp)
+    app.register_blueprint(inspo.inspo_bp)
+    app.register_blueprint(budget.budget_bp)
 
     return app

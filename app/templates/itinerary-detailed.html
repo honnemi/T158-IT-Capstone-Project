@@ -1,10 +1,10 @@
 {% extends 'base.html' %} {% block title %} Itinerary - Detailed {% endblock %}
 
 {% block active_tab %}
-<a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab active">Itinerary</a>
-<a href="{{ url_for('main.show_flights') }}" class="nav-tab">Bookings</a>
-<a href="{{ url_for('main.show_inspo') }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
+<a href="{{ url_for('itinerary.show_itinerary_overview') }}" class="nav-tab active">Itinerary</a>
+<a href="{{ url_for('bookings.show_flights') }}" class="nav-tab">Bookings</a>
+<a href="{{ url_for('inspo.show_inspo') }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('budget.show_budget') }}" class="nav-tab">Budget</a>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
     <div class="col-12">
       <!--Back button-->
       <div class="d-flex flex-row align-items-center gap-4">
-        <a href="{{ url_for('main.show_itinerary_overview') }}">
+        <a href="{{ url_for('itinerary.show_itinerary_overview') }}">
           <button
             class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
             aria-label="Back to Overview"

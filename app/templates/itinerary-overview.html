@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block title %} Itinerary - Overview {% endblock %}
 {% block active_tab %}
-<a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab active"
+<a href="{{ url_for('itinerary.show_itinerary_overview') }}" class="nav-tab active"
   >Itinerary</a
 >
-<a href="{{ url_for('main.show_flights') }}" class="nav-tab">Bookings</a>
-<a href="{{ url_for('main.show_inspo') }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
+<a href="{{ url_for('bookings.show_flights') }}" class="nav-tab">Bookings</a>
+<a href="{{ url_for('inspo.show_inspo') }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('budget.show_budget') }}" class="nav-tab">Budget</a>
 {% endblock %} {% block content %}
 
 <!--Page header-->
@@ -54,7 +54,7 @@
       class="col-12 col-md-4 d-flex justify-content-center justify-content-md-end"
     >
       <a
-        href="{{ url_for('main.show_itinerary_detailed') }}"
+        href="{{ url_for('itinerary.show_itinerary_detailed') }}"
         class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto"
       >
         Switch to Daily View
