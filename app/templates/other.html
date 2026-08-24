@@ -1,174 +1,170 @@
-{% extends 'base.html' %} {% block title %} Bookings {% endblock %}
-
-{% block active_tab %}
-<a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab">Itinerary</a>
+{% extends 'base.html' %} {% block title %} Bookings {% endblock %} {% block
+active_tab %}
+<a href="{{ url_for('main.show_itinerary_overview') }}" class="nav-tab"
+  >Itinerary</a
+>
 <a href="{{ url_for('main.show_flights') }}" class="nav-tab active">Bookings</a>
 <a href="{{ url_for('main.show_inspo') }}" class="nav-tab">Inspo</a>
 <a href="{{ url_for('main.show_budget') }}" class="nav-tab">Budget</a>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <!-- ======================================== -->
 <!-- MAIN PAGE LAYOUT -->
 <!-- ======================================== -->
 <div class="container-fluid main-layout">
-    <div class="row g-4">
+  <div class="row g-4">
+    <!-- ======================================== -->
+    <!-- LEFT SIDEBAR / TIMELINE -->
+    <!-- ======================================== -->
+    <aside class="col-lg-3 timeline-sidebar">
+      <div class="day-group">
+        <h5>Saturday 4 Jul</h5>
 
-        <!-- ======================================== -->
-        <!-- LEFT SIDEBAR / TIMELINE -->
-        <!-- ======================================== -->
-        <aside class="col-lg-3 timeline-sidebar">
+        <div class="timeline-item red">
+          <div>
+            <strong>BNE → ICN Departure</strong>
+            <small>10:20 AEST</small>
+          </div>
+        </div>
 
-            <div class="day-group">
-                <h5>Saturday 4 Jul</h5>
+        <div class="timeline-item red">
+          <div>
+            <strong>BNE → ICN Arrival</strong>
+            <small>19:00 KST</small>
+          </div>
+        </div>
 
-                <div class="timeline-item red">
-                    <div>
-                        <strong>BNE → ICN Departure</strong>
-                        <small>10:20 AEST</small>
-                    </div>
-                </div>
+        <div class="timeline-item orange">
+          <div>
+            <strong>Ocean Park 9 Check-in</strong>
+            <small>TBD</small>
+          </div>
+        </div>
+      </div>
 
-                <div class="timeline-item red">
-                    <div>
-                        <strong>BNE → ICN Arrival</strong>
-                        <small>19:00 KST</small>
-                    </div>
-                </div>
+      <div class="day-group">
+        <h5>Monday 6 Jul</h5>
 
-                <div class="timeline-item orange">
-                    <div>
-                        <strong>Ocean Park 9 Check-in</strong>
-                        <small>TBD</small>
-                    </div>
-                </div>
+        <div class="timeline-item red">
+          <div>
+            <strong>BNE → ICN Departure</strong>
+            <small>23:00 AEST</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <h5>Tuesday 7 Jul</h5>
+
+        <div class="timeline-item red">
+          <div>
+            <strong>BNE → ICN Arrival</strong>
+            <small>07:40 KST</small>
+          </div>
+        </div>
+
+        <div class="timeline-item orange">
+          <div>
+            <strong>Ocean Park 9 Check-out</strong>
+            <small>10:00AM</small>
+          </div>
+        </div>
+
+        <div class="timeline-item orange">
+          <div>
+            <strong>LOTTE City Hotel Check-in</strong>
+            <small>TBD</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-group">
+        <h5>Friday 10 Jul</h5>
+
+        <div class="timeline-item blue">
+          <div>
+            <strong>DMZ History Tour</strong>
+            <small>10:00-15:00</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ======================================== -->
+    <!-- MAIN CONTENT AREA -->
+    <!-- ======================================== -->
+    <main class="col-lg-9 content-area">
+      <!-- ======================================== -->
+      <!-- SECONDARY BOOKING TABS -->
+      <!-- ======================================== -->
+      <div class="booking-tabs d-flex flex-wrap">
+        <a
+          href="{{ url_for('main.show_flights')}}"
+          class="booking-tab text-decoration-none"
+        >
+          <i class="bi bi-airplane-fill me-2"></i>
+          Flights
+        </a>
+        <a
+          href="{{ url_for('main.show_accommodations')}}"
+          class="booking-tab text-decoration-none"
+        >
+          <i class="bi bi-building-fill me-2"></i>
+          Accommodations
+          <!-- <span class="badge-circle">1</span> -->
+        </a>
+        <a
+          href="{{ url_for('main.show_other')}}"
+          class="booking-tab active text-decoration-none"
+        >
+          <i class="bi bi-ticket-perforated-fill me-2"></i>
+          Other
+          <!-- <span class="badge-circle">1</span> -->
+        </a>
+      </div>
+
+      <!-- ======================================== -->
+      <!-- OTHER BOOKING CARD 1 -->
+      <!-- ======================================== -->
+      <div class="flight-card other-card">
+        <!-- Card header -->
+        <div
+          class="d-flex justify-content-between align-items-start mb-3 flex-wrap"
+        >
+          <h2>DMZ History Tour</h2>
+
+          <span class="booked-by">Booked by Jamie H.</span>
+        </div>
+
+        <!-- Booking details -->
+        <div class="flight-detail">
+          <i class="bi bi-clock"></i>
+          <span>10:00AM-15:00PM</span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-geo-alt"></i>
+          <span>DMZ</span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-tag"></i>
+          <span>$74pp</span>
+        </div>
+
+        <!-- Edit button -->
+         <div class="text-end mt-3" style="position:relative;">
+            <button class="kebab-btn" onclick="toggleMenu(this)">
+                <i class="bi bi-three-dots-vertical"></i>
+            </button>
+
+            <div class="accom-menu">
+                <a href="#" class="accom-menu-item">View flight details</a>
+                <a href="#" class="accom-menu-item">Contact agent</a>
             </div>
-
-            <div class="day-group">
-                <h5>Monday 6 Jul</h5>
-
-                <div class="timeline-item red">
-                    <div>
-                        <strong>BNE → ICN Departure</strong>
-                        <small>23:00 AEST</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-group">
-                <h5>Tuesday 7 Jul</h5>
-
-                <div class="timeline-item red">
-                    <div>
-                        <strong>BNE → ICN Arrival</strong>
-                        <small>07:40 KST</small>
-                    </div>
-                </div>
-
-                <div class="timeline-item orange">
-                    <div>
-                        <strong>Ocean Park 9 Check-out</strong>
-                        <small>10:00AM</small>
-                    </div>
-                </div>
-
-                <div class="timeline-item orange">
-                    <div>
-                        <strong>LOTTE City Hotel Check-in</strong>
-                        <small>TBD</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-group">
-                <h5>Friday 10 Jul</h5>
-
-                <div class="timeline-item blue">
-                    <div>
-                        <strong>DMZ History Tour</strong>
-                        <small>10:00-15:00</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-group">
-                <h5>Friday 17 Jul</h5>
-            </div>
-
-        </aside>
-
-        <!-- ======================================== -->
-        <!-- MAIN CONTENT AREA -->
-        <!-- ======================================== -->
-        <main class="col-lg-9 content-area">
-
-            <!-- ======================================== -->
-            <!-- SECONDARY BOOKING TABS -->
-            <!-- ======================================== -->
-            <div class="booking-tabs d-flex flex-wrap">
-
-                <a href="{{ url_for('main.show_flights')}}" class="booking-tab active text-decoration-none">
-                    <i class="bi bi-airplane-fill"></i>
-                    Flights
-                    <!-- <span class="badge-circle">1</span> -->
-                </a>
-                <a href="{{ url_for('main.show_accommodations')}}" class="booking-tab text-decoration-none">
-                    <i class="bi bi-bed-fill"></i>
-                    Accommodations
-                    <!-- <span class="badge-circle">1</span> -->
-                </a>
-                <a href="{{ url_for('main.show_other')}}" class="booking-tab text-decoration-none">
-                    <i class="bi bi-ticket-perforated-fill"></i>
-                    Other
-                    <!-- <span class="badge-circle">1</span> -->
-                </a>
-            </div>
-
-            <!-- ======================================== -->
-            <!-- OTHER BOOKING CARD 1 -->
-            <!-- ======================================== -->
-            <div class="flight-card">
-
-                <!-- Card header -->
-                <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
-                    <h2>DMZ History Tour</h2>
-
-                    <button class="kebab-btn" onclick="toggleMenu(this)">
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-
-                    <div class="accom-menu">
-                        <a href="#" class="accom-menu-item">View location on map</a>
-                        <a href="#" class="accom-menu-item">Contact agent</a>
-                    </div>
-                </div>
-
-                <!-- Booking details -->
-                <div class="flight-detail">
-                    <i class="bi bi-clock"></i>
-                    <span>10:00AM-15:00PM</span>
-                </div>
-
-                <div class="flight-detail">
-                    <i class="bi bi-geo-alt"></i>
-                    <span>DMZ</span>
-                </div>
-
-                <div class="flight-detail">
-                    <i class="bi bi-currency-dollar"></i>
-                    <span>$74pp</span>
-                </div>
-
-                <!-- Edit button -->
-                <div class="text-end mt-3">
-                    <button class="edit-btn">
-                        <i class="bi bi-paperclip"></i>
-                    </button>
-                </div>
-            </div>
-
-        </main>
-    </div>
+        </div>
+      </div>
+    </main>
+  </div>
 </div>
 
 <!-- Bootstrap JS -->
@@ -176,18 +172,20 @@
 
 <!-- Kebab menu toggle -->
 <script>
-function toggleMenu(btn) {
+  function toggleMenu(btn) {
     const menu = btn.nextElementSibling;
-    document.querySelectorAll('.accom-menu').forEach(m => {
-        if (m !== menu) m.classList.remove('open');
+    document.querySelectorAll(".accom-menu").forEach((m) => {
+      if (m !== menu) m.classList.remove("open");
     });
-    menu.classList.toggle('open');
-}
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.kebab-btn')) {
-        document.querySelectorAll('.accom-menu').forEach(m => m.classList.remove('open'));
+    menu.classList.toggle("open");
+  }
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".kebab-btn")) {
+      document
+        .querySelectorAll(".accom-menu")
+        .forEach((m) => m.classList.remove("open"));
     }
-});
+  });
 </script>
 
 {% endblock %}
