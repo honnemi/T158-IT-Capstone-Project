@@ -244,6 +244,14 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+.accommodation-card {
+    border: 1px solid #e8893c;
+}
+
+.other-card {
+    border: 1px solid #5b7db8;
+}
+
 
 /* Flight card heading */
 
@@ -332,25 +340,6 @@ body {
 }
 
 /* ======================================== */
-/* ACCOMMODATION CARDS */
-/* ======================================== */
-.accommodation-card {
-    background: #fff;
-    border: 1px solid #e8893c;
-    border-radius: 16px;
-    padding: 10px 32px;
-    margin-bottom: 28px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    position: relative;
-}
-
-.accommodation-card h2 {
-    margin: 0;
-    font-size: 1.6rem;
-    font-weight: 800;
-}
-
-/* ======================================== */
 /* KEBAB MENU BUTTON + DROPDOWN */
 /* ======================================== */
 .kebab-btn {
@@ -394,26 +383,6 @@ body {
 
 .accom-menu-item:hover {
     background: #f7f7f7;
-}
-
-/* ======================================== */
-/* OTHER BOOKING CARDS (Tours/Activities) */
-/* ======================================== */
-.other-card {
-    background: #fff;
-    border: 1px solid #5b7db8;
-    border-radius: 16px;
-    padding: 10px 32px;
-    margin-bottom: 28px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    position: relative;
-    max-width: 380px;
-}
-
-.other-card h2 {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: 800;
 }
 
 /* ======================================== */
