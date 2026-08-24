@@ -17,6 +17,7 @@ def create_app():
     
     login_manager.init_app(app)
     login_manager.login_view = 'auth.show_login'
+    login_manager.login_message = None
     
     from .models import User
     @login_manager.user_loader
