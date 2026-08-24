@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block title %} Accommodations {% endblock %} {%
 block active_tab %}
-<a href="{{ url_for('itinerary.show_itinerary_overview') }}" class="nav-tab"
+<a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab"
   >Itinerary</a
 >
-<a href="{{ url_for('bookings.show_flights') }}" class="nav-tab active">Bookings</a>
-<a href="{{ url_for('inspo.show_inspo') }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('budget.show_budget') }}" class="nav-tab">Budget</a>
+<a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab active">Bookings</a>
+<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
 {% endblock %} {% block content %}
 
 <!-- ======================================== -->
@@ -99,14 +99,14 @@ block active_tab %}
       <!-- ======================================== -->
       <div class="booking-tabs d-flex flex-wrap">
         <a
-          href="{{ url_for('bookings.show_flights')}}"
+          href="{{ url_for('bookings.show_flights', trip_id=trip.id)}}"
           class="booking-tab text-decoration-none"
         >
           <i class="bi bi-airplane-fill me-2"></i>
           Flights
         </a>
         <a
-          href="{{ url_for('bookings.show_accommodations')}}"
+          href="{{ url_for('bookings.show_accommodations', trip_id=trip.id)}}"
           class="booking-tab active text-decoration-none"
         >
           <i class="bi bi-building-fill me-2"></i>
@@ -114,7 +114,7 @@ block active_tab %}
           <!-- <span class="badge-circle">1</span> -->
         </a>
         <a
-          href="{{ url_for('bookings.show_other')}}"
+          href="{{ url_for('bookings.show_other', trip_id=trip.id)}}"
           class="booking-tab text-decoration-none"
         >
           <i class="bi bi-ticket-perforated-fill me-2"></i>

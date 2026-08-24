@@ -1,10 +1,10 @@
 {% extends 'base.html' %} {% block title %} Itinerary - Detailed {% endblock %}
 
 {% block active_tab %}
-<a href="{{ url_for('itinerary.show_itinerary_overview') }}" class="nav-tab active">Itinerary</a>
-<a href="{{ url_for('bookings.show_flights') }}" class="nav-tab">Bookings</a>
-<a href="{{ url_for('inspo.show_inspo') }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('budget.show_budget') }}" class="nav-tab">Budget</a>
+<a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab active">Itinerary</a>
+<a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">Bookings</a>
+<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
     <div class="col-12">
       <!--Back button-->
       <div class="d-flex flex-row align-items-center gap-4">
-        <a href="{{ url_for('itinerary.show_itinerary_overview') }}">
+        <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}">
           <button
             class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
             aria-label="Back to Overview"
@@ -22,7 +22,7 @@
             <i class="bi bi-caret-left-fill"></i>
           </button>
         </a>
-        <h1 class="display-6 fw-bold">Trip to Korea</h1>
+        <h1 class="display-6 fw-bold">{{ trip.name }}</h1>
       </div>
     </div>
   </div>
@@ -99,6 +99,7 @@
             </div>
             <!--Day (x-axis)-->
             <div class="col position-relative py-2">
+
               <!--Example activity card (in timeline)-->
               <div
                 class="card position-absolute w-100 bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start"

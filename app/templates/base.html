@@ -16,7 +16,7 @@
 
 </head>
 
-<body class="no-scrollbar">
+<body class="no-scrollbar d-flex flex-column min-vh-100">
 
 <!-- ======================================== -->
 <!-- TOP NAVIGATION BAR -->
@@ -45,10 +45,10 @@
     <!-- Main navigation tabs -->
     <div class="nav-tabs-custom d-flex flex-grow-1">
         {% block active_tab %}
-        <a href="{{ url_for('itinerary.show_itinerary_overview') }}" class="nav-tab">Itinerary</a>
-        <a href="{{ url_for('bookings.show_flights') }}" class="nav-tab">Bookings</a>
-        <a href="{{ url_for('inspo.show_inspo') }}" class="nav-tab">Inspo</a>
-        <a href="{{ url_for('budget.show_budget') }}" class="nav-tab">Budget</a>
+        <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">Itinerary</a>
+        <a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">Bookings</a>
+        <a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
+        <a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
         {% endblock %}
     </div>
 </nav>

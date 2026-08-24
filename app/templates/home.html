@@ -12,7 +12,7 @@
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
 </head>
 
-<body class="no-scrollbar">
+<body class="no-scrollbar d-flex flex-column min-vh-100">
 
     <!--Navigation bar-->
     <nav class="navbar d-flex align-items-center px-3">
@@ -114,7 +114,7 @@
                                     </p>
                                 </div>
 
-                                <a href="{{ url_for('itinerary.show_itinerary_overview') }}">
+                                <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}">
                                     <button class="btn btn-primary w-100">Continue Planning</button>
                                 </a>
                             </div>
@@ -158,8 +158,8 @@
                                     </p>
                                 </div>
 
-                                <a href="{{ url_for('itinerary.show_itinerary_overview') }}">
-                                    <button class="btn btn-secondary w-100">View Details</button>
+                                <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}">
+                                    <button class="btn btn-secondary w-100">Continue Planning</button>
                                 </a>
                             </div>
                         </div>

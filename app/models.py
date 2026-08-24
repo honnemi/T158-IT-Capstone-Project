@@ -54,15 +54,15 @@ class Flight(Booking):
     departure_airport = db.Column(db.String(100), nullable=False)
     arrival_airport = db.Column(db.String(100), nullable=False)
     flight_number = db.Column(db.String(20), nullable=False)
-    departure_time = db.Column(db.DateTime, nullable=False) # FIXED: Changed from db.Time to db.DateTime
+    departure_time = db.Column(db.DateTime, nullable=False) 
     arrival_time = db.Column(db.DateTime, nullable=False)
     
 class Accommodation(Booking):
     __tablename__ = "accommodations"
     location = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(200), nullable=False)
-    check_in = db.Column(db.Date, nullable=False)
-    check_out = db.Column(db.Date, nullable=False)
+    check_in = db.Column(db.DateTime, nullable=False)
+    check_out = db.Column(db.DateTime, nullable=False)
     room_capacity = db.Column(db.Integer, nullable=False)
     rating = db.Column(db.Integer, nullable=True)
     contact_email = db.Column(db.String(100), nullable=True)
