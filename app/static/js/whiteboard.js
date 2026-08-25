@@ -2,17 +2,18 @@ const whiteboardElement = document.getElementById("whiteboard");
 const whiteboardContainer= document.getElementById("whiteboard-container");
 
 if (whiteboardElement && whiteboardContainer) {
+    // Default colour: black
     let currentColour = "#1F2937";
 
     const canvas = new fabric.Canvas("whiteboard");
 
     // Canvas setup
     canvas.setDimensions({
+        // Canvas size responds to screen
         width: whiteboardContainer.clientWidth,
         height: whiteboardContainer.clientHeight
     });
     
-
     // Pen setup
     canvas.isDrawingMode = false;
 
@@ -20,7 +21,7 @@ if (whiteboardElement && whiteboardContainer) {
     canvas.freeDrawingBrush.width = 3;
     canvas.freeDrawingBrush.color = currentColour;
 
-    // Custom tool states tracker
+    // Track custom tool states
     let isArrowModeActive = false;
     let isDrawingArrow = false;
     let line;
@@ -80,9 +81,9 @@ if (whiteboardElement && whiteboardContainer) {
 
     if (penButton) {
         penButton.addEventListener("click", () => {
-            // clearCustomTools runs right before this via the .tool click event listener
+        
             canvas.isDrawingMode = true;
-            canvas.freeDrawingBrush.color = currentColour; // Fixed to use active currentColour
+            canvas.freeDrawingBrush.color = currentColour; 
             canvas.freeDrawingBrush.width = 3;
         });
     }

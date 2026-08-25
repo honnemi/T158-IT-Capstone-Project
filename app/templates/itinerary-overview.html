@@ -3,7 +3,7 @@
 <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab active">Itinerary</a>
 <a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">Bookings</a>
 <a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
+<a href="{{ url_for('budget.show_budget', trip_id=trip.id, whiteboard=trip.whiteboard_data) }}" class="nav-tab">Budget</a>
 {% endblock %} {% block content %}
 
 <!--Page header-->
