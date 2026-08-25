@@ -1,11 +1,21 @@
 {% extends 'base.html' %} {% block title %} Flights {% endblock %} {% block
 active_tab %}
-<a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab"
+<a
+  href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}"
+  class="nav-tab"
   >Itinerary</a
 >
-<a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab active">Bookings</a>
-<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
+<a
+  href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}"
+  class="nav-tab active"
+  >Bookings</a
+>
+<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab"
+  >Inspo</a
+>
+<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab"
+  >Budget</a
+>
 {% endblock %} {% block content %}
 <!-- ======================================== -->
 <!-- MAIN PAGE LAYOUT -->
@@ -164,7 +174,7 @@ active_tab %}
         </div>
 
         <!-- Edit button -->
-        <div class="text-end mt-3" style="position:relative;">
+        <div class="text-end mt-3" style="position: relative">
           <button class="kebab-btn" onclick="toggleMenu(this)">
             <i class="bi bi-three-dots-vertical"></i>
           </button>
@@ -214,7 +224,7 @@ active_tab %}
         </div>
 
         <!-- Edit button -->
-        <div class="text-end mt-3" style="position:relative;">
+        <div class="text-end mt-3" style="position: relative">
           <button class="kebab-btn" onclick="toggleMenu(this)">
             <i class="bi bi-three-dots-vertical"></i>
           </button>

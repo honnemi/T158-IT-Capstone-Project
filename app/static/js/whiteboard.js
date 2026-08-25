@@ -130,7 +130,7 @@ if (whiteboardElement) {
             const circle = new fabric.Ellipse({
                 left: 100,
                 top: 100,
-                rx: 50, // Fixed: rx and ry should be half of the target diameter (50 = 100px total width)
+                rx: 50, 
                 ry: 50,
                 fill: "transparent",
                 stroke: currentColour,
@@ -169,7 +169,6 @@ if (whiteboardElement) {
 
     if (arrowButton) {
         arrowButton.addEventListener("click", () => {
-            // clearCustomTools runs right before this via the .tool click event listener
             isArrowModeActive = true;
             canvas.selection = false;
             canvas.defaultCursor = 'crosshair';
@@ -286,7 +285,7 @@ if (whiteboardElement) {
         reader.onload = function(event) {
             const imgDataUrl = event.target.result;
 
-            // Use Fabric v6 syntax to load the image onto the canvas grid
+            // Load image onto the canvas grid from URL
             fabric.Image.fromURL(imgDataUrl).then((fabricImg) => {
                 
                 const maxDimension = Math.min(canvas.width, canvas.height) * 0.6;
@@ -294,7 +293,7 @@ if (whiteboardElement) {
                     fabricImg.scaleToWidth(maxDimension);
                 }
 
-                // Centre the uploaded asset within your existing boundary box
+                // Centre the uploaded asset within existing boundary box
                 fabricImg.set({
                     left: canvas.width / 2 - (fabricImg.getScaledWidth() / 2),
                     top: canvas.height / 2 - (fabricImg.getScaledHeight() / 2),
@@ -304,7 +303,7 @@ if (whiteboardElement) {
                     cornerSize: 10
                 });
 
-                // Commit object straight to the scene context and refresh the view layer
+                // Commit object and refresh the view layer
                 canvas.add(fabricImg);
                 canvas.setActiveObject(fabricImg);
                 canvas.requestRenderAll();

@@ -28,6 +28,7 @@ class Trip(db.Model):
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
     consultant_name = db.Column(db.String(100), nullable=False)
+    whiteboard = db.Column(db.Text, nullable=True)
     
     users = db.relationship('User', secondary=user_trip, back_populates='trips')
     
