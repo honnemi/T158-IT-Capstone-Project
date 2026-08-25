@@ -527,7 +527,7 @@ body {
     border: none !important;
 }
 
-.whiteboard-container {
+#whiteboard-container {
     width: 100%;
     height: 80vh;
 }

@@ -1,15 +1,17 @@
 const whiteboardElement = document.getElementById("whiteboard");
+const whiteboardContainer= document.getElementById("whiteboard-container");
 
-if (whiteboardElement) {
+if (whiteboardElement && whiteboardContainer) {
     let currentColour = "#1F2937";
 
     const canvas = new fabric.Canvas("whiteboard");
 
     // Canvas setup
     canvas.setDimensions({
-        width: 1070,
-        height: 500
+        width: whiteboardContainer.clientWidth,
+        height: whiteboardContainer.clientHeight
     });
+    
 
     // Pen setup
     canvas.isDrawingMode = false;
