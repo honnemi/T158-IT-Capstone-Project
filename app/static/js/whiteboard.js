@@ -1,109 +1,138 @@
 const whiteboardElement = document.getElementById("whiteboard");
-const whiteboardContainer= document.getElementById("whiteboard-container");
+const whiteboardContainer = document.getElementById("whiteboard-container");
 
 if (whiteboardElement && whiteboardContainer) {
-    // Default colour: black
     let currentColour = "#1F2937";
 
+    // Create canvas
     const canvas = new fabric.Canvas("whiteboard");
 
-    // Canvas setup
+    // Set canvas dimensions
     canvas.setDimensions({
-        // Canvas size responds to screen
         width: whiteboardContainer.clientWidth,
         height: whiteboardContainer.clientHeight
     });
-    
-    // Pen setup
-    canvas.isDrawingMode = false;
 
+    // Save whiteboard as JSON and return to route
+    let saveTimeout;
+
+    function saveWhiteboard() {
+        const whiteboardData = JSON.stringify(canvas.toJSON());
+
+        fetch(saveWhiteboardUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                whiteboard: whiteboardData
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Save failed: ${response.status}`);
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            console.log("Whiteboard saved:", data);
+        })
+        .catch(error => {
+            console.error("Failed to save whiteboard:", error);
+        });
+    }
+
+    // Delay saves slightly so requests aren't so frequent
+    function scheduleSave() {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(saveWhiteboard, 500);
+    }
+
+    // Set pen properties
+    canvas.isDrawingMode = false;
     canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
     canvas.freeDrawingBrush.width = 3;
     canvas.freeDrawingBrush.color = currentColour;
 
-    // Track custom tool states
+    // Track tool states
     let isArrowModeActive = false;
     let isDrawingArrow = false;
+
     let line;
     let arrowhead;
-
-    // Reset state when switching tools
+    
+    // Reset tool states on tool toggle
     function clearToolState() {
         isArrowModeActive = false;
         isDrawingArrow = false;
         line = null;
         arrowhead = null;
-        
-        // Restore standard canvas behaviors
+
         canvas.isDrawingMode = false;
-        canvas.selection = true; 
-        canvas.defaultCursor = 'default';
+        canvas.selection = true;
+        canvas.defaultCursor = "default";
     }
 
-    // Show toggle between tools
     const tools = document.querySelectorAll(".tool");
 
+    // Tool toggle
     tools.forEach(tool => {
         tool.addEventListener("click", () => {
-            // Remove active from all tools
             tools.forEach(t => t.classList.remove("active"));
-
-            // Activate clicked tool
             tool.classList.add("active");
-            
             clearToolState();
         });
     });
-
-    // Show toggle between colours
+    
+    // Colour swatches
     const colourButtons = document.querySelectorAll(".colour");
 
     colourButtons.forEach(button => {
         button.addEventListener("click", () => {
-            // Remove tick from all colours
-            colourButtons.forEach(btn => {
-                btn.classList.remove("active");
-            });
-
-            // Add tick to selected colour
+            colourButtons.forEach(btn => btn.classList.remove("active"));
             button.classList.add("active");
 
-            // Change drawing colour
             currentColour = button.dataset.color;
+
             if (canvas.freeDrawingBrush) {
                 canvas.freeDrawingBrush.color = currentColour;
             }
         });
     });
 
-    // Pen functionality
+    // Pen tool
     const penButton = document.getElementById("pen");
 
     if (penButton) {
         penButton.addEventListener("click", () => {
-        
             canvas.isDrawingMode = true;
-            canvas.freeDrawingBrush.color = currentColour; 
+            canvas.freeDrawingBrush.color = currentColour;
             canvas.freeDrawingBrush.width = 3;
         });
     }
 
-    // Eraser functionality
+    // Erase tool
     const eraserButton = document.getElementById("eraser");
 
     if (eraserButton) {
         eraserButton.addEventListener("click", () => {
-            const activeObject = canvas.getActiveObject();
+            clearToolState();
 
-            if (activeObject) {
-                canvas.remove(activeObject);
+            const activeObjects = canvas.getActiveObjects();
+
+            if (activeObjects.length > 0) {
+                activeObjects.forEach(object => {
+                    canvas.remove(object);
+                });
+
                 canvas.discardActiveObject();
                 canvas.requestRenderAll();
             }
         });
     }
 
-    // Square functionality
+    // Square tool
     const squareButton = document.getElementById("square");
 
     if (squareButton) {
@@ -125,7 +154,7 @@ if (whiteboardElement && whiteboardContainer) {
         });
     }
 
-    // Circle functionality
+    // Circle tool
     const circleButton = document.getElementById("circle");
 
     if (circleButton) {
@@ -133,7 +162,7 @@ if (whiteboardElement && whiteboardContainer) {
             const circle = new fabric.Ellipse({
                 left: 100,
                 top: 100,
-                rx: 50, 
+                rx: 50,
                 ry: 50,
                 fill: "transparent",
                 stroke: currentColour,
@@ -147,7 +176,7 @@ if (whiteboardElement && whiteboardContainer) {
         });
     }
 
-    // Text functionality
+    // Text tool
     const textButton = document.getElementById("text");
 
     if (textButton) {
@@ -167,66 +196,69 @@ if (whiteboardElement && whiteboardContainer) {
         });
     }
 
-    // Arrow functionality
+    // Arrow tool
     const arrowButton = document.getElementById("arrow");
 
     if (arrowButton) {
         arrowButton.addEventListener("click", () => {
             isArrowModeActive = true;
             canvas.selection = false;
-            canvas.defaultCursor = 'crosshair';
+            canvas.defaultCursor = "crosshair";
         });
     }
 
-    // Create line and arrowhead on click
-    canvas.on('mouse:down', function (options) {
+    canvas.on("mouse:down", options => {
         if (!isArrowModeActive || options.target) return;
 
         isDrawingArrow = true;
+
         const pointer = canvas.getPointer(options.e);
         const color = currentColour;
-        
-        // Create the line
-        line = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
-            strokeWidth: 3,
-            stroke: color,
-            fill: 'transparent',
-            originX: 'center',
-            originY: 'center',
-            selectable: false,
-            hoverCursor: 'default'
-        });
 
-        // Create the triangle point
+        line = new fabric.Line(
+            [pointer.x, pointer.y, pointer.x, pointer.y],
+            {
+                strokeWidth: 3,
+                stroke: color,
+                fill: "transparent",
+                originX: "center",
+                originY: "center",
+                selectable: false,
+                hoverCursor: "default"
+            }
+        );
+
         arrowhead = new fabric.Triangle({
             width: 15,
             height: 15,
             fill: color,
             left: pointer.x,
             top: pointer.y,
-            originX: 'center',
-            originY: 'center',
+            originX: "center",
+            originY: "center",
             selectable: false,
             angle: 0,
-            hoverCursor: 'default'
+            hoverCursor: "default"
         });
 
         canvas.add(line, arrowhead);
     });
 
-    // Update line with math as mouse moves
-    canvas.on('mouse:move', function (options) {
+    canvas.on("mouse:move", options => {
         if (!isDrawingArrow || !line || !arrowhead) return;
 
         const pointer = canvas.getPointer(options.e);
 
-        line.set({ x2: pointer.x, y2: pointer.y });
+        line.set({
+            x2: pointer.x,
+            y2: pointer.y
+        });
 
         const dx = pointer.x - line.x1;
         const dy = pointer.y - line.y1;
-        
+
         let angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        angle += 90; 
+        angle += 90;
 
         arrowhead.set({
             left: pointer.x,
@@ -237,8 +269,9 @@ if (whiteboardElement && whiteboardContainer) {
         canvas.renderAll();
     });
 
-    canvas.on('mouse:up', function () {
+    canvas.on("mouse:up", () => {
         if (!isDrawingArrow) return;
+
         isDrawingArrow = false;
 
         if (line && arrowhead) {
@@ -257,7 +290,7 @@ if (whiteboardElement && whiteboardContainer) {
 
                 canvas.remove(line, arrowhead);
                 canvas.add(arrowGroup);
-                
+
                 arrowGroup.setCoords();
                 canvas.setActiveObject(arrowGroup);
             }
@@ -268,55 +301,89 @@ if (whiteboardElement && whiteboardContainer) {
         canvas.renderAll();
     });
 
-    // Image functionality
-    const imageToolBtn = document.getElementById('image');
-    const imageLoader = document.getElementById('image-loader');
+    // Image tool
+    const imageToolBtn = document.getElementById("image");
+    const imageLoader = document.getElementById("image-loader");
 
-    // Open image upload
-    imageToolBtn.addEventListener('click', () => {
-        imageLoader.click();
-    });
+    if (imageToolBtn && imageLoader) {
+        imageToolBtn.addEventListener("click", () => {
+            imageLoader.click();
+        });
 
-    // Listen for file selection
-    imageLoader.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+        imageLoader.addEventListener("change", function(e) {
+            const file = e.target.files[0];
 
-        const reader = new FileReader();
-        
-        // Convert selected local file into secure DataURL string
-        reader.onload = function(event) {
-            const imgDataUrl = event.target.result;
+            if (!file) return;
 
-            // Load image onto the canvas grid from URL
-            fabric.Image.fromURL(imgDataUrl).then((fabricImg) => {
-                
-                const maxDimension = Math.min(canvas.width, canvas.height) * 0.6;
-                if (fabricImg.width > maxDimension || fabricImg.height > maxDimension) {
-                    fabricImg.scaleToWidth(maxDimension);
-                }
+            const reader = new FileReader();
 
-                // Centre the uploaded asset within existing boundary box
-                fabricImg.set({
-                    left: canvas.width / 2 - (fabricImg.getScaledWidth() / 2),
-                    top: canvas.height / 2 - (fabricImg.getScaledHeight() / 2),
-                    cornerColor: '#3B82F6',
-                    cornerStrokeColor: '#1E40AF',
-                    transparentCorners: false,
-                    cornerSize: 10
+            reader.onload = function(event) {
+                const imgDataUrl = event.target.result;
+
+                fabric.Image.fromURL(imgDataUrl).then(fabricImg => {
+                    const maxDimension =
+                        Math.min(canvas.width, canvas.height) * 0.6;
+
+                    if (
+                        fabricImg.width > maxDimension ||
+                        fabricImg.height > maxDimension
+                    ) {
+                        fabricImg.scaleToWidth(maxDimension);
+                    }
+
+                    fabricImg.set({
+                        left:
+                            canvas.width / 2 -
+                            fabricImg.getScaledWidth() / 2,
+                        top:
+                            canvas.height / 2 -
+                            fabricImg.getScaledHeight() / 2,
+                        cornerColor: "#3B82F6",
+                        cornerStrokeColor: "#1E40AF",
+                        transparentCorners: false,
+                        cornerSize: 10
+                    });
+
+                    canvas.add(fabricImg);
+                    canvas.setActiveObject(fabricImg);
+                    canvas.requestRenderAll();
                 });
+            };
 
-                // Commit object and refresh the view layer
-                canvas.add(fabricImg);
-                canvas.setActiveObject(fabricImg);
-                canvas.requestRenderAll();
-            });
-        };
+            reader.readAsDataURL(file);
+            this.value = "";
+        });
+    }
 
-        reader.readAsDataURL(file);
-        
-        // Clear input value so the same image can be re-uploaded back-to-back if needed
-        this.value = '';
-    });
+    // Load whiteboard and listen for events
+    setTimeout(() => {
+        canvas.setDimensions({
+            width: whiteboardContainer.clientWidth,
+            height: whiteboardContainer.clientHeight
+        });
 
+        if (savedWhiteboard) {
+            try {
+                const whiteboardData =
+                    typeof savedWhiteboard === "string"
+                        ? JSON.parse(savedWhiteboard)
+                        : savedWhiteboard;
+
+                canvas.loadFromJSON(whiteboardData, () => {
+                    canvas.calcOffset();
+                    canvas.requestRenderAll();
+
+                    canvas.on("object:added", scheduleSave);
+                    canvas.on("object:modified", scheduleSave);
+                    canvas.on("object:removed", scheduleSave);
+                });
+            } catch (error) {
+                console.error("Error loading whiteboard:", error);
+            }
+        } else {
+            canvas.on("object:added", scheduleSave);
+            canvas.on("object:modified", scheduleSave);
+            canvas.on("object:removed", scheduleSave);
+        }
+    }, 100);
 }

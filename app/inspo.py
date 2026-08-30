@@ -10,17 +10,16 @@ inspo_bp = Blueprint("inspo", __name__)
 @login_required
 def show_inspo(trip_id):
     trip = Trip.query.get_or_404(trip_id)
-    
-    if current_user not in trip.users:
-        abort(403)
+    return render_template("inspo.html", trip=trip)
 
-    if request.method == "POST":
-        data = request.get_json()
+@inspo_bp.route("/inspo/save/<int:trip_id>", methods=["POST"])
+@login_required
+def save_whiteboard(trip_id):
+    trip = Trip.query.get_or_404(trip_id)
 
-        trip.whiteboard = json.dumps(data)
+    data = request.get_json()
+    trip.whiteboard = data.get("whiteboard")
 
-        db.session.commit()
+    db.session.commit()
 
-        return jsonify({"success": True})
-    
-    return render_template("inspo.html", trip=trip, whiteboard=trip.whiteboard)
+    return jsonify({"success": True})
