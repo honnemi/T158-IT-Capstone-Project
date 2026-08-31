@@ -89,7 +89,7 @@
             <div class="col-auto text-end text-nowrap pe-3 text-muted" style="width: 90px">
               <h6>Time</h6>
             </div>
-            <!--Can write a loop to optimise this-->
+            <!--Could write a loop to optimise this-->
             <div class="col">
               <h6>Sun</h6>
             </div>
@@ -116,7 +116,7 @@
           <!--Calendar Body-->
 
           <!--Times (y-axis)-->
-          <div class="overflow-y-auto no-scrollbar border-bottom" style="max-height: 500px">
+          <div class="overflow-y-auto border-bottom" style="max-height: 500px">
 
             <div class="row m-0" style="height: 3000px">
               <div
@@ -163,11 +163,12 @@
                   {% if activity.date == day %}
 
                     <div
-                      class="card position-absolute w-100 bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden"
+                      class="card position-absolute bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden"
                       style="
                         top: {{ activity.top_percent }}%;
                         height: {{ activity.height_percent }}%;
-                        left: 0;
+                        left: {{ activity.left_percent }}%;
+                        width: {{ activity.width_percent }}%;
                         z-index: 10;
                       "
                     >

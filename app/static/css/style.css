@@ -605,3 +605,12 @@ body {
     background-color: #06B6D4;
     border-radius: 100px;
 }
+
+.activity-card .dropdown {
+    position: relative;
+    z-index: 9999;
+}
+
+.activity-card .dropdown-menu {
+    z-index: 99999 !important;
+}

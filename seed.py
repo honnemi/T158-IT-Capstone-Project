@@ -83,12 +83,13 @@ def seed_database():
         # 4. FLIGHTS
         # ============================================================
 
-        # OUTBOUND
-        # LAX -> NRT
         flight_outbound = Flight(
             name="Outbound Flight - LAX to NRT",
             cost=850.00,
             trip_id=tokyo_trip.id,
+
+            location="Narita International Airport",
+            address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
 
             departure_airport="LAX",
             arrival_airport="NRT",
@@ -103,15 +104,13 @@ def seed_database():
             )
         )
 
-        # RETURN
-        # NRT -> LAX
-        #
-        # For simplicity, this uses a later date for arrival
-        # so your calendar does not treat it as backwards.
         flight_return = Flight(
             name="Return Flight - NRT to LAX",
             cost=850.00,
             trip_id=tokyo_trip.id,
+
+            location="Narita International Airport",
+            address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
 
             departure_airport="NRT",
             arrival_airport="LAX",
@@ -145,7 +144,7 @@ def seed_database():
 
             address=(
                 "3-7-1 Nishi-Shinjuku, "
-                "Shinjuku-ku, Tokyo"
+                "Shinjuku-ku, Tokyo, Japan"
             ),
 
             check_in=datetime(
@@ -175,15 +174,16 @@ def seed_database():
             cost=340.00,
             trip_id=tokyo_trip.id,
 
+            location="Narita International Airport",
+            address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
+
             start_time=datetime(
                 2026, 10, 11, 16, 00
             ),
 
             end_time=datetime(
                 2026, 10, 17, 23, 59
-            ),
-
-            location="Narita Airport"
+            )
         )
 
         airport_transfer = Other(
@@ -191,15 +191,19 @@ def seed_database():
             cost=80.00,
             trip_id=tokyo_trip.id,
 
+            location="Narita Airport → Shinjuku",
+            address=(
+                "Narita International Airport, "
+                "1-1 Furugome, Narita, Chiba, Japan"
+            ),
+
             start_time=datetime(
                 2026, 10, 11, 16, 00
             ),
 
             end_time=datetime(
                 2026, 10, 11, 17, 30
-            ),
-
-            location="Narita Airport → Shinjuku"
+            )
         )
 
         dinner_booking = Other(
@@ -207,15 +211,19 @@ def seed_database():
             cost=120.00,
             trip_id=tokyo_trip.id,
 
+            location="Shibuya, Tokyo",
+            address=(
+                "2-24-1 Shibuya, "
+                "Shibuya-ku, Tokyo, Japan"
+            ),
+
             start_time=datetime(
                 2026, 10, 12, 19, 00
             ),
 
             end_time=datetime(
                 2026, 10, 12, 21, 00
-            ),
-
-            location="Shibuya"
+            )
         )
 
         db.session.add_all([
@@ -231,9 +239,9 @@ def seed_database():
 
         activities = [
 
-            # -------------------------
-            # SUNDAY - OCT 11
-            # -------------------------
+            # --------------------------------------------------------
+            # SUNDAY - OCTOBER 11
+            # --------------------------------------------------------
 
             Activity(
                 name="Arrive in Tokyo",
@@ -242,7 +250,15 @@ def seed_database():
                 start_time=time(15, 25),
                 end_time=time(16, 00),
 
-                notes="Arrive at Narita Airport and collect luggage.",
+                location="Narita International Airport",
+                address=(
+                    "1-1 Furugome, Narita, "
+                    "Chiba 282-0004, Japan"
+                ),
+
+                notes=(
+                    "Arrive at Narita Airport and collect luggage."
+                ),
 
                 created_by=alex.id,
                 trip_id=tokyo_trip.id
@@ -255,16 +271,24 @@ def seed_database():
                 start_time=time(17, 30),
                 end_time=time(18, 00),
 
-                notes="Check in and settle into the hotel.",
+                location="Shinjuku Park Hotel",
+                address=(
+                    "3-7-1 Nishi-Shinjuku, "
+                    "Shinjuku-ku, Tokyo, Japan"
+                ),
+
+                notes=(
+                    "Check in and settle into the hotel."
+                ),
 
                 created_by=sam.id,
                 trip_id=tokyo_trip.id
             ),
 
 
-            # -------------------------
-            # MONDAY - OCT 12
-            # -------------------------
+            # --------------------------------------------------------
+            # MONDAY - OCTOBER 12
+            # --------------------------------------------------------
 
             Activity(
                 name="Visit Senso-ji Temple",
@@ -272,6 +296,12 @@ def seed_database():
 
                 start_time=time(9, 00),
                 end_time=time(11, 00),
+
+                location="Senso-ji Temple",
+                address=(
+                    "2-3-1 Asakusa, "
+                    "Taito City, Tokyo 111-0032, Japan"
+                ),
 
                 notes=(
                     "Explore Senso-ji Temple "
@@ -289,7 +319,15 @@ def seed_database():
                 start_time=time(11, 15),
                 end_time=time(12, 30),
 
-                notes="Try local street food and browse the market.",
+                location="Nakamise Shopping Street",
+                address=(
+                    "1-36-3 Asakusa, "
+                    "Taito City, Tokyo 111-0032, Japan"
+                ),
+
+                notes=(
+                    "Try local street food and browse the market."
+                ),
 
                 created_by=sam.id,
                 trip_id=tokyo_trip.id
@@ -302,7 +340,15 @@ def seed_database():
                 start_time=time(14, 00),
                 end_time=time(15, 00),
 
-                notes="Visit the famous Shibuya Crossing.",
+                location="Shibuya Crossing",
+                address=(
+                    "2-24 Shibuya, "
+                    "Shibuya City, Tokyo 150-0002, Japan"
+                ),
+
+                notes=(
+                    "Visit the famous Shibuya Crossing."
+                ),
 
                 created_by=jordan.id,
                 trip_id=tokyo_trip.id
@@ -315,6 +361,12 @@ def seed_database():
                 start_time=time(15, 30),
                 end_time=time(18, 00),
 
+                location="teamLab Planets TOKYO",
+                address=(
+                    "6-1-16 Toyosu, "
+                    "Koto City, Tokyo 135-0061, Japan"
+                ),
+
                 notes=(
                     "Tickets reserved for 15:30. "
                     "Wear easy-to-remove shoes."
@@ -325,9 +377,9 @@ def seed_database():
             ),
 
 
-            # -------------------------
-            # TUESDAY - OCT 13
-            # -------------------------
+            # --------------------------------------------------------
+            # TUESDAY - OCTOBER 13
+            # --------------------------------------------------------
 
             Activity(
                 name="Tokyo Skytree",
@@ -336,7 +388,15 @@ def seed_database():
                 start_time=time(9, 30),
                 end_time=time(11, 30),
 
-                notes="Visit the observation deck.",
+                location="Tokyo Skytree",
+                address=(
+                    "1-1-2 Oshiage, "
+                    "Sumida City, Tokyo 131-0045, Japan"
+                ),
+
+                notes=(
+                    "Visit the observation deck."
+                ),
 
                 created_by=alex.id,
                 trip_id=tokyo_trip.id
@@ -349,7 +409,15 @@ def seed_database():
                 start_time=time(12, 00),
                 end_time=time(13, 30),
 
-                notes="Lunch and explore Akihabara.",
+                location="Akihabara",
+                address=(
+                    "Sotokanda, Chiyoda City, "
+                    "Tokyo 101-0021, Japan"
+                ),
+
+                notes=(
+                    "Lunch and explore Akihabara."
+                ),
 
                 created_by=jordan.id,
                 trip_id=tokyo_trip.id
@@ -362,16 +430,24 @@ def seed_database():
                 start_time=time(14, 00),
                 end_time=time(17, 00),
 
-                notes="Explore electronics and anime stores.",
+                location="Akihabara Electric Town",
+                address=(
+                    "Sotokanda, Chiyoda City, "
+                    "Tokyo 101-0021, Japan"
+                ),
+
+                notes=(
+                    "Explore electronics and anime stores."
+                ),
 
                 created_by=sam.id,
                 trip_id=tokyo_trip.id
             ),
 
 
-            # -------------------------
-            # WEDNESDAY - OCT 14
-            # -------------------------
+            # --------------------------------------------------------
+            # WEDNESDAY - OCTOBER 14
+            # --------------------------------------------------------
 
             Activity(
                 name="Meiji Shrine",
@@ -380,7 +456,15 @@ def seed_database():
                 start_time=time(8, 30),
                 end_time=time(10, 30),
 
-                notes="Morning visit to Meiji Shrine.",
+                location="Meiji Jingu",
+                address=(
+                    "1-1 Yoyogikamizonocho, "
+                    "Shibuya City, Tokyo 151-8557, Japan"
+                ),
+
+                notes=(
+                    "Morning visit to Meiji Shrine."
+                ),
 
                 created_by=alex.id,
                 trip_id=tokyo_trip.id
@@ -393,7 +477,15 @@ def seed_database():
                 start_time=time(11, 00),
                 end_time=time(13, 00),
 
-                notes="Explore Takeshita Street.",
+                location="Takeshita Street",
+                address=(
+                    "1-17-1 Jingumae, "
+                    "Shibuya City, Tokyo 150-0001, Japan"
+                ),
+
+                notes=(
+                    "Explore Takeshita Street."
+                ),
 
                 created_by=jordan.id,
                 trip_id=tokyo_trip.id
@@ -406,16 +498,24 @@ def seed_database():
                 start_time=time(14, 00),
                 end_time=time(16, 30),
 
-                notes="Relax and explore the gardens.",
+                location="Shinjuku Gyoen National Garden",
+                address=(
+                    "11 Naitomachi, "
+                    "Shinjuku City, Tokyo 160-0014, Japan"
+                ),
+
+                notes=(
+                    "Relax and explore the gardens."
+                ),
 
                 created_by=sam.id,
                 trip_id=tokyo_trip.id
             ),
 
 
-            # -------------------------
-            # THURSDAY - OCT 15
-            # -------------------------
+            # --------------------------------------------------------
+            # THURSDAY - OCTOBER 15
+            # --------------------------------------------------------
 
             Activity(
                 name="Mount Fuji Day Trip",
@@ -424,16 +524,24 @@ def seed_database():
                 start_time=time(7, 00),
                 end_time=time(18, 00),
 
-                notes="Full-day trip to Mount Fuji.",
+                location="Mount Fuji",
+                address=(
+                    "Fujisan, Kitayama, Fujinomiya, "
+                    "Shizuoka 418-0112, Japan"
+                ),
+
+                notes=(
+                    "Full-day trip to Mount Fuji."
+                ),
 
                 created_by=alex.id,
                 trip_id=tokyo_trip.id
             ),
 
 
-            # -------------------------
-            # FRIDAY - OCT 16
-            # -------------------------
+            # --------------------------------------------------------
+            # FRIDAY - OCTOBER 16
+            # --------------------------------------------------------
 
             Activity(
                 name="Tsukiji Outer Market",
@@ -442,7 +550,15 @@ def seed_database():
                 start_time=time(9, 00),
                 end_time=time(11, 00),
 
-                notes="Breakfast and seafood market.",
+                location="Tsukiji Outer Market",
+                address=(
+                    "4-16-2 Tsukiji, "
+                    "Chuo City, Tokyo 104-0045, Japan"
+                ),
+
+                notes=(
+                    "Breakfast and seafood market."
+                ),
 
                 created_by=sam.id,
                 trip_id=tokyo_trip.id
@@ -455,7 +571,15 @@ def seed_database():
                 start_time=time(12, 00),
                 end_time=time(14, 00),
 
-                notes="Explore the Imperial Palace grounds.",
+                location="Imperial Palace",
+                address=(
+                    "1-1 Chiyoda, "
+                    "Chiyoda City, Tokyo 100-8111, Japan"
+                ),
+
+                notes=(
+                    "Explore the Imperial Palace grounds."
+                ),
 
                 created_by=jordan.id,
                 trip_id=tokyo_trip.id
@@ -468,16 +592,23 @@ def seed_database():
                 start_time=time(19, 00),
                 end_time=time(22, 00),
 
-                notes="Explore Tokyo nightlife.",
+                location="Shinjuku",
+                address=(
+                    "Shinjuku City, Tokyo, Japan"
+                ),
+
+                notes=(
+                    "Explore Tokyo nightlife."
+                ),
 
                 created_by=alex.id,
                 trip_id=tokyo_trip.id
             ),
 
 
-            # -------------------------
-            # SATURDAY - OCT 17
-            # -------------------------
+            # --------------------------------------------------------
+            # SATURDAY - OCTOBER 17
+            # --------------------------------------------------------
 
             Activity(
                 name="Final Shopping",
@@ -486,7 +617,14 @@ def seed_database():
                 start_time=time(9, 00),
                 end_time=time(11, 30),
 
-                notes="Last-minute shopping before departure.",
+                location="Shinjuku",
+                address=(
+                    "Shinjuku City, Tokyo, Japan"
+                ),
+
+                notes=(
+                    "Last-minute shopping before departure."
+                ),
 
                 created_by=sam.id,
                 trip_id=tokyo_trip.id
@@ -499,7 +637,15 @@ def seed_database():
                 start_time=time(14, 00),
                 end_time=time(15, 30),
 
-                notes="Travel to Narita Airport for return flight.",
+                location="Narita International Airport",
+                address=(
+                    "1-1 Furugome, Narita, "
+                    "Chiba 282-0004, Japan"
+                ),
+
+                notes=(
+                    "Travel to Narita Airport for return flight."
+                ),
 
                 created_by=alex.id,
                 trip_id=tokyo_trip.id
@@ -521,7 +667,12 @@ def seed_database():
 
         print("\nTRIPS:")
         for trip in Trip.query.all():
-            print(trip.id, trip.name, trip.start_date, trip.end_date)
+            print(
+                trip.id,
+                trip.name,
+                trip.start_date,
+                trip.end_date
+            )
 
         print("\nACTIVITIES:")
         for activity in Activity.query.all():
@@ -530,7 +681,9 @@ def seed_database():
                 activity.name,
                 activity.date,
                 activity.start_time,
-                activity.end_time
+                activity.end_time,
+                activity.location,
+                activity.address
             )
 
 

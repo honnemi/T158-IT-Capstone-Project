@@ -40,6 +40,8 @@ class Activity(db.Model):
     start_time = db.Column(db.Time, nullable=True)
     end_time = db.Column(db.Time, nullable=True)
     notes = db.Column(db.String(8000), nullable=True)
+    location = db.Column(db.String(200), nullable=True)
+    address = db.Column(db.String(500), nullable=True)
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
 
@@ -48,6 +50,8 @@ class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     cost = db.Column(db.Float, nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(500), nullable=True)
     trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
     
 class Flight(Booking):
@@ -73,7 +77,6 @@ class Other(Booking):
     __tablename__ = "others"
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
-    location = db.Column(db.String(100), nullable=False)
     
 class Budget(db.Model):
     __tablename__ = "budgets"
