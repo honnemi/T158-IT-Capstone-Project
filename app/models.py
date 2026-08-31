@@ -45,6 +45,11 @@ class Activity(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     trip_id = db.Column(db.Integer, db.ForeignKey('trips.id'), nullable=False)
 
+    created_by_user = db.relationship(
+    "User",
+    foreign_keys=[created_by]
+)
+
 class Booking(db.Model):
     __abstract__ = True 
     id = db.Column(db.Integer, primary_key=True)

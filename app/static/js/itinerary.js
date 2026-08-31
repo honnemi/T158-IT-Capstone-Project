@@ -185,3 +185,10 @@ editButtons.forEach(button => {
         editDay.value = button.dataset.currentDay;
     });
 });
+
+// Add activity modal
+const addDay = document.querySelector("#addActivityDay");
+
+if (addDay && itineraryPage) {
+    addDay.value = itineraryPage.dataset.currentDay;
+}

@@ -168,7 +168,7 @@ def show_itinerary_overview(trip_id):
             "date": activity.date,
             "start_time": activity.start_time,
             "end_time": activity.end_time,
-            "type": "activity"
+            "type": "activity",
         })
 
     # Flights
@@ -322,16 +322,17 @@ def show_itinerary_detailed(trip_id):
         if activity.date is None:
             continue
 
-        calendar_items.append({
-            "id": activity.id,
-            "name": activity.name,
-            "date": activity.date,
-            "start_time": activity.start_time,
-            "end_time": activity.end_time,
-            "location": activity.location,
-            "address": activity.address,
-            "notes": activity.notes,
-            "type": "activity"
+        calendar_items.append({ 
+            "id": activity.id, 
+            "name": activity.name, 
+            "date": activity.date, 
+            "start_time": activity.start_time, 
+            "end_time": activity.end_time, 
+            "location": activity.location, 
+            "address": activity.address, 
+            "notes": activity.notes, 
+            "created_by": activity.created_by_user.name,
+            "type": "activity" 
         })
 
     # Flights
@@ -388,6 +389,13 @@ def show_itinerary_detailed(trip_id):
         if item["date"] == selected_date
     ]
 
+    # Show unassigned activities in separate panel
+    unassigned_activities = [
+        activity
+        for activity in activities
+        if activity.date is None
+    ]
+
     # Calculate positions of each activity on the calendar
     calendar_items = position_overlapping_items(calendar_items)
 
@@ -397,7 +405,8 @@ def show_itinerary_detailed(trip_id):
         calendar_items=calendar_items,
         current_day=current_day,
         max_day=trip_duration,
-        selected_date=selected_date
+        selected_date=selected_date,
+        unassigned_activities=unassigned_activities
     )
 
 @itinerary_bp.route("/delete/<int:activity_id>", methods=["POST"])
@@ -455,6 +464,48 @@ def edit_activity(activity_id):
             "%H:%M"
         ).time()
 
+    db.session.commit()
+
+    day = request.form.get("day", type=int)
+
+    return redirect(url_for(
+        "itinerary.show_itinerary_detailed",
+        trip_id=trip.id,
+        day=day or 1
+    ))
+
+@itinerary_bp.route("/add/<int:trip_id>", methods=["POST"])
+@login_required
+def add_activity(trip_id):
+
+    trip = Trip.query.get_or_404(trip_id)
+
+    if current_user not in trip.users:
+        abort(403)
+
+    name = request.form.get("name")
+    location = request.form.get("location")
+    notes = request.form.get("notes")
+
+    if not name:
+        return redirect(url_for(
+            "itinerary.show_itinerary_detailed",
+            trip_id=trip.id,
+            day=request.form.get("day", type=int) or 1
+        ))
+
+    activity = Activity(
+        name=name,
+        location=location,
+        notes=notes,
+        trip_id=trip.id,
+        date=None,
+        start_time=None,
+        end_time=None,
+        created_by=current_user.id,
+    )
+
+    db.session.add(activity)
     db.session.commit()
 
     day = request.form.get("day", type=int)

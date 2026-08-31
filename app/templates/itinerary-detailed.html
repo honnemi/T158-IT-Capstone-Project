@@ -212,6 +212,15 @@
                   {{ activity.address }}
                 </div>
                 {% endif %}
+                <!-- Created by -->
+                 {% if activity.created_by %}
+                <div class="d-flex align-items-center text-white-50 small gap-2">
+                  <i class="bi bi-person-circle"></i>
+                  <span>
+                    {{ activity.created_by }}
+                  </span>
+                </div>
+                {% endif %}
               </div>
               {% endfor %}
             </div>
@@ -219,7 +228,8 @@
         </div>
       </div>
 
-      <!--Activities header-->
+      <!--Unassigned activities-->
+      <!--Header-->
       <div class="col-12 col-lg-4">
         <div
           class="card shadow-sm border overflow-hidden d-flex flex-column"
@@ -233,43 +243,106 @@
             <!--Add activities button-->
             <button
               class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
-              aria-label="Add activity" data-bs-toggle="modal" data-bs-target="#addActivityModal"
+              aria-label="Add activity"
+              data-bs-toggle="modal"
+              data-bs-target="#addActivityModal"
             >
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-
-          <!--Activities body-->
+          <!--Body-->
+          <!--Activity cards-->
           <div class="card-body overflow-y-auto p-3 d-flex flex-column gap-3">
-            <!--Example activity card-->
+            {% for activity in unassigned_activities %}
             <div class="card w-100 shadow-sm border">
               <div class="card-body">
-                <!--Activity name-->
-                <h6 class="card-title fw-bold mb-3">KBBQ Lunch</h6>
-                <div class="d-flex flex-column gap-2">
-                  <!--Activity duration-->
-                  <div class="d-flex flex-row align-items-center gap-2">
-                    <i class="bi bi-clock-history"></i>
-                    <small class="text-body-secondary">1hr 30 mins</small>
-                  </div>
-                  <!--Activity location-->
-                  <div class="d-flex flex-row align-items-center gap-2">
-                    <i class="bi bi-geo-alt"></i>
-                    <small class="text-body-secondary"
-                      >Myeongdong Korean BBQ Mongvely</small
+
+                <!-- Header: Activity name + Action menu -->
+                <div class="d-flex flex-row justify-content-between align-items-start mb-3">
+
+                  <!-- Activity name -->
+                  <h6 class="card-title fw-bold mb-0">
+                    {{ activity.name }}
+                  </h6>
+
+                  <!-- Action menu -->
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-link text-body p-0 border-0 lh-1"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      data-bs-popper-config='{"strategy":"fixed"}'
+                      aria-expanded="false"
+                      aria-label="Activity options"
                     >
-                  </div>
-                  <!--Activity address-->
-                  <div class="d-flex flex-row align-items-center gap-2">
-                    <small class="text-body-secondary"
-                      >South Korea, Seoul, Jung District, Myeongdong 8na-gil, 9
-                      3층</small
-                    >
-                  </div>
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+
+                      <!-- View notes -->
+                      <li>
+                        <a
+                          class="dropdown-item d-flex align-items-center gap-2 view-notes"
+                          href="#"
+                          data-bs-toggle="modal"
+                          data-bs-target="#notesModal"
+                          data-name="{{ activity.name }}"
+                          data-notes="{{ activity.notes or 'No notes available.' }}"
+                        >
+                          <i class="bi bi-journal"></i>
+                          View Notes
+                        </a>
+                      </li>
+
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+
+                      <!-- Delete -->
+                      <li>
+                        <a
+                          href="#"
+                          class="dropdown-item text-danger d-flex align-items-center gap-2 delete-activity-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteModal"
+                          data-activity-id="{{ activity.id }}"
+                          data-current-day="{{ current_day }}"
+                          data-activity-name="{{ activity.name }}"
+                        >
+                          <i class="bi bi-trash"></i>
+                          Delete Activity
+                        </a>
+                      </li>
+
+                    </ul>
                   </div>
                 </div>
+
+                <!-- Location -->
+                <div class="d-flex flex-row align-items-center gap-2 mb-1">
+                  <i class="bi bi-geo-alt"></i>
+                  <small class="text-body-secondary">
+                    {{ activity.location }}
+                  </small>
+                </div>
+
+                <!-- Address -->
+                <small class="text-body-secondary d-block mb-2">
+                  {{ activity.address }}
+                </small>
+
+                <!-- Created by -->
+                <div class="d-flex flex-row align-items-center gap-2">
+                  <i class="bi bi-person-circle"></i>
+                  <small class="text-body-secondary">
+                    {{ activity.created_by_user.name }}
+                  </small>
+                </div>
+
               </div>
             </div>
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -296,43 +369,96 @@
 </div>
 
 <!--Add Activity Modal-->
-<div class="modal fade" id="addActivityModal" tabindex="-1" role="dialog" aria-labelledby="addActivityModalTitle" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addActivityModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addActivityModalTitle"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
+
       <div class="modal-header">
-        <h5 class="modal-title" id="addActivityModalTitle">Add New Activity</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="addActivityModalTitle">
+          Add Activity
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
-      <div class="modal-body">
-        <div class="d-flex flex-column gap-4"> 
-          <div class="form-group">
-            <label class="mb-2">Name</label>
-            <input type="text" class="form-control" placeholder="Enter activity name">
-          </div>
-          <div class="form-group d-flex gap-4">
-            <label for="timeInput" class="form-label">Start Time</label>
-            <input type="time" class="form-control" id="timeInput">
-            <label for="timeInput" class="form-label">End Time</label>
-            <input type="time" class="form-control" id="timeInput">
-          </div>
-          <div class="form-group">
-            <i class="bi bi-geo-alt"></i>
-            <label class="mb-2 ms-1">Location</label>
-            <div class="position-relative">
-              <input type="search" class="form-control" placeholder="Search location name">
-              <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"></i>
+      <form id="addActivityForm" method="POST" action="{{ url_for('itinerary.add_activity', trip_id=trip.id) }}">
+        <div class="modal-body">
+          <div class="d-flex flex-column gap-4">
+            <div class="form-group">
+              <label class="mb-2">Name</label>
+              <input
+                id="addActivityName"
+                name="name"
+                type="text"
+                class="form-control"
+                placeholder="Enter activity name"
+                required
+              >
             </div>
-          </div>
-          <div class="form-group">
-            <label class="mb-2">Notes (Optional)</label>
-            <textarea class="form-control" aria-label="With textarea"></textarea>
+            <div class="form-group">
+              <i class="bi bi-geo-alt"></i>
+              <label class="mb-2 ms-1">
+                Location
+              </label>
+              <div class="position-relative">
+                <input
+                  id="addActivityLocation"
+                  name="location"
+                  type="search"
+                  class="form-control"
+                  placeholder="Search location name"
+                  required
+                >
+                <i
+                  class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"
+                ></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="mb-2">
+                Notes (Optional)
+              </label>
+              <textarea
+                id="addActivityNotes"
+                name="notes"
+                class="form-control"
+                aria-label="Activity notes"
+              ></textarea>
+            </div>
+            <input
+              type="hidden"
+              name="day"
+              id="addActivityDay"
+              value="{{ current_day }}"
+            >
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Save changes">Confirm</button>
-      </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            Confirm
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -371,6 +497,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Enter activity name"
+                required
               >
             </div>
             <div class="form-group d-flex gap-4">
@@ -386,6 +513,7 @@
                   name="start_time"
                   type="time"
                   class="form-control"
+                  required
                 >
               </div>
               <div class="flex-fill">
@@ -400,10 +528,10 @@
                   name="end_time"
                   type="time"
                   class="form-control"
+                  required
                 >
               </div>
             </div>
-            <!-- Location -->
             <div class="form-group">
               <i class="bi bi-geo-alt"></i>
               <label class="mb-2 ms-1">
@@ -416,13 +544,13 @@
                   type="search"
                   class="form-control"
                   placeholder="Search location name"
+                  required
                 >
                 <i
                   class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"
                 ></i>
               </div>
             </div>
-            <!-- Notes -->
             <div class="form-group">
               <label class="mb-2">
                 Notes (Optional)
