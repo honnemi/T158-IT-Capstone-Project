@@ -9,8 +9,7 @@
 
 {% block content %}
 <!--Chart.js library for Piecharts-->
-<script
-src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
 </script>
 <!--Page header-->
 <div class="container py-4 mt-3">
@@ -21,55 +20,49 @@ src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
     </div>
   </div>
 
-<main>
+  <main>
     <div class="row g-4 mb-4">
-        <div class="col-lg-8 ">
-          <!--Total Spending PieChart-->
-          <div
-          class="card shadow-sm border d-flex object-fit-contain flex-column align-items-center g-4"
+      <div class="col-lg-8 ">
+        <!--Total Spending PieChart-->
+        <div class="card shadow-sm border d-flex object-fit-contain flex-column align-items-center g-4"
           style="min-height: 400px; height: 630px">
           <h5 class="text-body-primary mt-5">Spending for South Korea Trip!</h5>
           <h6 class="text-body-secondary mt-0 mb-3">Sub heading</h6>
-          <canvas 
-            id="Total_Spending" 
-            style="width:100%;max-width:40%">
+          <canvas id="Total_Spending" style="width:100%;max-width:40%">
           </canvas>
           <div>
-          <table class="table-sm">
-            <tbody>
-              <tr>
-                <th scope="row">Flights</th>
-                <td>$2500</td>
-              </tr>
-              <tr>
-                <th scope="row">Accommodation</th>
-                <td>$2000</td>
-              </tr>
-              <tr>
-                <th scope="row">Insurance</th>
-                <td>$1000</td>
-              </tr>
-              <tr>
-                <th scope="row">Tours</th>
-                <td>$3000</td>
-              </tr>
-              <tr>
-                <th scope="row">Cruises</th>
-                <td>$500</td>
-            </tbody>
-          </table>
+            <table class="table-sm">
+              <tbody>
+                <tr>
+                  <th scope="row">Flights</th>
+                  <td>$2500</td>
+                </tr>
+                <tr>
+                  <th scope="row">Accommodation</th>
+                  <td>$2000</td>
+                </tr>
+                <tr>
+                  <th scope="row">Insurance</th>
+                  <td>$1000</td>
+                </tr>
+                <tr>
+                  <th scope="row">Tours</th>
+                  <td>$3000</td>
+                </tr>
+                <tr>
+                  <th scope="row">Cruises</th>
+                  <td>$500</td>
+              </tbody>
+            </table>
           </div>
-          </div>
-          <!--Remaining Budget PieChart-->
-          <br>
-          <div
-          class="card shadow-sm border object-fit-contain overflow-hidden d-flex flex-column align-items-center g-4"
+        </div>
+        <!--Remaining Budget PieChart-->
+        <br>
+        <!-- <div class="card shadow-sm border object-fit-contain overflow-hidden d-flex flex-column align-items-center g-4"
           style="min-height: 300px; height: 560px">
           <h5 class="text-body-primary mt-5">Remaining Budget</h5>
           <h6 class="text-body-secondary mt-0 mb-3">Sub heading</h6>
-          <canvas 
-            id="Remaining_Budget" 
-            style="width:100%;max-width:40%">
+          <canvas id="Remaining_Budget" style="width:100%;max-width:40%">
           </canvas>
           <table class="table-sm">
             <tbody>
@@ -87,27 +80,21 @@ src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
               </tr>
             </tbody>
           </table>
-        </div>
-    </div>    
-   
-    
+        </div> -->
+      </div>
 
-    <!--Budget Items header-->
+
+
+      <!--Budget Items header-->
       <div class="col-12 col-lg-4">
-        <div
-          class="card shadow-sm border overflow-hidden d-flex flex-column"
-          style="min-height: 400px; height: 600px"
-        >
+        <div class="card shadow-sm border overflow-hidden d-flex flex-column" style="min-height: 400px; height: 600px">
           <div
-            class="card-header bg-white d-flex align-items-center justify-content-between p-3 border-bottom flex-shrink-0"
-          >
+            class="card-header bg-white d-flex align-items-center justify-content-between p-3 border-bottom flex-shrink-0">
             <h5 class="mb-0">Budget</h5>
 
             <!--Request Budget Item button-->
-            <button
-              class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
-              aria-label="Add activity"
-            >
+            <button class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+              aria-label="Add activity">
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
@@ -122,39 +109,34 @@ src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
                 <div class="d-flex flex-column gap-2">
                   <!--Budget item cost-->
                   <div class="d-flex flex-row align-items-center gap-2">
-                     <i class="bi bi-tag"></i>
+                    <i class="bi bi-tag"></i>
                     <small class="text-body-secondary">$1280</small>
                   </div>
                   <!--Budget Item information-->
                   <div class="d-flex flex-row align-items-center gap-2">
                     <i class="bi bi-geo-alt"></i>
-                    <small class="text-body-secondary"
-                      >Incheon International Airport</small
-                    >
+                    <small class="text-body-secondary">Incheon International Airport</small>
                   </div>
                   <!--Budget Item vendor-->
                   <div class="d-flex flex-row align-items-center gap-2">
                     <i class="bi bi-shop"></i>
-                    <small class="text-body-secondary"
-                      >Qantas</small
-                    >
+                    <small class="text-body-secondary">Qantas</small>
                   </div>
                   <!--Budget Item assignee-->
                   <div class="d-flex flex-row align-items-center gap-2">
                     <i class="bi bi-person-circle"></i>
                     <!--individual icons-->
                     <div>
-                        
-                        <small class="text-body-secondary">Olivia</small>
+
+                      <small class="text-body-secondary">Olivia</small>
                     </div>
-                    
+
                   </div>
                 </div>
                 <!--View notes link-->
                 <div class="d-flex flex-row justify-content-end mt-3">
-                  <a href="#" class="card-link text-decoration-none small" data-bs-toggle="modal" data-bs-target="#notesModal"
-                    ><i class="bi bi-journal"></i></a
-                  >
+                  <a href="#" class="card-link text-decoration-none small" data-bs-toggle="modal"
+                    data-bs-target="#notesModal"><i class="bi bi-journal"></i></a>
                 </div>
               </div>
             </div>
@@ -162,35 +144,36 @@ src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
         </div>
       </div>
     </div>
-    </div>
-  </main>
+</div>
+</main>
 
-    <!-- Notes Modal -->
-    <div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="notesModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="notesModalTitle">Notes</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-        </div>
-      <div class="modal-body">
-            note note note
+<!-- Notes Modal -->
+<div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="notesModalTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="notesModalTitle">Notes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
       </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+      <div class="modal-body">
+        note note note
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
   </div>
 </div>
 
 
 <script>
-const spendingItems = ["Flights", "Accommodation", "Insurance", "Tours", "Cruises"];
-const spendingItemValues = [25, 20, 10, 30, 5];
-const remainingBudgetItems = ["Total Budget", "Total Expenses", "Remaining Balance"];
-const remainingBudgetValues = [100, 50, 25];
-const barColors = [
+  const spendingItems = ["Flights", "Accommodation", "Insurance", "Tours", "Cruises"];
+  const spendingItemValues = [25, 20, 10, 30, 5];
+  // const remainingBudgetItems = ["Total Budget", "Total Expenses", "Remaining Balance"]; -->
+  // const remainingBudgetValues = [100, 50, 25];
+  const barColors = [
     //Flights Red
     "#BF0010",
     //Accommodation Orange
@@ -202,42 +185,42 @@ const barColors = [
     //placeholder colour
     "#525252"];
 
-    const ctx = document.getElementById('Total_Spending');
+  const ctx = document.getElementById('Total_Spending');
 
-    new Chart("Total_Spending", {
+  new Chart("Total_Spending", {
     type: "doughnut",
     data: {
-        datasets: [{
+      datasets: [{
         backgroundColor: barColors,
         data: spendingItemValues
-        }],
-        labels: spendingItems,
+      }],
+      labels: spendingItems,
     },
     options: {
-        title: {
+      title: {
         display: true,
         text: "Spending for South Korea Trip"
-        }
+      }
     }
-    });
+  });
 
-    const canvas = document.getElementById('Remaining_Budget');
+  const canvas = document.getElementById('Remaining_Budget');
 
-    new Chart("Remaining_Budget", {
+  new Chart("Remaining_Budget", {
     type: "doughnut",
     data: {
-        datasets: [{
+      datasets: [{
         backgroundColor: barColors,
         data: remainingBudgetValues
-        }],
-    labels: remainingBudgetItems,
+      }],
+      labels: remainingBudgetItems,
     },
     options: {
-        title: {
+      title: {
         display: true,
         text: "Remaining Budget for South Korea Trip"
-        }
+      }
     }
-    });
+  });
 </script>
-  {% endblock %}
+{% endblock %}
