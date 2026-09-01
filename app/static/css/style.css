@@ -17,7 +17,7 @@ body {
 /* TOP NAVIGATION BAR */
 /* ======================================== */
 .navbar {
-    background: #BF0010;
+    background: #A60107;
     height: 80px;
 }
 
@@ -74,7 +74,7 @@ body {
     flex: 1;
     text-align: center;
     text-decoration: none;
-    background: #D6D6D6;
+    background: #F5F5F5;
     color: #111;
     padding: 15px;
     border-radius: 12px 12px 0 0;
@@ -160,15 +160,15 @@ body {
 /* Timeline colors */
 
 .timeline-item.red::before {
-    background: #b32020;
+    background: #A60107;
 }
 
 .timeline-item.orange::before {
-    background: #e8893c;
+    background: #F97316;
 }
 
 .timeline-item.blue::before {
-    background: #5b7db8;
+    background: #3B82F6;
 }
 
 
@@ -225,7 +225,7 @@ body {
     bottom: 0;
     width: 100%;
     height: 3px;
-    background: #b32020;
+    background: #A60107;
     border-radius: 2px;
 }
 
@@ -236,7 +236,7 @@ body {
 
 .flight-card {
     background: #fff;
-    border: 1px solid #b32020;
+    border: 1px solid #A60107;
     border-radius: 12px;
     padding: 20px 24px;
     margin-bottom: 18px;
@@ -245,11 +245,11 @@ body {
 }
 
 .accommodation-card {
-    border: 1px solid #e8893c;
+    border: 1px solid #F97316;
 }
 
 .other-card {
-    border: 1px solid #5b7db8;
+    border: 1px solid #3B82F6;
 }
 
 
@@ -297,7 +297,7 @@ body {
 }
 
 .edit-btn:hover {
-    color: #b32020;
+    color: #A60107;
 }
 
 
@@ -618,6 +618,22 @@ body {
 .activity-card.dragging,
 .unassigned-activity.dragging {
     opacity: 0.5;
+}
+
+.activity-activity {
+    background: #16A34A !important;
+}
+
+.activity-flight {
+    background: #A60107 !important;
+}
+
+.activity-accommodation {
+    background: #F97316 !important;
+}
+
+.activity-other {
+    background: #3B82F6 !important;
 }
 
 .drop-preview {

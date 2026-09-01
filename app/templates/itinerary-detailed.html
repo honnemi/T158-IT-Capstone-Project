@@ -113,7 +113,7 @@
               {% for activity in calendar_items %}
               {% if activity.type == "activity" %}
               <div
-                class="card position-absolute bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-card"
+                class="card position-absolute text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-card activity-{{activity.type}}"
                 data-activity-id="{{ activity.id }}"
                 draggable="true"
                 style="
@@ -228,7 +228,7 @@
               </div>
               {% else %}
               <div
-                class="card position-absolute bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start"
+                class="card position-absolute text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-{{activity.type}}"
                 style="
                   top: {{ activity.top_percent }}%;
                   height: {{ activity.height_percent }}%;
