@@ -475,6 +475,48 @@ def edit_activity(activity_id):
         day=day or 1
     ))
 
+@itinerary_bp.route("/move/<int:activity_id>", methods=["POST"])
+@login_required
+def move_activity(activity_id):
+
+    activity = Activity.query.get_or_404(activity_id)
+
+    trip = Trip.query.get_or_404(activity.trip_id)
+
+    if current_user not in trip.users:
+        abort(403)
+
+    date_string = request.form.get("date")
+    start_time = request.form.get("start_time")
+    end_time = request.form.get("end_time")
+
+    # Dropped back into unassigned panel
+    if not date_string:
+        activity.date = None
+        activity.start_time = None
+        activity.end_time = None
+
+    # Dropped onto timeline
+    else:
+        activity.date = datetime.strptime(
+            date_string,
+            "%Y-%m-%d"
+        ).date()
+
+        activity.start_time = datetime.strptime(
+            start_time,
+            "%H:%M"
+        ).time()
+
+        activity.end_time = datetime.strptime(
+            end_time,
+            "%H:%M"
+        ).time()
+
+    db.session.commit()
+
+    return {"success": True}
+
 @itinerary_bp.route("/add/<int:trip_id>", methods=["POST"])
 @login_required
 def add_activity(trip_id):
@@ -518,3 +560,4 @@ def add_activity(trip_id):
         trip_id=trip.id,
         day=day or 1
     ))
+

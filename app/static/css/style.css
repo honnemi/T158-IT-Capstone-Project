@@ -606,6 +606,31 @@ body {
     border-radius: 100px;
 }
 
+.activity-card {
+    cursor: grab;
+}
+
+.activity-card:active,
+.unassigned-activity:active {
+    cursor: grabbing;
+}
+
+.activity-card.dragging,
+.unassigned-activity.dragging {
+    opacity: 0.5;
+}
+
+.drop-preview {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border: 2px dashed currentColor;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0.6;
+    z-index: 5;
+}
+
 .activity-card .dropdown {
     position: relative;
     z-index: 9999;

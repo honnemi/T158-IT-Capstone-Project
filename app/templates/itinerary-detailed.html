@@ -109,8 +109,124 @@
               <div style="height: 4.1667%;">11:00PM</div>
             </div>
             <!--Activity cards-->
-            <div class="col position-relative py-2">
+            <div id="itinerary-timeline" class="col position-relative py-2">
               {% for activity in calendar_items %}
+              {% if activity.type == "activity" %}
+              <div
+                class="card position-absolute bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-card"
+                data-activity-id="{{ activity.id }}"
+                draggable="true"
+                style="
+                  top: {{ activity.top_percent }}%;
+                  height: {{ activity.height_percent }}%;
+                  left: {{ activity.left_percent }}%;
+                  width: {{ activity.width_percent }}%;
+                  z-index: 10;
+                "
+              >
+                <div class="d-flex flex-row justify-content-between">
+                  <!--Activity name-->
+                  <div class="fw-bold small">{{ activity.name }}</div>
+                  <!--Action menu-->
+                  <div class="dropdown d-flex justify-content-end">
+                    <button
+                      class="btn btn-link link-light p-0 border-0 lh-1"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      data-bs-popper-config='{"strategy":"fixed"}'
+                      aria-expanded="false"
+                      aria-label="Activity options"
+                    >
+                    <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+                      <li>
+                        <!--View notes link-->
+                        <a
+                          class="dropdown-item d-flex align-items-center gap-2 view-notes"
+                          href="#"
+                          data-bs-toggle="modal"
+                          data-bs-target="#notesModal"
+                          data-name="{{ activity.name }}"
+                          data-notes="{{ activity.notes or 'No notes available.' }}"
+                        >
+                          <i class="bi bi-journal"></i>
+                          View Notes
+                        </a>
+                        {% if activity.type == "activity" %}
+                        <!--Edit activity link-->
+                        <a
+                          class="dropdown-item d-flex align-items-center gap-2 edit-activity-btn"
+                          href="#"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editActivityModal"
+
+                          data-activity-id="{{ activity.id }}"
+                          data-activity-name="{{ activity.name }}"
+                          data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
+                          data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
+                          data-location="{{ activity.location or '' }}"
+                          data-address="{{ activity.address or '' }}"
+                          data-notes="{{ activity.notes or '' }}"
+                          data-current-day="{{ current_day }}"
+                      >
+                          <i class="bi bi-pencil"></i>
+                          Edit Activity
+                      </a>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <a
+                          href="#"
+                          class="dropdown-item text-danger d-flex align-items-center gap-2 delete-activity-btn"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteModal"
+                          data-activity-id="{{ activity.id }}"
+                          data-current-day="{{ current_day }}"
+                          data-activity-name="{{ activity.name }}"
+                        >
+                          <i class="bi bi-trash"></i>
+                          Delete Activity
+                        </a>
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </div>
+                <!--Activity duration-->
+                <div
+                  class="d-flex align-items-center text-white-50 small gap-2"
+                >
+                  <i class="bi bi-clock"></i>
+                  <span>
+                    {{ activity.start_time.strftime('%I:%M %p') }}
+                    -
+                    {{ activity.end_time.strftime('%I:%M %p') }}</span>
+                </div>
+                {% if activity.location %}
+                <!--Activity location-->
+                <div
+                  class="d-flex align-items-center text-white-50 small gap-2"
+                >
+                  <i class="bi bi-geo-alt"></i>
+                  <span>{{ activity.location }}</span>
+                </div>
+                <!--Activity address-->
+                <div class="text-white-50 small">
+                  {{ activity.address }}
+                </div>
+                {% endif %}
+                <!-- Created by -->
+                 {% if activity.created_by %}
+                <div class="d-flex align-items-center text-white-50 small gap-2">
+                  <i class="bi bi-person-circle"></i>
+                  <span>
+                    {{ activity.created_by }}
+                  </span>
+                </div>
+                {% endif %}
+              </div>
+              {% else %}
               <div
                 class="card position-absolute bg-primary text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start"
                 style="
@@ -223,6 +339,7 @@
                 </div>
                 {% endif %}
               </div>
+              {% endif %}
               {% endfor %}
             </div>
           </div>
@@ -253,9 +370,13 @@
           </div>
           <!--Body-->
           <!--Activity cards-->
-          <div class="card-body overflow-y-auto p-3 d-flex flex-column gap-3">
+          <div id="unassigned-activities" class="card-body overflow-y-auto p-3 d-flex flex-column gap-3">
             {% for activity in unassigned_activities %}
-            <div class="card w-100 shadow-sm border">
+            <div
+              class="card w-100 shadow-sm border unassigned-activity"
+              draggable="true"
+              data-activity-id="{{ activity.id }}"
+            >
               <div class="card-body">
 
                 <!-- Header: Activity name + Action menu -->
