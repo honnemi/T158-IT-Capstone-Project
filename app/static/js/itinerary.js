@@ -171,18 +171,30 @@ const editNotes = document.querySelector("#editActivityNotes");
 const editDay = document.querySelector("#editActivityDay");
 
 editButtons.forEach(button => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
 
         const activityId = button.dataset.activityId;
+        const currentLocation = button.dataset.location;
+        const currentAddress = button.dataset.address;
 
         editForm.action = `/itinerary/edit/${activityId}`;
 
         editName.value = button.dataset.activityName;
         editStartTime.value = button.dataset.startTime;
         editEndTime.value = button.dataset.endTime;
-        editLocation.value = button.dataset.location;
         editNotes.value = button.dataset.notes;
         editDay.value = button.dataset.currentDay;
+
+        document.getElementById("editLocation").value = currentLocation;
+        document.getElementById("editAddress").value = currentAddress;
+
+        await initLocationSearch(
+            "editActivityLocation",
+            currentLocation,
+            "editLocation",
+            "editAddress",
+            "editPlaceId"
+        );
     });
 });
 
@@ -192,3 +204,68 @@ const addDay = document.querySelector("#addActivityDay");
 if (addDay && itineraryPage) {
     addDay.value = itineraryPage.dataset.currentDay;
 }
+
+// Location search
+async function initLocationSearch(
+    element_id,
+    current_location,
+    hiddenLocationId,
+    hiddenAddressId,
+    hiddenPlaceId
+) {
+    const { PlaceAutocompleteElement } =
+        await google.maps.importLibrary("places");
+
+    const container = document.getElementById(element_id);
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const autocomplete = new PlaceAutocompleteElement();
+
+    autocomplete.placeholder = "Search location name";
+
+    if (current_location) {
+        autocomplete.value = current_location;
+    }
+
+    container.appendChild(autocomplete);
+
+    autocomplete.addEventListener(
+        "gmp-select",
+        async ({ placePrediction }) => {
+
+            const place = placePrediction.toPlace();
+
+            await place.fetchFields({
+                fields: [
+                    "displayName",
+                    "formattedAddress",
+                    "location",
+                    "id"
+                ]
+            });
+
+            // Location name
+            document.getElementById(hiddenLocationId).value =
+                place.displayName;
+
+            // Address
+            document.getElementById(hiddenAddressId).value =
+                place.formattedAddress;
+
+            // Google Place ID
+            document.getElementById(hiddenPlaceId).value =
+                place.id;
+        }
+    );
+}
+
+initLocationSearch(
+    "addActivityLocation",
+    "",
+    "addLocation",
+    "addAddress",
+    "addPlaceId"
+);

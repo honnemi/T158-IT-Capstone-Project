@@ -447,6 +447,7 @@ def edit_activity(activity_id):
 
     activity.name = request.form.get("name")
     activity.location = request.form.get("location")
+    activity.address = request.form.get("address")
     activity.notes = request.form.get("notes")
 
     start_time = request.form.get("start_time")
@@ -485,6 +486,7 @@ def add_activity(trip_id):
 
     name = request.form.get("name")
     location = request.form.get("location")
+    address = request.form.get("address")
     notes = request.form.get("notes")
 
     if not name:
@@ -497,6 +499,7 @@ def add_activity(trip_id):
     activity = Activity(
         name=name,
         location=location,
+        address=address,
         notes=notes,
         trip_id=trip.id,
         date=None,
