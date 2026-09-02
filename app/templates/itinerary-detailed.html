@@ -141,17 +141,22 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
                       <li>
-                        <!--View notes link-->
+                        <!--View details link-->
                         <a
-                          class="dropdown-item d-flex align-items-center gap-2 view-notes"
+                          class="dropdown-item d-flex align-items-center gap-2 view-details"
                           href="#"
                           data-bs-toggle="modal"
-                          data-bs-target="#notesModal"
+                          data-bs-target="#detailsModal"
                           data-name="{{ activity.name }}"
-                          data-notes="{{ activity.notes or 'No notes available.' }}"
+                          data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
+                          data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
+                          data-location="{{ activity.location }}"
+                          data-address="{{ activity.address }}"
+                          data-created-by="{{ activity.created_by }}"
+                          data-notes="{{ activity.notes }}"
                         >
-                          <i class="bi bi-journal"></i>
-                          View Notes
+                          <i class="bi bi-info-circle"></i>
+                          View Details
                         </a>
                         {% if activity.type == "activity" %}
                         <!--Edit activity link-->
@@ -211,17 +216,13 @@
                   <i class="bi bi-geo-alt"></i>
                   <span>{{ activity.location }}</span>
                 </div>
-                <!--Activity address-->
-                <div class="text-white-50 small text-truncate">
-                  {{ activity.address }}
-                </div>
                 {% endif %}
                 <!-- Created by -->
                  {% if activity.created_by %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
-                    {{ activity.created_by }}
+                    Created by {{ activity.created_by }}
                   </span>
                 </div>
                 {% endif %}
@@ -254,17 +255,22 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
                       <li>
-                        <!--View notes link-->
+                        <!--View details link-->
                         <a
-                          class="dropdown-item d-flex align-items-center gap-2 view-notes"
+                          class="dropdown-item d-flex align-items-center gap-2 view-details"
                           href="#"
                           data-bs-toggle="modal"
-                          data-bs-target="#notesModal"
+                          data-bs-target="#detailsModal"
                           data-name="{{ activity.name }}"
-                          data-notes="{{ activity.notes or 'No notes available.' }}"
+                          data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
+                          data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
+                          data-location="{{ activity.location }}"
+                          data-address="{{ activity.address }}"
+                          data-created-by="{{ activity.created_by }}"
+                          data-notes="{{ activity.notes }}"
                         >
-                          <i class="bi bi-journal"></i>
-                          View Notes
+                          <i class="bi bi-info-circle"></i>
+                          View Details
                         </a>
                         {% if activity.type == "activity" %}
                         <!--Edit activity link-->
@@ -324,17 +330,13 @@
                   <i class="bi bi-geo-alt"></i>
                   <span>{{ activity.location }}</span>
                 </div>
-                <!--Activity address-->
-                <div class="text-white-50 small text-truncate">
-                  {{ activity.address }}
-                </div>
                 {% endif %}
                 <!-- Created by -->
                  {% if activity.created_by %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
-                    {{ activity.created_by }}
+                    Booked by {{ activity.created_by }}
                   </span>
                 </div>
                 {% endif %}
@@ -402,18 +404,18 @@
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
 
-                      <!-- View notes -->
+                      <!-- View details -->
                       <li>
                         <a
-                          class="dropdown-item d-flex align-items-center gap-2 view-notes"
+                          class="dropdown-item d-flex align-items-center gap-2 view-details"
                           href="#"
                           data-bs-toggle="modal"
-                          data-bs-target="#notesModal"
+                          data-bs-target="#detailsModal"
                           data-name="{{ activity.name }}"
                           data-notes="{{ activity.notes or 'No notes available.' }}"
                         >
-                          <i class="bi bi-journal"></i>
-                          View Notes
+                          <i class="bi bi-info-circle"></i>
+                          View Details
                         </a>
                       </li>
 
@@ -449,16 +451,11 @@
                   </small>
                 </div>
 
-                <!-- Address -->
-                <small class="text-body-secondary d-block mb-2">
-                  {{ activity.address }}
-                </small>
-
                 <!-- Created by -->
                 <div class="d-flex flex-row align-items-center gap-2">
                   <i class="bi bi-person-circle"></i>
                   <small class="text-body-secondary">
-                    {{ activity.created_by_user.name }}
+                    Created by {{ activity.created_by_user.name }}
                   </small>
                 </div>
 
@@ -472,17 +469,65 @@
   </main>
 
   <!--Notes Modal-->
-<div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="notesModalTitle" aria-hidden="true">
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="notesModalTitle">Notes</h5>
+        <h5 class="modal-title" id="detailsModalTitle">Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
       </div>
-      <div class="modal-body">
-        <h6 id="notesActivityName"></h6>
-        <p id="notesContent" class="mb-0"></p>
-      </div>
+      <div class="modal-body overflow-y-auto">
+        <h5>Details</h5>
+        <div class="row mt-3">
+          <div class="col-6">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <i class="bi bi-clock"></i>
+              <h6 class="m-0">Start Time:</h6>
+            </div>
+            <p id="detailsStartTime"></p>
+          </div>
+          <div class="col-6">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <i class="bi bi-clock"></i>
+              <h6 class="m-0">End Time:</h6>
+            </div>
+            <p id="detailsEndTime"></p>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-6">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <i class="bi bi-geo-alt"></i>
+              <h6 class="m-0">Location:</h6>
+            </div>
+            <p id="detailsLocation"></p>
+          </div>
+          <div class="col-6">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <i class="bi bi-building"></i>
+              <h6 class="m-0">Address:</h6>
+            </div>
+            <p id="detailsAddress"></p>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <i class="bi bi-person-circle"></i>
+              <h6 class="m-0">Created by:</h6>
+            </div>
+            <p id="detailsCreatedBy"></p>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <h6>Notes:</h6>
+          </div>
+          <div class="col-12">
+            <p id="detailsNotes"></p>
+          </div>
+        </div>
+        </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
       </div>

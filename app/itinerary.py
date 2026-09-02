@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, request, redirect, url_for
 from flask_login import login_required, current_user
-from app.models import Trip, Activity, Flight, Accommodation, Other
+from app.models import Trip, Activity, Flight, Accommodation, Cruise, Tour, Other
 from datetime import datetime, timedelta
 from app import db
 
@@ -154,6 +154,14 @@ def show_itinerary_overview(trip_id):
         trip_id=trip.id
     ).all()
 
+    cruises = Cruise.query.filter_by(
+            trip_id=trip.id
+        ).all()
+
+    tours = Tour.query.filter_by(
+            trip_id=trip.id
+        ).all()
+
     others = Other.query.filter_by(
         trip_id=trip.id
     ).all()
@@ -163,12 +171,21 @@ def show_itinerary_overview(trip_id):
     # Activities
     for activity in activities:
 
-        calendar_items.append({
-            "name": activity.name,
-            "date": activity.date,
-            "start_time": activity.start_time,
-            "end_time": activity.end_time,
-            "type": "activity",
+        # Ignore unscheduled activities
+        if activity.date is None:
+            continue
+
+        calendar_items.append({ 
+            "id": activity.id, 
+            "name": activity.name, 
+            "date": activity.date, 
+            "start_time": activity.start_time, 
+            "end_time": activity.end_time, 
+            "location": activity.location, 
+            "address": activity.address, 
+            "notes": activity.notes, 
+            "created_by": activity.created_by_user.name,
+            "type": "activity" 
         })
 
     # Flights
@@ -179,7 +196,10 @@ def show_itinerary_overview(trip_id):
             "date": flight.departure_time.date(),
             "start_time": flight.departure_time.time(),
             "end_time": flight.arrival_time.time(),
-            "type": "flight"
+            "location": flight.departure_airport, 
+            "address": flight.departure_address, 
+            "type": "flight",
+            "created_by": flight.consultant.name
         })
 
     # Accommodation
@@ -192,7 +212,10 @@ def show_itinerary_overview(trip_id):
             "end_time": (
                 accommodation.check_in + timedelta(minutes=30)
             ).time(),
-            "type": "accommodation"
+            "location": accommodation.location, 
+            "address": accommodation.address, 
+            "type": "accommodation",
+            "created_by": flight.consultant.name
         })
 
         calendar_items.append({
@@ -202,8 +225,54 @@ def show_itinerary_overview(trip_id):
             "end_time": (
                 accommodation.check_out + timedelta(minutes=30)
             ).time(),
-            "type": "accommodation"
+            "location": accommodation.location, 
+            "address": accommodation.address,
+            "type": "accommodation",
+            "created_by": flight.consultant.name
         })
+
+    # Cruises
+        for cruise in cruises:
+    
+            calendar_items.append({
+                "name": cruise.name + " - Boarding",
+                "date": cruise.start_date.date(),
+                "start_time": cruise.start_date.time(),
+                "end_time": (
+                    cruise.start_date + timedelta(minutes=30)
+                ).time(),
+                "location": cruise.boarding_location, 
+                "address": cruise.boarding_address,
+                "type": "cruise",
+                "created_by": cruise.consultant.name
+            })
+
+            calendar_items.append({
+                "name": cruise.name + " - Drop-off",
+                "date": cruise.end_date.date(),
+                "start_time": cruise.end_date.time(),
+                "end_time": (
+                    cruise.start_date + timedelta(minutes=30)
+                ).time(),
+                "type": "cruise",
+                "location": cruise.drop_off_location, 
+                "address": cruise.drop_off_address,
+                "created_by": cruise.consultant.name
+            })
+
+    # Tours
+        for tour in tours:
+    
+            calendar_items.append({
+                "name": tour.name,
+                "date": tour.start_time.date(),
+                "start_time": tour.start_time.time(),
+                "end_time": tour.end_time.time(),
+                "location": tour.location, 
+                "address": tour.address,
+                "type": "tour",
+                "created_by": tour.consultant.name
+            })
 
     # Other bookings
     for other in others:
@@ -213,7 +282,8 @@ def show_itinerary_overview(trip_id):
             "date": other.start_time.date(),
             "start_time": other.start_time.time(),
             "end_time": other.end_time.time(),
-            "type": "other"
+            "type": "other",
+            "created_by": flight.consultant.name
         })
 
     # Create Sunday -> Saturday dates
@@ -309,6 +379,14 @@ def show_itinerary_detailed(trip_id):
         trip_id=trip.id
     ).all()
 
+    tours = Tour.query.filter_by(
+            trip_id=trip.id
+        ).all()
+
+    cruises = Cruise.query.filter_by(
+            trip_id=trip.id
+        ).all()
+
     others = Other.query.filter_by(
         trip_id=trip.id
     ).all()
@@ -343,7 +421,10 @@ def show_itinerary_detailed(trip_id):
             "date": flight.departure_time.date(),
             "start_time": flight.departure_time.time(),
             "end_time": flight.arrival_time.time(),
-            "type": "flight"
+            "location": flight.departure_airport, 
+            "address": flight.departure_address, 
+            "type": "flight",
+            "created_by": flight.consultant.name
         })
 
     # Accommodation
@@ -354,10 +435,12 @@ def show_itinerary_detailed(trip_id):
             "date": accommodation.check_in.date(),
             "start_time": accommodation.check_in.time(),
             "end_time": (
-                accommodation.check_in
-                + timedelta(minutes=30)
+                accommodation.check_in + timedelta(minutes=30)
             ).time(),
-            "type": "accommodation"
+            "location": accommodation.location, 
+            "address": accommodation.address, 
+            "type": "accommodation",
+            "created_by": flight.consultant.name
         })
 
         calendar_items.append({
@@ -365,11 +448,56 @@ def show_itinerary_detailed(trip_id):
             "date": accommodation.check_out.date(),
             "start_time": accommodation.check_out.time(),
             "end_time": (
-                accommodation.check_out
-                + timedelta(minutes=30)
+                accommodation.check_out + timedelta(minutes=30)
             ).time(),
-            "type": "accommodation"
+            "location": accommodation.location, 
+            "address": accommodation.address,
+            "type": "accommodation",
+            "created_by": flight.consultant.name
         })
+
+    # Cruises
+        for cruise in cruises:
+    
+            calendar_items.append({
+                "name": cruise.name + " - Boarding",
+                "date": cruise.start_date.date(),
+                "start_time": cruise.start_date.time(),
+                "end_time": (
+                    cruise.start_date + timedelta(minutes=30)
+                ).time(),
+                "location": cruise.boarding_location, 
+                "address": cruise.boarding_address,
+                "type": "cruise",
+                "created_by": cruise.consultant.name
+            })
+
+            calendar_items.append({
+                "name": cruise.name + " - Drop-off",
+                "date": cruise.end_date.date(),
+                "start_time": cruise.end_date.time(),
+                "end_time": (
+                    cruise.start_date + timedelta(minutes=30)
+                ).time(),
+                "type": "cruise",
+                "location": cruise.drop_off_location, 
+                "address": cruise.drop_off_address,
+                "created_by": cruise.consultant.name
+            })
+
+    # Tours
+        for tour in tours:
+    
+            calendar_items.append({
+                "name": tour.name,
+                "date": tour.start_time.date(),
+                "start_time": tour.start_time.time(),
+                "end_time": tour.end_time.time(),
+                "location": tour.location, 
+                "address": tour.address,
+                "type": "tour",
+                "created_by": tour.consultant.name
+            })
 
     # Other bookings
     for other in others:
@@ -379,7 +507,8 @@ def show_itinerary_detailed(trip_id):
             "date": other.start_time.date(),
             "start_time": other.start_time.time(),
             "end_time": other.end_time.time(),
-            "type": "other"
+            "type": "other",
+            "created_by": flight.consultant.name
         })
 
     # Only show activities for the selected day
