@@ -126,7 +126,7 @@
               >
                 <div class="d-flex flex-row justify-content-between">
                   <!--Activity name-->
-                  <div class="fw-bold small">{{ activity.name }}</div>
+                  <div class="fw-bold small text-truncate">{{ activity.name }}</div>
                   <!--Action menu-->
                   <div class="dropdown d-flex justify-content-end">
                     <button
@@ -206,19 +206,19 @@
                 {% if activity.location %}
                 <!--Activity location-->
                 <div
-                  class="d-flex align-items-center text-white-50 small gap-2"
+                  class="d-flex align-items-center text-white-50 small gap-2 text-truncate"
                 >
                   <i class="bi bi-geo-alt"></i>
                   <span>{{ activity.location }}</span>
                 </div>
                 <!--Activity address-->
-                <div class="text-white-50 small">
+                <div class="text-white-50 small text-truncate">
                   {{ activity.address }}
                 </div>
                 {% endif %}
                 <!-- Created by -->
                  {% if activity.created_by %}
-                <div class="d-flex align-items-center text-white-50 small gap-2">
+                <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
                     {{ activity.created_by }}
@@ -239,7 +239,7 @@
               >
                 <div class="d-flex flex-row justify-content-between">
                   <!--Activity name-->
-                  <div class="fw-bold small">{{ activity.name }}</div>
+                  <div class="fw-bold small text-truncate">{{ activity.name }}</div>
                   <!--Action menu-->
                   <div class="dropdown d-flex justify-content-end">
                     <button
@@ -319,19 +319,19 @@
                 {% if activity.location %}
                 <!--Activity location-->
                 <div
-                  class="d-flex align-items-center text-white-50 small gap-2"
+                  class="d-flex align-items-center text-white-50 small gap-2 text-truncate"
                 >
                   <i class="bi bi-geo-alt"></i>
                   <span>{{ activity.location }}</span>
                 </div>
                 <!--Activity address-->
-                <div class="text-white-50 small">
+                <div class="text-white-50 small text-truncate">
                   {{ activity.address }}
                 </div>
                 {% endif %}
                 <!-- Created by -->
                  {% if activity.created_by %}
-                <div class="d-flex align-items-center text-white-50 small gap-2">
+                <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
                     {{ activity.created_by }}
