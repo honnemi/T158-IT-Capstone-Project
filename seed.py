@@ -3,22 +3,35 @@ from werkzeug.security import generate_password_hash
 
 from app import create_app, db
 
-app = create_app()
-
 from app.models import (
-    User, Trip, Activity, Flight,
-    Accommodation, Other, Budget
+    User,
+    Consultant,
+    Trip,
+    Activity,
+    Flight,
+    Accommodation,
+    Other,
+    Tours,
+    Cruises,
+    Budget
 )
+
+
+app = create_app()
 
 
 def seed_database():
     with app.app_context():
 
-        # Clear existing data
+        # ============================================================
+        # CLEAR EXISTING DATA
+        # ============================================================
+
         db.drop_all()
         db.create_all()
 
         print("Seeding database...")
+
 
         # ============================================================
         # 1. USERS
@@ -45,29 +58,52 @@ def seed_database():
             password_changed=True
         )
 
-        db.session.add_all([alex, sam, jordan])
+        db.session.add_all([
+            alex,
+            sam,
+            jordan
+        ])
+
         db.session.commit()
 
 
         # ============================================================
-        # 2. TRIP
+        # 2. CONSULTANT
+        # ============================================================
+
+        consultant = Consultant(
+            name="Sarah Jenkins",
+            email="sarah@globetrottertravel.com"
+        )
+
+        db.session.add(consultant)
+        db.session.commit()
+
+
+        # ============================================================
+        # 3. TRIP
         # ============================================================
 
         tokyo_trip = Trip(
             name="Tokyo Adventure",
             start_date=date(2026, 10, 10),
             end_date=date(2026, 10, 17),
-            consultant_name="Sarah Jenkins (GlobeTrotter Travel)"
+            consultant_id=consultant.id
         )
 
-        tokyo_trip.users.extend([alex, sam, jordan])
+        # Add users to trip
+        tokyo_trip.users.extend([
+            alex,
+            sam,
+            jordan
+        ])
 
         db.session.add(tokyo_trip)
         db.session.commit()
 
 
         # ============================================================
-        # 3. BUDGET
+        # 4. BUDGET
         # ============================================================
 
         trip_budget = Budget(
@@ -80,7 +116,7 @@ def seed_database():
 
 
         # ============================================================
-        # 4. FLIGHTS
+        # 5. FLIGHTS
         # ============================================================
 
         flight_outbound = Flight(
@@ -125,6 +161,10 @@ def seed_database():
             )
         )
 
+        # Assign consultant
+        flight_outbound.consultants.append(consultant)
+        flight_return.consultants.append(consultant)
+
         db.session.add_all([
             flight_outbound,
             flight_return
@@ -132,7 +172,7 @@ def seed_database():
 
 
         # ============================================================
-        # 5. ACCOMMODATION
+        # 6. ACCOMMODATION
         # ============================================================
 
         hotel = Accommodation(
@@ -162,11 +202,14 @@ def seed_database():
             contact_phone="+81-3-5555-1234"
         )
 
+        # Assign consultant
+        hotel.consultants.append(consultant)
+
         db.session.add(hotel)
 
 
         # ============================================================
-        # 6. OTHER BOOKINGS
+        # 7. OTHER BOOKINGS
         # ============================================================
 
         jr_pass = Other(
@@ -175,7 +218,9 @@ def seed_database():
             trip_id=tokyo_trip.id,
 
             location="Narita International Airport",
-            address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
+            address=(
+                "1-1 Furugome, Narita, Chiba 282-0004, Japan"
+            ),
 
             start_time=datetime(
                 2026, 10, 11, 16, 00
@@ -226,6 +271,11 @@ def seed_database():
             )
         )
 
+        # Assign consultant
+        jr_pass.consultants.append(consultant)
+        airport_transfer.consultants.append(consultant)
+        dinner_booking.consultants.append(consultant)
+
         db.session.add_all([
             jr_pass,
             airport_transfer,
@@ -234,7 +284,123 @@ def seed_database():
 
 
         # ============================================================
-        # 7. ACTIVITIES
+        # 8. TOURS
+        # ============================================================
+
+        tokyo_food_tour = Tours(
+            name="Tokyo Food Tour",
+            cost=150.00,
+            trip_id=tokyo_trip.id,
+
+            location="Shibuya, Tokyo",
+            address=(
+                "Shibuya Station, "
+                "Shibuya City, Tokyo, Japan"
+            ),
+
+            start_time=datetime(
+                2026, 10, 13, 18, 00
+            ),
+
+            end_time=datetime(
+                2026, 10, 13, 21, 00
+            )
+        )
+
+        tokyo_walking_tour = Tours(
+            name="Tokyo Walking Tour",
+            cost=90.00,
+            trip_id=tokyo_trip.id,
+
+            location="Asakusa, Tokyo",
+            address=(
+                "Senso-ji Temple, "
+                "Asakusa, Tokyo, Japan"
+            ),
+
+            start_time=datetime(
+                2026, 10, 14, 10, 30
+            ),
+
+            end_time=datetime(
+                2026, 10, 14, 13, 00
+            )
+        )
+
+        # Assign consultant
+        tokyo_food_tour.consultants.append(consultant)
+        tokyo_walking_tour.consultants.append(consultant)
+
+        db.session.add_all([
+            tokyo_food_tour,
+            tokyo_walking_tour
+        ])
+
+
+        # ============================================================
+        # 9. CRUISES
+        # ============================================================
+
+        tokyo_bay_cruise = Cruises(
+            name="Tokyo Bay Dinner Cruise",
+            cost=180.00,
+            trip_id=tokyo_trip.id,
+
+            location="Tokyo Bay",
+            address=(
+                "Hinode Pier, "
+                "Minato City, Tokyo, Japan"
+            ),
+
+            startDate=datetime(
+                2026, 10, 15, 18, 00
+            ),
+
+            endDate=datetime(
+                2026, 10, 15, 21, 00
+            ),
+
+            boardingLocation="Hinode Pier",
+            dropOffLocation="Hinode Pier",
+            cruiseLine="Tokyo Bay Cruise"
+        )
+
+        japan_coastal_cruise = Cruises(
+            name="Japan Coastal Cruise",
+            cost=650.00,
+            trip_id=tokyo_trip.id,
+
+            location="Yokohama",
+            address=(
+                "Osanbashi Pier, "
+                "Yokohama, Japan"
+            ),
+
+            startDate=datetime(
+                2026, 10, 16, 8, 00
+            ),
+
+            endDate=datetime(
+                2026, 10, 16, 20, 00
+            ),
+
+            boardingLocation="Yokohama Osanbashi Pier",
+            dropOffLocation="Yokohama Osanbashi Pier",
+            cruiseLine="Japan Coastal Cruises"
+        )
+
+        # Assign consultant
+        tokyo_bay_cruise.consultants.append(consultant)
+        japan_coastal_cruise.consultants.append(consultant)
+
+        db.session.add_all([
+            tokyo_bay_cruise,
+            japan_coastal_cruise
+        ])
+
+
+        # ============================================================
+        # 10. ACTIVITIES
         # ============================================================
 
         activities = [
@@ -593,9 +759,7 @@ def seed_database():
                 end_time=time(22, 00),
 
                 location="Shinjuku",
-                address=(
-                    "Shinjuku City, Tokyo, Japan"
-                ),
+                address="Shinjuku City, Tokyo, Japan",
 
                 notes=(
                     "Explore Tokyo nightlife."
@@ -618,9 +782,7 @@ def seed_database():
                 end_time=time(11, 30),
 
                 location="Shinjuku",
-                address=(
-                    "Shinjuku City, Tokyo, Japan"
-                ),
+                address="Shinjuku City, Tokyo, Japan",
 
                 notes=(
                     "Last-minute shopping before departure."
@@ -662,19 +824,129 @@ def seed_database():
         db.session.commit()
 
         print("Database successfully seeded!")
+
         print(f"Trip ID: {tokyo_trip.id}")
         print(f"Activities created: {len(activities)}")
 
+
+        # ============================================================
+        # DISPLAY SEEDED DATA
+        # ============================================================
+
+        print("\nUSERS:")
+
+        for user in User.query.all():
+            print(
+                user.id,
+                user.name,
+                user.email
+            )
+
+
+        print("\nCONSULTANTS:")
+
+        for consultant in Consultant.query.all():
+            print(
+                consultant.id,
+                consultant.name,
+                consultant.email
+            )
+
+
         print("\nTRIPS:")
+
         for trip in Trip.query.all():
             print(
                 trip.id,
                 trip.name,
                 trip.start_date,
-                trip.end_date
+                trip.end_date,
+                f"Consultant: {trip.consultant.name}",
+                f"Users: {[user.name for user in trip.users]}"
             )
 
+
+        print("\nBUDGETS:")
+
+        for budget in Budget.query.all():
+            print(
+                budget.id,
+                budget.name,
+                budget.total_amount,
+                budget.trip_id
+            )
+
+
+        print("\nFLIGHTS:")
+
+        for flight in Flight.query.all():
+            print(
+                flight.id,
+                flight.name,
+                flight.flight_number,
+                flight.departure_airport,
+                flight.arrival_airport,
+                flight.departure_time,
+                flight.arrival_time,
+                f"Consultants: {[c.name for c in flight.consultants]}"
+            )
+
+
+        print("\nACCOMMODATIONS:")
+
+        for accommodation in Accommodation.query.all():
+            print(
+                accommodation.id,
+                accommodation.name,
+                accommodation.check_in,
+                accommodation.check_out,
+                accommodation.room_capacity,
+                accommodation.rating,
+                f"Consultants: {[c.name for c in accommodation.consultants]}"
+            )
+
+
+        print("\nOTHER BOOKINGS:")
+
+        for other in Other.query.all():
+            print(
+                other.id,
+                other.name,
+                other.start_time,
+                other.end_time,
+                f"Consultants: {[c.name for c in other.consultants]}"
+            )
+
+
+        print("\nTOURS:")
+
+        for tour in Tours.query.all():
+            print(
+                tour.id,
+                tour.name,
+                tour.start_time,
+                tour.end_time,
+                f"Consultants: {[c.name for c in tour.consultants]}"
+            )
+
+
+        print("\nCRUISES:")
+
+        for cruise in Cruises.query.all():
+            print(
+                cruise.id,
+                cruise.name,
+                cruise.startDate,
+                cruise.endDate,
+                cruise.boardingLocation,
+                cruise.dropOffLocation,
+                cruise.cruiseLine,
+                f"Consultants: {[c.name for c in cruise.consultants]}"
+            )
+
+
         print("\nACTIVITIES:")
+
         for activity in Activity.query.all():
             print(
                 activity.id,
@@ -683,7 +955,8 @@ def seed_database():
                 activity.start_time,
                 activity.end_time,
                 activity.location,
-                activity.address
+                activity.address,
+                f"Created by: {activity.created_by_user.name}"
             )
 
 
