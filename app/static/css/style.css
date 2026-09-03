@@ -396,7 +396,7 @@ body {
 .auth-page {
     min-height: 100vh;
     width: 100%;
-    background: url('../images/boat.jpg') center/cover no-repeat;
+    background: url('../images/ocean.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -634,6 +634,14 @@ body {
 
 .activity-other {
     background: #3B82F6 !important;
+}
+
+.activity-tour {
+    background: #7C3AED !important;
+}
+
+.activity-cruise {
+    background: #0891B2 !important;
 }
 
 .drop-preview {

@@ -117,24 +117,55 @@ if (nextWeekButton) {
     });
 }
 
-// Notes modal update
-const notesActivityName = document.querySelector("#notesActivityName");
-const notesContent = document.querySelector("#notesContent");
+// Details modal update
+const detailsActivityName = document.querySelector("#detailsModalTitle");
+const detailsStartTime = document.querySelector("#detailsStartTime");
+const detailsEndTime = document.querySelector("#detailsEndTime");
+const detailsLocation = document.querySelector("#detailsLocation");
+const detailsAddress = document.querySelector("#detailsAddress");
+const detailsCreatedBy = document.querySelector("#detailsCreatedBy");
+const detailsNotes = document.querySelector("#detailsNotes");
 
-const noteLinks = document.querySelectorAll(".view-notes");
+const noteLinks = document.querySelectorAll(".view-details");
 
 noteLinks.forEach(link => {
     link.addEventListener("click", () => {
 
         const name = link.dataset.name;
+        const startTime = link.dataset.startTime;
+        const endTime = link.dataset.endTime;
+        const location = link.dataset.location;
+        const address = link.dataset.address;
+        const createdBy = link.dataset.createdBy;
         const notes = link.dataset.notes;
 
-        if (notesActivityName) {
-            notesActivityName.textContent = name;
+
+        if (detailsActivityName) {
+            detailsActivityName.textContent = name;
         }
 
-        if (notesContent) {
-            notesContent.textContent = notes;
+        if (detailsStartTime) {
+            detailsStartTime.textContent = startTime || "-";
+        }
+
+        if (detailsEndTime) {
+            detailsEndTime.textContent = endTime || "-";
+        }
+
+        if (detailsLocation) {
+            detailsLocation.textContent = location || "-";
+        }
+
+        if (detailsAddress) {
+            detailsAddress.textContent = address || "-";
+        }
+
+        if (detailsCreatedBy) {
+            detailsCreatedBy.textContent = createdBy || "-";
+        }
+
+        if (detailsNotes) {
+            detailsNotes.textContent = notes || "No notes available.";
         }
     });
 });
