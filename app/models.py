@@ -68,9 +68,6 @@ class Consultant(db.Model):
         back_populates='consultant'
     )
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-
 
 class Trip(db.Model):
     __tablename__ = "trips"
@@ -110,11 +107,19 @@ class Activity(db.Model):
     notes = db.Column(db.String(8000), nullable=True)
     location = db.Column(db.String(200), nullable=True)
     address = db.Column(db.String(500), nullable=True)
+
     created_by = db.Column(
         db.Integer,
         db.ForeignKey('users.id'),
         nullable=False
     )
+
+    updated_by = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable=True
+    )
+
     trip_id = db.Column(
         db.Integer,
         db.ForeignKey('trips.id'),
@@ -124,6 +129,11 @@ class Activity(db.Model):
     created_by_user = db.relationship(
         "User",
         foreign_keys=[created_by]
+    )
+
+    updated_by_user = db.relationship(
+        "User",
+        foreign_keys=[updated_by]
     )
 
     updated_at = db.Column(
@@ -142,11 +152,22 @@ class Booking(db.Model):
     location = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(500), nullable=True)
 
+    updated_by = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable=True
+    )
+
+    updated_by_user = db.relationship(
+        'User',
+        foreign_keys=[updated_by]
+    )
+
     updated_at = db.Column(
-            db.DateTime,
-            default=datetime.utcnow,
-            onupdate=datetime.utcnow
-        )
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
 
     @declared_attr
     def trip_id(cls):
@@ -178,12 +199,6 @@ class Flight(Booking):
     departure_time = db.Column(db.DateTime, nullable=False)
     arrival_time = db.Column(db.DateTime, nullable=False)
 
-    updated_at = db.Column(
-            db.DateTime,
-            default=datetime.utcnow,
-            onupdate=datetime.utcnow
-        )
-
     consultant = db.relationship(
         'Consultant',
         back_populates='flights'
@@ -200,12 +215,6 @@ class Accommodation(Booking):
     contact_email = db.Column(db.String(100), nullable=True)
     contact_phone = db.Column(db.String(20), nullable=True)
 
-    updated_at = db.Column(
-            db.DateTime,
-            default=datetime.utcnow,
-            onupdate=datetime.utcnow
-        )
-
     consultant = db.relationship(
         'Consultant',
         back_populates='accommodations'
@@ -218,12 +227,6 @@ class Other(Booking):
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
 
-    updated_at = db.Column(
-            db.DateTime,
-            default=datetime.utcnow,
-            onupdate=datetime.utcnow
-        )
-
     consultant = db.relationship(
         'Consultant',
         back_populates='others'
@@ -235,12 +238,6 @@ class Tour(Booking):
 
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
-
-    updated_at = db.Column(
-            db.DateTime,
-            default=datetime.utcnow,
-            onupdate=datetime.utcnow
-        )
 
     consultant = db.relationship(
         'Consultant',
@@ -262,12 +259,6 @@ class Cruise(Booking):
 
     cruise_line = db.Column(db.String(100), nullable=True)
 
-    updated_at = db.Column(
-            db.DateTime,
-            default=datetime.utcnow,
-            onupdate=datetime.utcnow
-        )
-
     consultant = db.relationship(
         'Consultant',
         back_populates='cruises'
@@ -281,14 +272,25 @@ class Budget(db.Model):
     name = db.Column(db.String(100), nullable=False)
     total_amount = db.Column(db.Float, nullable=False)
 
-    updated_at = db.Column(
-            db.DateTime,
-            default=datetime.utcnow,
-            onupdate=datetime.utcnow
-        )
-    
     trip_id = db.Column(
         db.Integer,
         db.ForeignKey('trips.id'),
         nullable=False
+    )
+
+    updated_by = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable=True
+    )
+
+    updated_by_user = db.relationship(
+        'User',
+        foreign_keys=[updated_by]
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
     )
