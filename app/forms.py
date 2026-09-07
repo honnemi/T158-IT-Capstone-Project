@@ -8,11 +8,11 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 class ResetPasswordForm(FlaskForm):
-    new_password=PasswordField("New Password", validators=[InputRequired('Enter password'), Length(min=8), Regexp(
+    new_password=PasswordField("New Password", validators=[InputRequired('Enter password'), Length(min=12), Regexp(
                 r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$',
                 message="Password must include at least one uppercase letter, one lowercase letter, one number, and one special character."
             )])
-    confirm_password=PasswordField("Confirm New Password", validators=[InputRequired('Enter password'), Length(min=8), EqualTo('new_password', message='Passwords must match.'), Regexp(
+    confirm_password=PasswordField("Confirm New Password", validators=[InputRequired('Enter password'), Length(min=12), EqualTo('new_password', message='Passwords must match.'), Regexp(
                 r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$',
                 message="Password must include at least one uppercase letter, one lowercase letter, one number, and one special character."
             )])

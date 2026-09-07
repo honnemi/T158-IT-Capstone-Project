@@ -2,6 +2,7 @@ from sqlalchemy.orm import declared_attr
 from werkzeug.security import check_password_hash
 from . import db
 from flask_login import UserMixin
+from datetime import datetime
 
 
 user_trip = db.Table(
@@ -125,6 +126,12 @@ class Activity(db.Model):
         foreign_keys=[created_by]
     )
 
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
 
 class Booking(db.Model):
     __abstract__ = True
@@ -134,6 +141,12 @@ class Booking(db.Model):
     cost = db.Column(db.Float, nullable=False)
     location = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(500), nullable=True)
+
+    updated_at = db.Column(
+            db.DateTime,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow
+        )
 
     @declared_attr
     def trip_id(cls):
@@ -165,6 +178,12 @@ class Flight(Booking):
     departure_time = db.Column(db.DateTime, nullable=False)
     arrival_time = db.Column(db.DateTime, nullable=False)
 
+    updated_at = db.Column(
+            db.DateTime,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow
+        )
+
     consultant = db.relationship(
         'Consultant',
         back_populates='flights'
@@ -181,6 +200,12 @@ class Accommodation(Booking):
     contact_email = db.Column(db.String(100), nullable=True)
     contact_phone = db.Column(db.String(20), nullable=True)
 
+    updated_at = db.Column(
+            db.DateTime,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow
+        )
+
     consultant = db.relationship(
         'Consultant',
         back_populates='accommodations'
@@ -193,6 +218,12 @@ class Other(Booking):
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
 
+    updated_at = db.Column(
+            db.DateTime,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow
+        )
+
     consultant = db.relationship(
         'Consultant',
         back_populates='others'
@@ -204,6 +235,12 @@ class Tour(Booking):
 
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
+
+    updated_at = db.Column(
+            db.DateTime,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow
+        )
 
     consultant = db.relationship(
         'Consultant',
@@ -225,6 +262,12 @@ class Cruise(Booking):
 
     cruise_line = db.Column(db.String(100), nullable=True)
 
+    updated_at = db.Column(
+            db.DateTime,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow
+        )
+
     consultant = db.relationship(
         'Consultant',
         back_populates='cruises'
@@ -237,6 +280,13 @@ class Budget(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     total_amount = db.Column(db.Float, nullable=False)
+
+    updated_at = db.Column(
+            db.DateTime,
+            default=datetime.utcnow,
+            onupdate=datetime.utcnow
+        )
+    
     trip_id = db.Column(
         db.Integer,
         db.ForeignKey('trips.id'),
