@@ -1,226 +1,634 @@
-{% extends 'base.html' %} {% block title %} Budget {% endblock %}
+{% extends 'base.html' %}
 
-{% block active_tab %}
-<a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">Itinerary</a>
-<a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">Bookings</a>
-<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab active">Budget</a>
+
+{% block title %}
+Budget
 {% endblock %}
 
+
+{% block active_tab %}
+
+<a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">
+  Itinerary
+</a>
+
+<a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">
+  Bookings
+</a>
+
+<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">
+  Inspo
+</a>
+
+<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab active">
+  Budget
+</a>
+
+{% endblock %}
+
+
 {% block content %}
-<!--Chart.js library for Piecharts-->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
-</script>
-<!--Page header-->
+
+
+<!-- ======================================== -->
+<!-- CHART.JS -->
+<!-- ======================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
+
+
 <div class="container py-4 mt-3">
-  <!--Trip name-->
+
+
+  <!-- ======================================== -->
+  <!-- PAGE HEADER -->
+  <!-- ======================================== -->
+
   <div class="row mb-4 text-center text-md-start">
+
     <div class="col">
-      <h1 class="display-6 fw-bold">Trip to Korea</h1>
+
+      <h1 class="display-6 fw-bold">
+        {{ trip.name }} Budget
+      </h1>
+
     </div>
+
   </div>
+
 
   <main>
+
     <div class="row g-4 mb-4">
-      <div class="col-lg-8 ">
-        <!--Total Spending PieChart-->
-        <div class="card shadow-sm border d-flex object-fit-contain flex-column align-items-center g-4"
-          style="min-height: 400px; height: 630px">
-          <h5 class="text-body-primary mt-5">Spending for South Korea Trip!</h5>
-          <h6 class="text-body-secondary mt-0 mb-3">Sub heading</h6>
-          <canvas id="Total_Spending" style="width:100%;max-width:40%">
+
+
+      <!-- ======================================== -->
+      <!-- LEFT SIDE -->
+      <!-- ======================================== -->
+
+      <div class="col-lg-8">
+
+
+        <!-- ======================================== -->
+        <!-- SPENDING CHART -->
+        <!-- ======================================== -->
+
+        <div class="card shadow-sm border
+                 d-flex flex-column
+                 align-items-center" style="min-height: 400px;">
+
+          <h5 class="text-body-primary mt-5">
+            Spending for {{ trip.name }}
+          </h5>
+
+          <h6 class="text-body-secondary mb-3">
+            Current trip expenses
+          </h6>
+
+
+          <canvas id="Total_Spending" data-flight-total="{{ flight_total }}"
+            data-accommodation-total="{{ accommodation_total }}" data-tour-total="{{ tour_total }}"
+            data-cruise-total="{{ cruise_total }}" data-other-total="{{ other_total }}"
+            style="width:100%; max-width:40%;">
           </canvas>
-          <div>
-            <table class="table-sm">
+
+
+          <!-- ======================================== -->
+          <!-- CATEGORY TOTALS -->
+          <!-- ======================================== -->
+
+          <div class="mt-4 mb-4">
+
+            <table class="table table-sm">
+
               <tbody>
+
+
+                <!-- Flights -->
+
                 <tr>
-                  <th scope="row">Flights</th>
-                  <td>$2500</td>
+
+                  <th scope="row">
+                    Flights
+                  </th>
+
+                  <td>
+                    ${{ "%.2f"|format(flight_total) }}
+                  </td>
+
                 </tr>
+
+
+                <!-- Accommodation -->
+
                 <tr>
-                  <th scope="row">Accommodation</th>
-                  <td>$2000</td>
+
+                  <th scope="row">
+                    Accommodation
+                  </th>
+
+                  <td>
+                    ${{ "%.2f"|format(accommodation_total) }}
+                  </td>
+
                 </tr>
+
+
+                <!-- Tours -->
+
                 <tr>
-                  <th scope="row">Insurance</th>
-                  <td>$1000</td>
+
+                  <th scope="row">
+                    Tours
+                  </th>
+
+                  <td>
+                    ${{ "%.2f"|format(tour_total) }}
+                  </td>
+
                 </tr>
+
+
+                <!-- Cruises -->
+
                 <tr>
-                  <th scope="row">Tours</th>
-                  <td>$3000</td>
+
+                  <th scope="row">
+                    Cruises
+                  </th>
+
+                  <td>
+                    ${{ "%.2f"|format(cruise_total) }}
+                  </td>
+
                 </tr>
+
+
+                <!-- Other -->
+
                 <tr>
-                  <th scope="row">Cruises</th>
-                  <td>$500</td>
+
+                  <th scope="row">
+                    Other
+                  </th>
+
+                  <td>
+                    ${{ "%.2f"|format(other_total) }}
+                  </td>
+
+                </tr>
+
+
               </tbody>
+
             </table>
+
           </div>
+
         </div>
-        <!--Remaining Budget PieChart-->
-        <br>
-        <!-- <div class="card shadow-sm border object-fit-contain overflow-hidden d-flex flex-column align-items-center g-4"
-          style="min-height: 300px; height: 560px">
-          <h5 class="text-body-primary mt-5">Remaining Budget</h5>
-          <h6 class="text-body-secondary mt-0 mb-3">Sub heading</h6>
-          <canvas id="Remaining_Budget" style="width:100%;max-width:40%">
-          </canvas>
-          <table class="table-sm">
-            <tbody>
-              <tr>
-                <th scope="row">Total Budget</th>
-                <td>$5000</td>
-              </tr>
-              <tr>
-                <th scope="row">Total Expenses</th>
-                <td>$4500</td>
-              </tr>
-              <tr>
-                <th scope="row">Remaining Balance</th>
-                <td>$500</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> -->
-      </div>
 
 
+        <!-- ======================================== -->
+        <!-- BUDGET SUMMARY -->
+        <!-- ======================================== -->
 
-      <!--Budget Items header-->
-      <div class="col-12 col-lg-4">
-        <div class="card shadow-sm border overflow-hidden d-flex flex-column" style="min-height: 400px; height: 600px">
-          <div
-            class="card-header bg-white d-flex align-items-center justify-content-between p-3 border-bottom flex-shrink-0">
-            <h5 class="mb-0">Budget</h5>
+        <div class="card shadow-sm border mt-4">
 
-            <!--Request Budget Item button-->
-            <button class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
-              aria-label="Add activity">
-              <i class="bi bi-plus-lg"></i>
-            </button>
-          </div>
+          <div class="card-body">
 
-          <!--Budget Items body-->
-          <div class="card-body overflow-y-auto p-3 d-flex flex-column gap-3">
-            <!--Example budget item card-->
-            <div class="card w-100 shadow-sm border">
-              <div class="card-body">
-                <!--Budget item name-->
-                <h6 class="card-title fw-bold mb-3">Flights</h6>
-                <div class="d-flex flex-column gap-2">
-                  <!--Budget item cost-->
-                  <div class="d-flex flex-row align-items-center gap-2">
-                    <i class="bi bi-tag"></i>
-                    <small class="text-body-secondary">$1280</small>
-                  </div>
-                  <!--Budget Item information-->
-                  <div class="d-flex flex-row align-items-center gap-2">
-                    <i class="bi bi-geo-alt"></i>
-                    <small class="text-body-secondary">Incheon International Airport</small>
-                  </div>
-                  <!--Budget Item vendor-->
-                  <div class="d-flex flex-row align-items-center gap-2">
-                    <i class="bi bi-shop"></i>
-                    <small class="text-body-secondary">Qantas</small>
-                  </div>
-                  <!--Budget Item assignee-->
-                  <div class="d-flex flex-row align-items-center gap-2">
-                    <i class="bi bi-person-circle"></i>
-                    <!--individual icons-->
-                    <div>
 
-                      <small class="text-body-secondary">Olivia</small>
-                    </div>
+            <h5 class="fw-bold mb-4">
+              Budget Summary
+            </h5>
 
-                  </div>
+
+            <!-- ======================================== -->
+            <!-- TOTAL BUDGET -->
+            <!-- ======================================== -->
+
+            <div class="
+                d-flex
+                justify-content-between
+                align-items-start
+                border-bottom
+                py-3
+              ">
+
+              <div>
+
+                <span>
+                  Total Budget
+                </span>
+
+
+                <!-- Last budget update -->
+
+                {% if budget and budget.updated_at %}
+
+                <div>
+
+                  <small class="text-muted">
+
+                    Last updated
+                    {{ budget.updated_at.strftime('%d %b %Y at %H:%M') }}
+
+                    {% if budget.updated_by_user %}
+
+                    by {{ budget.updated_by_user.name }}
+
+                    {% endif %}
+
+                  </small>
+
                 </div>
-                <!--View notes link-->
-                <div class="d-flex flex-row justify-content-end mt-3">
-                  <a href="#" class="card-link text-decoration-none small" data-bs-toggle="modal"
-                    data-bs-target="#notesModal"><i class="bi bi-journal"></i></a>
-                </div>
+
+                {% endif %}
+
               </div>
+
+
+              <strong>
+                ${{ "%.2f"|format(total_budget) }}
+              </strong>
+
             </div>
+
+
+            <!-- ======================================== -->
+            <!-- TOTAL SPENT -->
+            <!-- ======================================== -->
+
+            <div class="
+                d-flex
+                justify-content-between
+                border-bottom
+                py-3
+              ">
+
+              <span>
+                Total Spent
+              </span>
+
+              <strong>
+                ${{ "%.2f"|format(total_spent) }}
+              </strong>
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- REMAINING -->
+            <!-- ======================================== -->
+
+            <div class="
+                d-flex
+                justify-content-between
+                py-3
+              ">
+
+              <span>
+                Remaining Budget
+              </span>
+
+
+              <strong {% if remaining_budget < 0 %} class="text-danger" {% else %} class="text-success" {% endif %}>
+
+                ${{ "%.2f"|format(remaining_budget) }}
+
+              </strong>
+
+            </div>
+
+
           </div>
+
         </div>
+
       </div>
+
+
+      <!-- ======================================== -->
+      <!-- RIGHT SIDE -->
+      <!-- ======================================== -->
+
+      <div class="col-12 col-lg-4">
+
+
+        <div class="
+            card
+            shadow-sm
+            border
+            overflow-hidden
+            d-flex
+            flex-column
+          " style="min-height: 400px; height: 600px;">
+
+
+          <!-- ======================================== -->
+          <!-- BUDGET ITEMS HEADER -->
+          <!-- ======================================== -->
+
+          <div class="
+              card-header
+              bg-white
+              d-flex
+              align-items-center
+              justify-content-between
+              p-3
+              border-bottom
+            ">
+
+
+            <h5 class="mb-0">
+              Budget Items
+            </h5>
+
+
+            <!-- ======================================== -->
+            <!-- PLUS BUTTON -->
+            <!-- ======================================== -->
+
+            <div class="dropdown">
+
+
+              <button class="btn btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                style="width: 40px; height: 40px;">
+
+                <i class="bi bi-plus-lg"></i>
+
+              </button>
+
+
+              <!-- ======================================== -->
+              <!-- PLUS MENU -->
+              <!-- ======================================== -->
+
+              <ul class="dropdown-menu dropdown-menu-end">
+
+
+                <li>
+
+                  <a class="dropdown-item"
+                    href="mailto:{{ trip.consultant.email }}?subject=Request new budget for {{ trip.name }}">
+
+                    <i class="bi bi-wallet2 me-2"></i>
+
+                    Request new budget
+
+                  </a>
+
+                </li>
+
+
+              </ul>
+
+            </div>
+
+          </div>
+
+
+          <!-- ======================================== -->
+          <!-- BUDGET ITEM LIST -->
+          <!-- ======================================== -->
+
+          <div class="
+              card-body
+              overflow-y-auto
+              p-3
+              d-flex
+              flex-column
+              gap-3
+            ">
+
+
+            {% if budget_items %}
+
+
+            {% for item in budget_items %}
+
+
+            <div class="card w-100 shadow-sm border">
+
+
+              <div class="card-body">
+
+
+                <!-- ======================================== -->
+                <!-- ITEM HEADER -->
+                <!-- ======================================== -->
+
+                <div class="
+                        d-flex
+                        justify-content-between
+                        align-items-start
+                        mb-3
+                      ">
+
+
+                  <div>
+
+                    <h6 class="card-title fw-bold mb-1">
+                      {{ item.name }}
+                    </h6>
+
+                    <small class="text-muted">
+                      {{ item.type }}
+                    </small>
+
+                  </div>
+
+
+                  <strong>
+                    ${{ "%.2f"|format(item.cost) }}
+                  </strong>
+
+
+                </div>
+
+
+                <div class="d-flex flex-column gap-2">
+
+
+                  <!-- ======================================== -->
+                  <!-- LOCATION -->
+                  <!-- ======================================== -->
+
+                  <div class="
+                          d-flex
+                          flex-row
+                          align-items-center
+                          gap-2
+                        ">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                    <small class="text-body-secondary">
+
+                      {{ item.location }}
+
+                    </small>
+
+                  </div>
+
+
+                  <!-- ======================================== -->
+                  <!-- LAST UPDATED -->
+                  <!-- ======================================== -->
+
+                  <div class="
+                          d-flex
+                          flex-row
+                          align-items-center
+                          gap-2
+                        ">
+
+                    <i class="bi bi-clock-history"></i>
+
+
+                    <small class="text-body-secondary">
+
+
+                      {% if item.updated_at %}
+
+                      Last updated
+                      {{ item.updated_at.strftime(
+                      '%d %b %Y at %H:%M'
+                      ) }}
+
+                      {% else %}
+
+                      No update information
+
+                      {% endif %}
+
+
+                    </small>
+
+                  </div>
+
+
+                  <!-- ======================================== -->
+                  <!-- UPDATED BY -->
+                  <!-- ======================================== -->
+
+                  {% if item.updated_by %}
+
+
+                  <div class="
+                            d-flex
+                            flex-row
+                            align-items-center
+                            gap-2
+                          ">
+
+                    <i class="bi bi-person"></i>
+
+                    <small class="text-body-secondary">
+
+                      Updated by {{ item.updated_by }}
+
+                    </small>
+
+                  </div>
+
+
+                  {% endif %}
+
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            {% endfor %}
+
+
+            {% else %}
+
+
+            <p class="text-muted">
+
+              No expenses have been added to this trip yet.
+
+            </p>
+
+
+            {% endif %}
+
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
-</div>
-</main>
 
-<!-- Notes Modal -->
-<div class="modal fade" id="notesModal" tabindex="-1" role="dialog" aria-labelledby="notesModalTitle"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="notesModalTitle">Notes</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-      </div>
-      <div class="modal-body">
-        note note note
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
+  </main>
+
 </div>
 
 
+<!-- ======================================== -->
+<!-- DATABASE-DRIVEN CHART -->
+<!-- ======================================== -->
 <script>
-  const spendingItems = ["Flights", "Accommodation", "Insurance", "Tours", "Cruises"];
-  const spendingItemValues = [25, 20, 10, 30, 5];
-  // const remainingBudgetItems = ["Total Budget", "Total Expenses", "Remaining Balance"]; -->
-  // const remainingBudgetValues = [100, 50, 25];
-  const barColors = [
-    //Flights Red
-    "#BF0010",
-    //Accommodation Orange
-    "#FF7F3A",
-    //placeholder colour
-    "#C4C4C4",
-    // Tours Blue
-    "#4BA2B6",
-    //placeholder colour
-    "#525252"];
+  const spendingChart = document.getElementById("Total_Spending");
 
-  const ctx = document.getElementById('Total_Spending');
+  if (spendingChart) {
 
-  new Chart("Total_Spending", {
-    type: "doughnut",
-    data: {
-      datasets: [{
-        backgroundColor: barColors,
-        data: spendingItemValues
-      }],
-      labels: spendingItems,
-    },
-    options: {
-      title: {
-        display: true,
-        text: "Spending for South Korea Trip"
+    const spendingItems = [
+      "Flights",
+      "Accommodation",
+      "Tours",
+      "Cruises",
+      "Other"
+    ];
+
+    const spendingItemValues = [
+      Number(spendingChart.dataset.flightTotal),
+      Number(spendingChart.dataset.accommodationTotal),
+      Number(spendingChart.dataset.tourTotal),
+      Number(spendingChart.dataset.cruiseTotal),
+      Number(spendingChart.dataset.otherTotal)
+    ];
+
+    const barColors = [
+      "#BF0010",
+      "#FF7F3A",
+      "#4BA2B6",
+      "#525252",
+      "#C4C4C4"
+    ];
+
+    new Chart(spendingChart, {
+      type: "doughnut",
+
+      data: {
+        labels: spendingItems,
+
+        datasets: [
+          {
+            backgroundColor: barColors,
+            data: spendingItemValues
+          }
+        ]
+      },
+
+      options: {
+        responsive: true,
+
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        }
       }
-    }
-  });
-
-  const canvas = document.getElementById('Remaining_Budget');
-
-  new Chart("Remaining_Budget", {
-    type: "doughnut",
-    data: {
-      datasets: [{
-        backgroundColor: barColors,
-        data: remainingBudgetValues
-      }],
-      labels: remainingBudgetItems,
-    },
-    options: {
-      title: {
-        display: true,
-        text: "Remaining Budget for South Korea Trip"
-      }
-    }
-  });
+    });
+  }
 </script>
+
+
 {% endblock %}
