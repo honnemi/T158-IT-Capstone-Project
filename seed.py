@@ -35,14 +35,14 @@ def seed_database():
             name="Sam Taylor",
             email="sam@example.com",
             password=generate_password_hash("Test123!"),
-            password_changed=True
+            password_changed=False
         )
 
         jordan = User(
             name="Jordan Lee",
             email="jordan@example.com",
             password=generate_password_hash("Test123!"),
-            password_changed=True
+            password_changed=False
         )
 
         db.session.add_all([alex, sam, jordan])
