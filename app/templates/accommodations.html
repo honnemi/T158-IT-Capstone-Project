@@ -1,247 +1,187 @@
-{% extends 'base.html' %} {% block title %} Accommodations {% endblock %} {%
-block active_tab %}
-<a
-  href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}"
-  class="nav-tab"
-  >Itinerary</a
->
-<a
-  href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}"
-  class="nav-tab active"
-  >Bookings</a
->
-<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab"
-  >Inspo</a
->
-<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab"
-  >Budget</a
->
-{% endblock %} {% block content %}
+{% extends 'base.html' %}
+{% block title %}Accommodations{% endblock %}
 
-<!-- ======================================== -->
-<!-- MAIN PAGE LAYOUT -->
-<!-- ======================================== -->
+{% block active_tab %}
+<a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">Itinerary</a>
+<a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab active">Bookings</a>
+<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
+<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
+{% endblock %}
+
+{% block content %}
 <div class="container-fluid main-layout">
   <div class="row g-4">
-    <!-- ======================================== -->
-    <!-- LEFT SIDEBAR / TIMELINE -->
-    <!-- ======================================== -->
     <aside class="col-lg-3 timeline-sidebar">
-      <div class="day-group">
-        <h5>Saturday 4 Jul</h5>
+          {% if grouped_timeline %}
+            {% for date, events in grouped_timeline.items() %}
+              <div class="day-group">
+                <h5>{{ date.strftime('%A %d %b')|replace(' 0', ' ') }}</h5>
+    
+                {% for event in events %}
+                  <div class="timeline-item {{ event.colour }}">
+                    <div>
+                      <strong>{{ event.title }}</strong>
+                      <small>{{ event.time }}</small>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="day-group">
+              <h5>No bookings yet</h5>
+              <small>Booking dates will appear here once they are added.</small>
+            </div>
+          {% endif %}
+        </aside>
 
-        <div class="timeline-item red">
-          <div>
-            <strong>BNE → ICN Departure</strong>
-            <small>10:20 AEST</small>
-          </div>
-        </div>
-
-        <div class="timeline-item red">
-          <div>
-            <strong>BNE → ICN Arrival</strong>
-            <small>19:00 KST</small>
-          </div>
-        </div>
-
-        <div class="timeline-item orange">
-          <div>
-            <strong>Ocean Park 9 Check-in</strong>
-            <small>TBD</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-group">
-        <h5>Monday 6 Jul</h5>
-
-        <div class="timeline-item red">
-          <div>
-            <strong>BNE → ICN Departure</strong>
-            <small>23:00 AEST</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-group">
-        <h5>Tuesday 7 Jul</h5>
-
-        <div class="timeline-item red">
-          <div>
-            <strong>BNE → ICN Arrival</strong>
-            <small>07:40 KST</small>
-          </div>
-        </div>
-
-        <div class="timeline-item orange">
-          <div>
-            <strong>Ocean Park 9 Check-out</strong>
-            <small>10:00AM</small>
-          </div>
-        </div>
-
-        <div class="timeline-item orange">
-          <div>
-            <strong>LOTTE City Hotel Check-in</strong>
-            <small>TBD</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-group">
-        <h5>Friday 10 Jul</h5>
-
-        <div class="timeline-item blue">
-          <div>
-            <strong>DMZ History Tour</strong>
-            <small>10:00-15:00</small>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- ======================================== -->
-    <!-- MAIN CONTENT AREA -->
-    <!-- ======================================== -->
     <main class="col-lg-9 content-area">
-      <!-- ======================================== -->
-      <!-- SECONDARY BOOKING TABS -->
-      <!-- ======================================== -->
-      <div class="booking-tabs d-flex flex-wrap">
+<div class="booking-tabs d-flex flex-wrap">
         <a
-          href="{{ url_for('bookings.show_flights', trip_id=trip.id)}}"
+          href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}"
           class="booking-tab text-decoration-none"
         >
           <i class="bi bi-airplane-fill me-2"></i>
           Flights
         </a>
+
         <a
-          href="{{ url_for('bookings.show_accommodations', trip_id=trip.id)}}"
+          href="{{ url_for('bookings.show_accommodations', trip_id=trip.id) }}"
           class="booking-tab active text-decoration-none"
         >
           <i class="bi bi-building-fill me-2"></i>
           Accommodations
-          <!-- <span class="badge-circle">1</span> -->
         </a>
+
         <a
-          href="{{ url_for('bookings.show_other', trip_id=trip.id)}}"
+          href="{{ url_for('bookings.show_cruises', trip_id=trip.id) }}"
+          class="booking-tab text-decoration-none"
+        >
+          <i class="bi bi-water me-2"></i>
+          Cruises
+        </a>
+
+        <a
+          href="{{ url_for('bookings.show_tours', trip_id=trip.id) }}"
+          class="booking-tab text-decoration-none"
+        >
+          <i class="bi bi-map-fill me-2"></i>
+          Tours
+        </a>
+
+        <a
+          href="{{ url_for('bookings.show_other', trip_id=trip.id) }}"
           class="booking-tab text-decoration-none"
         >
           <i class="bi bi-ticket-perforated-fill me-2"></i>
           Other
-          <!-- <span class="badge-circle">1</span> -->
         </a>
+
       </div>
 
-      <!-- ======================================== -->
-      <!-- ACCOMMODATION CARD 1 -->
-      <!-- ======================================== -->
-      <div class="flight-card accommodation-card">
-        <!-- Card header -->
-        <div
-          class="d-flex justify-content-between align-items-start mb-3 flex-wrap"
-        >
-          <h2>Ocean Park 9</h2>
+      {% if accommodations %}
+        {% for accommodation in accommodations %}
+          <div class="flight-card accommodation-card">
+            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
+              <h2>{{ accommodation.name }}</h2>
 
-          <span class="booked-by">Booked by Jamie H.</span>
-        </div>
+              {% if accommodation.consultant %}
+                <span class="booked-by">Booked by {{ accommodation.consultant.name }}</span>
+              {% endif %}
+            </div>
 
-        <!-- Accommodation details -->
-        <div class="flight-detail">
-          <i class="bi bi-calendar"></i>
-          <span>Sat 4 Jul - Tues 7 Jul</span>
-        </div>
+            <div class="flight-detail">
+              <i class="bi bi-calendar"></i>
+              <span>
+                {{ accommodation.check_in.strftime('%a %d %b')|replace(' 0', ' ') }} -
+                {{ accommodation.check_out.strftime('%a %d %b %Y')|replace(' 0', ' ') }}
+              </span>
+            </div>
 
-        <div class="flight-detail">
-          <i class="bi bi-geo-alt"></i>
-          <span
-            >10, Yeongjongjingwangjang-ro, Jung-gu, 22393 Incheon, South
-            Korea</span
-          >
-        </div>
+            <div class="flight-detail">
+              <i class="bi bi-clock"></i>
+              <span>
+                Check-in {{ accommodation.check_in.strftime('%H:%M') }} ·
+                Check-out {{ accommodation.check_out.strftime('%H:%M') }}
+              </span>
+            </div>
 
-        <div class="flight-detail">
-          <i class="bi bi-telephone"></i>
-          <span>(+01) 123456789</span>
-        </div>
+            <div class="flight-detail">
+              <i class="bi bi-geo-alt"></i>
+              <span>{{ accommodation.address or accommodation.location }}</span>
+            </div>
 
-        <!-- Edit button -->
-        <div class="text-end mt-3" style="position: relative">
-          <button class="kebab-btn" onclick="toggleMenu(this)">
-            <i class="bi bi-three-dots-vertical"></i>
-          </button>
+            <div class="flight-detail">
+              <i class="bi bi-people"></i>
+              <span>Room capacity: {{ accommodation.room_capacity }}</span>
+            </div>
 
-          <div class="accom-menu">
-            <a href="#" class="accom-menu-item">View flight details</a>
-            <a href="#" class="accom-menu-item">Contact agent</a>
+            {% if accommodation.rating %}
+              <div class="flight-detail">
+                <i class="bi bi-star-fill"></i>
+                <span>{{ accommodation.rating }}/5</span>
+              </div>
+            {% endif %}
+
+            {% if accommodation.contact_phone %}
+              <div class="flight-detail">
+                <i class="bi bi-telephone"></i>
+                <span>{{ accommodation.contact_phone }}</span>
+              </div>
+            {% endif %}
+
+            {% if accommodation.contact_email %}
+              <div class="flight-detail">
+                <i class="bi bi-envelope"></i>
+                <span>{{ accommodation.contact_email }}</span>
+              </div>
+            {% endif %}
+
+            <div class="flight-detail">
+              <i class="bi bi-tag"></i>
+              <span>${{ '%.2f'|format(accommodation.cost) }}</span>
+            </div>
+
+            <div class="text-end mt-3" style="position: relative">
+              <button class="kebab-btn" type="button" onclick="toggleMenu(this)">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <div class="accom-menu">
+                <a href="#" class="accom-menu-item">View accommodation details</a>
+                <a href="#" class="accom-menu-item">Contact agent</a>
+              </div>
+            </div>
           </div>
+        {% endfor %}
+      {% else %}
+        <div class="booking-empty-state">
+          <h3>No accommodation booked</h3>
+          <p>Accommodation added to this trip will appear here.</p>
         </div>
-      </div>
-
-      <!-- ======================================== -->
-      <!-- ACCOMMODATION CARD 2 -->
-      <!-- ======================================== -->
-      <div class="flight-card accommodation-card">
-        <!-- Card header -->
-        <div
-          class="d-flex justify-content-between align-items-start mb-3 flex-wrap"
-        >
-          <h2>LOTTE City Hotel, Guro</h2>
-
-          <span class="booked-by">Booked by Jamie H.</span>
-        </div>
-
-        <!-- Accommodation details -->
-        <div class="flight-detail">
-          <i class="bi bi-calendar"></i>
-          <span>Tues 7 Jul - Fri 17 Jul</span>
-        </div>
-
-        <div class="flight-detail">
-          <i class="bi bi-geo-alt"></i>
-          <span>300, Digital-ro, Guro, Seoul, South Korea, 152-848</span>
-        </div>
-
-        <div class="flight-detail">
-          <i class="bi bi-telephone"></i>
-          <span>(+01) 123456789</span>
-        </div>
-
-        <!-- Edit button -->
-        <div class="text-end mt-3" style="position: relative">
-          <button class="kebab-btn" onclick="toggleMenu(this)">
-            <i class="bi bi-three-dots-vertical"></i>
-          </button>
-
-          <div class="accom-menu">
-            <a href="#" class="accom-menu-item">View flight details</a>
-            <a href="#" class="accom-menu-item">Contact agent</a>
-          </div>
-        </div>
-      </div>
+      {% endif %}
     </main>
   </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Kebab menu toggle -->
 <script>
   function toggleMenu(btn) {
     const menu = btn.nextElementSibling;
-    document.querySelectorAll(".accom-menu").forEach((m) => {
-      if (m !== menu) m.classList.remove("open");
+
+    document.querySelectorAll(".accom-menu").forEach((otherMenu) => {
+      if (otherMenu !== menu) {
+        otherMenu.classList.remove("open");
+      }
     });
+
     menu.classList.toggle("open");
   }
-  document.addEventListener("click", function (e) {
-    if (!e.target.closest(".kebab-btn")) {
-      document
-        .querySelectorAll(".accom-menu")
-        .forEach((m) => m.classList.remove("open"));
+
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest(".kebab-btn") && !event.target.closest(".accom-menu")) {
+      document.querySelectorAll(".accom-menu").forEach((menu) => {
+        menu.classList.remove("open");
+      });
     }
   });
 </script>
-
 {% endblock %}

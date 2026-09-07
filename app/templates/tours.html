@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Other Bookings{% endblock %}
+{% block title %}Tours{% endblock %}
 
 {% block active_tab %}
 <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">Itinerary</a>
@@ -63,7 +63,7 @@
 
         <a
           href="{{ url_for('bookings.show_tours', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
+          class="booking-tab active text-decoration-none"
         >
           <i class="bi bi-map-fill me-2"></i>
           Tours
@@ -71,7 +71,7 @@
 
         <a
           href="{{ url_for('bookings.show_other', trip_id=trip.id) }}"
-          class="booking-tab active text-decoration-none"
+          class="booking-tab text-decoration-none"
         >
           <i class="bi bi-ticket-perforated-fill me-2"></i>
           Other
@@ -79,48 +79,42 @@
 
       </div>
 
-      {% if others %}
-        {% for booking in others %}
-          <div class="flight-card other-card">
+      {% if tours %}
+        {% for tour in tours %}
+          <div class="flight-card tour-card">
             <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
-              <h2>{{ booking.name }}</h2>
+              <h2>{{ tour.name }}</h2>
 
-              {% if booking.consultant %}
-                <span class="booked-by">Booked by {{ booking.consultant.name }}</span>
+              {% if tour.consultant %}
+                <span class="booked-by">Booked by {{ tour.consultant.name }}</span>
               {% endif %}
             </div>
 
             <div class="flight-detail">
               <i class="bi bi-calendar"></i>
-              <span>{{ booking.start_time.strftime('%A %d %b %Y')|replace(' 0', ' ') }}</span>
+              <span>{{ tour.start_time.strftime('%A %d %b %Y')|replace(' 0', ' ') }}</span>
             </div>
 
             <div class="flight-detail">
               <i class="bi bi-clock"></i>
-              <span>
-                {{ booking.start_time.strftime('%H:%M') }} -
-                {{ booking.end_time.strftime('%H:%M') }}
-                {% if booking.end_time.date() != booking.start_time.date() %}
-                  (ends {{ booking.end_time.strftime('%d %b %Y')|replace(' 0', ' ') }})
-                {% endif %}
-              </span>
+              <span>{{ tour.start_time.strftime('%H:%M') }} - {{ tour.end_time.strftime('%H:%M') }}</span>
             </div>
 
             <div class="flight-detail">
               <i class="bi bi-geo-alt"></i>
-              <span>{{ booking.location }}</span>
+              <span>{{ tour.location }}</span>
             </div>
 
-            {% if booking.address %}
+            {% if tour.address %}
               <div class="flight-detail">
                 <i class="bi bi-signpost"></i>
-                <span>{{ booking.address }}</span>
+                <span>{{ tour.address }}</span>
               </div>
             {% endif %}
 
             <div class="flight-detail">
               <i class="bi bi-tag"></i>
-              <span>${{ '%.2f'|format(booking.cost) }}</span>
+              <span>${{ '%.2f'|format(tour.cost) }}</span>
             </div>
 
             <div class="text-end mt-3" style="position: relative">
@@ -128,7 +122,7 @@
                 <i class="bi bi-three-dots-vertical"></i>
               </button>
               <div class="accom-menu">
-                <a href="#" class="accom-menu-item">View booking details</a>
+                <a href="#" class="accom-menu-item">View tour details</a>
                 <a href="#" class="accom-menu-item">Contact agent</a>
               </div>
             </div>
@@ -136,8 +130,8 @@
         {% endfor %}
       {% else %}
         <div class="booking-empty-state">
-          <h3>No other bookings</h3>
-          <p>Other bookings added to this trip will appear here.</p>
+          <h3>No tours booked</h3>
+          <p>Tours added to this trip will appear here.</p>
         </div>
       {% endif %}
     </main>
