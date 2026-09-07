@@ -25,12 +25,13 @@ def create_app():
        print("LOAD USER CALLED:", user_id)
        return db.session.scalar(db.select(User).where(User.id==user_id))
 
-    from . import home, auth, itinerary, bookings, inspo, budget
+    from . import home, auth, itinerary, bookings, inspo, budget, contact
     app.register_blueprint(home.home_bp)
     app.register_blueprint(auth.auth_bp)
     app.register_blueprint(itinerary.itinerary_bp)
     app.register_blueprint(bookings.bookings_bp)
     app.register_blueprint(inspo.inspo_bp)
     app.register_blueprint(budget.budget_bp)
+    app.register_blueprint(contact.contact_bp)
 
     return app

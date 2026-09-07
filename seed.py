@@ -53,7 +53,21 @@ def seed_database():
             email="sarah@globetrottertravel.com"
         )
 
-        db.session.add(consultant)
+        consultant_two = Consultant(
+            name="Daniel Kim",
+             email="daniel@globetrottertravel.com"
+        )
+
+        consultant_three = Consultant(
+            name="Priya Shah",
+            email="priya@globetrottertravel.com"
+        )
+
+        db.session.add_all([
+            consultant,
+            consultant_two,
+            consultant_three
+        ])
         db.session.commit()
 
         trip = Trip(
