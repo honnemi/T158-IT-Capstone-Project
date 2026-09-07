@@ -106,6 +106,8 @@ body {
 
 .main-layout > .row {
     height: 100%;
+    display: flex;
+    flex-wrap: nowrap;
 }
 
 
@@ -115,6 +117,11 @@ body {
 
 .timeline-sidebar {
     height: 100%;
+
+    flex: 0 0 25%;
+    width: 25%;
+    max-width: 25%;
+
     overflow-y: auto;
     overflow-x: hidden;
     padding: 28px 28px 40px;
@@ -192,6 +199,12 @@ body {
 
 .content-area {
     height: 100%;
+
+    flex: 0 0 75%;
+    width: 75%;
+    max-width: 75%;
+    min-width: 0;
+
     overflow-y: auto;
     overflow-x: hidden;
     padding: 28px 40px 50px;
@@ -315,15 +328,24 @@ body {
 /* ======================================== */
 @media (max-width: 991px) {
 
-    /* Stack the main layout */
+    /* Keep booking layout at 25% / 75% */
     .timeline-sidebar {
-        min-height: auto;
-        border-right: none;
-        border-bottom: 1px solid #e5e5e5;
+        flex: 0 0 25%;
+        width: 25%;
+        max-width: 25%;
+
+        border-right: 1px solid #ddd;
+        border-bottom: none;
+
+        padding: 20px 12px 30px;
     }
 
-    /* Reduce content padding */
     .content-area {
+        flex: 0 0 75%;
+        width: 75%;
+        max-width: 75%;
+        min-width: 0;
+
         padding: 24px 20px 32px;
     }
 
@@ -338,6 +360,7 @@ body {
         gap: 20px;
     }
 }
+
 
 /* ======================================== */
 /* KEBAB MENU BUTTON + DROPDOWN */
