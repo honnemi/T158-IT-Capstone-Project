@@ -151,17 +151,20 @@ class Booking(db.Model):
     cost = db.Column(db.Float, nullable=False)
     location = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(500), nullable=True)
-
+    
     updated_by = db.Column(
         db.Integer,
         db.ForeignKey('users.id'),
         nullable=True
     )
 
-    updated_by_user = db.relationship(
-        'User',
-        foreign_keys=[updated_by]
-    )
+    @declared_attr
+    def updated_by_user(cls):
+        return db.relationship(
+            'User',
+            foreign_keys=[cls.updated_by]
+        )
+
 
     updated_at = db.Column(
         db.DateTime,
