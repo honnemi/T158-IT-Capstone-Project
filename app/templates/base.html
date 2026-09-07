@@ -146,11 +146,17 @@
     {% endblock %}
 
     <footer class="text-center text-lg-start mt-auto">
-      <div
-        class="text-center p-3"
-      >
+    <div class="container py-4">
+        <img
+            src="{{ url_for('static', filename='images/fctg_logo.png') }}"
+            alt="FCTG logo"
+            class="footer-logo"
+        >
+    </div>
+
+    <div class="text-center p-3">
         © 2026 Copyright: IT Capstone T158
-      </div>
-    </footer>
+    </div>
+  </footer>
   </body>
 </html>

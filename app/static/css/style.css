@@ -55,6 +55,13 @@ footer {
     background-color: #F5F5F5;
 }
 
+.footer-logo {
+    width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 /* Buttons */
 .primary-blue-btn {
     font-family: 'robotoMedium';
@@ -178,6 +185,15 @@ footer {
 .navbar {
     background: #D40119; 
     height: 80px;
+}
+
+.navbar-logo {
+    width: 110px;
+    height: auto;
+    display: block;
+
+    /* Turn the existing logo white */
+    filter: brightness(0) invert(1);
 }
 
 /* Hamburger button */
