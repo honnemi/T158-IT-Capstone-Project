@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Other Bookings{% endblock %}
+{% block title %}Cruises{% endblock %}
 
 {% block active_tab %}
 <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">Itinerary</a>
@@ -55,7 +55,7 @@
 
         <a
           href="{{ url_for('bookings.show_cruises', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
+          class="booking-tab active text-decoration-none"
         >
           <i class="bi bi-water me-2"></i>
           Cruises
@@ -71,7 +71,7 @@
 
         <a
           href="{{ url_for('bookings.show_other', trip_id=trip.id) }}"
-          class="booking-tab active text-decoration-none"
+          class="booking-tab text-decoration-none"
         >
           <i class="bi bi-ticket-perforated-fill me-2"></i>
           Other
@@ -79,48 +79,52 @@
 
       </div>
 
-      {% if others %}
-        {% for booking in others %}
-          <div class="flight-card other-card">
+      {% if cruises %}
+        {% for cruise in cruises %}
+          <div class="flight-card cruise-card">
             <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
-              <h2>{{ booking.name }}</h2>
+              <div>
+                <h2>{{ cruise.name }}</h2>
+                {% if cruise.cruise_line %}
+                  <span class="airline">{{ cruise.cruise_line }}</span>
+                {% endif %}
+              </div>
 
-              {% if booking.consultant %}
-                <span class="booked-by">Booked by {{ booking.consultant.name }}</span>
+              {% if cruise.consultant %}
+                <span class="booked-by">Booked by {{ cruise.consultant.name }}</span>
               {% endif %}
             </div>
 
             <div class="flight-detail">
               <i class="bi bi-calendar"></i>
-              <span>{{ booking.start_time.strftime('%A %d %b %Y')|replace(' 0', ' ') }}</span>
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-clock"></i>
               <span>
-                {{ booking.start_time.strftime('%H:%M') }} -
-                {{ booking.end_time.strftime('%H:%M') }}
-                {% if booking.end_time.date() != booking.start_time.date() %}
-                  (ends {{ booking.end_time.strftime('%d %b %Y')|replace(' 0', ' ') }})
-                {% endif %}
+                {{ cruise.start_date.strftime('%a %d %b %Y')|replace(' 0', ' ') }} -
+                {{ cruise.end_date.strftime('%a %d %b %Y')|replace(' 0', ' ') }}
               </span>
             </div>
 
             <div class="flight-detail">
-              <i class="bi bi-geo-alt"></i>
-              <span>{{ booking.location }}</span>
+              <i class="bi bi-clock"></i>
+              <span>{{ cruise.start_date.strftime('%H:%M') }} - {{ cruise.end_date.strftime('%H:%M') }}</span>
             </div>
 
-            {% if booking.address %}
-              <div class="flight-detail">
-                <i class="bi bi-signpost"></i>
-                <span>{{ booking.address }}</span>
-              </div>
-            {% endif %}
+            <div class="flight-detail">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>
+                Board: {{ cruise.boarding_location }}{% if cruise.boarding_address %} — {{ cruise.boarding_address }}{% endif %}
+              </span>
+            </div>
+
+            <div class="flight-detail">
+              <i class="bi bi-box-arrow-in-right"></i>
+              <span>
+                Drop-off: {{ cruise.drop_off_location }}{% if cruise.drop_off_address %} — {{ cruise.drop_off_address }}{% endif %}
+              </span>
+            </div>
 
             <div class="flight-detail">
               <i class="bi bi-tag"></i>
-              <span>${{ '%.2f'|format(booking.cost) }}</span>
+              <span>${{ '%.2f'|format(cruise.cost) }}</span>
             </div>
 
             <div class="text-end mt-3" style="position: relative">
@@ -128,7 +132,7 @@
                 <i class="bi bi-three-dots-vertical"></i>
               </button>
               <div class="accom-menu">
-                <a href="#" class="accom-menu-item">View booking details</a>
+                <a href="#" class="accom-menu-item">View cruise details</a>
                 <a href="#" class="accom-menu-item">Contact agent</a>
               </div>
             </div>
@@ -136,8 +140,8 @@
         {% endfor %}
       {% else %}
         <div class="booking-empty-state">
-          <h3>No other bookings</h3>
-          <p>Other bookings added to this trip will appear here.</p>
+          <h3>No cruises booked</h3>
+          <p>Cruises added to this trip will appear here.</p>
         </div>
       {% endif %}
     </main>
