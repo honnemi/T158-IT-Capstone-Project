@@ -138,8 +138,8 @@ class Activity(db.Model):
 
     updated_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=datetime.now,
+        onupdate=datetime.now
     )
 
 
@@ -168,8 +168,8 @@ class Booking(db.Model):
 
     updated_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=datetime.now,
+        onupdate=datetime.now
     )
 
     @declared_attr
@@ -294,6 +294,6 @@ class Budget(db.Model):
 
     updated_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=datetime.now,
+        onupdate=datetime.now
     )

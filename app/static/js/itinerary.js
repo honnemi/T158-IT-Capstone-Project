@@ -1,11 +1,10 @@
-// Daily navigation
 const itineraryPage = document.querySelector("#itinerary-page");
-
 const previousDayButton = document.querySelector("#previous-day");
 const nextDayButton = document.querySelector("#next-day");
 const nativeDate = document.querySelector("#nativeDate");
 
 if (itineraryPage) {
+
     const currentDay = parseInt(
         itineraryPage.dataset.currentDay,
         10
@@ -20,223 +19,527 @@ if (itineraryPage) {
         itineraryPage.dataset.itineraryUrl;
 
     if (previousDayButton) {
+
         previousDayButton.addEventListener("click", () => {
+
             if (currentDay > 1) {
+
                 window.location.href =
-                    itineraryUrl + "?day=" + (currentDay - 1);
+                    itineraryUrl +
+                    "?day=" +
+                    (currentDay - 1);
+
             }
+
         });
+
     }
 
     if (nextDayButton) {
+
         nextDayButton.addEventListener("click", () => {
+
             if (currentDay < maxDay) {
+
                 window.location.href =
-                    itineraryUrl + "?day=" + (currentDay + 1);
+                    itineraryUrl +
+                    "?day=" +
+                    (currentDay + 1);
+
             }
+
         });
+
     }
 
     if (nativeDate) {
+
         nativeDate.addEventListener("change", () => {
+
             if (nativeDate.value) {
+
                 window.location.href =
-                    itineraryUrl + "?date=" + nativeDate.value;
+                    itineraryUrl +
+                    "?date=" +
+                    nativeDate.value;
+
             }
+
         });
+
     }
+
 }
 
-// Weekly navigation
-const previousWeekButton = document.querySelector("#previous-week");
-const nextWeekButton = document.querySelector("#next-week");
-const weekCounter = document.querySelector("#week-counter");
-const weekDate = document.querySelector("#week-dates");
+const previousWeekButton =
+    document.querySelector("#previous-week");
+
+const nextWeekButton =
+    document.querySelector("#next-week");
+
+const weekCounter =
+    document.querySelector("#week-counter");
+
+const weekDate =
+    document.querySelector("#week-date");
 
 let currentWeek = 1;
-let maxWeek = 2;
+const maxWeek = 2;
 
 function formatDate(date) {
+
     return date.toLocaleDateString("en-GB", {
         day: "numeric",
         month: "short",
         year: "numeric"
     });
+
 }
 
 function updateWeek() {
+
     if (!itineraryPage) {
         return;
     }
 
-    const startDateString = itineraryPage.dataset.startDate;
+    const startDateString =
+        itineraryPage.dataset.startDate;
 
     if (!startDateString) {
         return;
     }
 
-    const startDate = new Date(startDateString + "T00:00:00");
+    const startDate =
+        new Date(startDateString + "T00:00:00");
 
-    const weekStart = new Date(startDate);
+    const weekStart =
+        new Date(startDate);
 
     weekStart.setDate(
-        startDate.getDate() + (currentWeek - 1) * 7
+        weekStart.getDate() +
+        ((currentWeek - 1) * 7)
     );
 
-    const weekEnd = new Date(weekStart);
+    const weekEnd =
+        new Date(weekStart);
 
     weekEnd.setDate(
-        weekStart.getDate() + 6
+        weekEnd.getDate() + 6
     );
 
     if (weekCounter) {
-        weekCounter.textContent = `Week ${currentWeek}`;
+
+        weekCounter.textContent =
+            `Week ${currentWeek}`;
+
     }
 
     if (weekDate) {
+
         weekDate.textContent =
             `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+
     }
+
+    if (previousWeekButton) {
+
+        previousWeekButton.disabled =
+            currentWeek <= 1;
+
+    }
+
+    if (nextWeekButton) {
+
+        nextWeekButton.disabled =
+            currentWeek >= maxWeek;
+
+    }
+
 }
 
 if (previousWeekButton) {
-    previousWeekButton.addEventListener("click", () => {
-        if (currentWeek > 1) {
-            currentWeek--;
-            updateWeek();
+
+    previousWeekButton.addEventListener(
+        "click",
+        () => {
+
+            if (currentWeek > 1) {
+
+                currentWeek--;
+
+                updateWeek();
+
+            }
+
         }
-    });
+    );
+
 }
 
 if (nextWeekButton) {
-    nextWeekButton.addEventListener("click", () => {
-        if (currentWeek < maxWeek) {
-            currentWeek++;
-            updateWeek();
+
+    nextWeekButton.addEventListener(
+        "click",
+        () => {
+
+            if (currentWeek < maxWeek) {
+
+                currentWeek++;
+
+                updateWeek();
+
+            }
+
         }
-    });
+    );
+
 }
 
-// Details modal update
-const detailsActivityName = document.querySelector("#detailsModalTitle");
-const detailsStartTime = document.querySelector("#detailsStartTime");
-const detailsEndTime = document.querySelector("#detailsEndTime");
-const detailsLocation = document.querySelector("#detailsLocation");
-const detailsAddress = document.querySelector("#detailsAddress");
-const detailsCreatedBy = document.querySelector("#detailsCreatedBy");
-const detailsNotes = document.querySelector("#detailsNotes");
+updateWeek();
 
-const noteLinks = document.querySelectorAll(".view-details");
+const detailsActivityName =
+    document.querySelector("#detailsModalTitle");
+
+const detailsStartTime =
+    document.querySelector("#detailsStartTime");
+
+const detailsEndTime =
+    document.querySelector("#detailsEndTime");
+
+const detailsLocation =
+    document.querySelector("#detailsLocation");
+
+const detailsAddress =
+    document.querySelector("#detailsAddress");
+
+const detailsCreatedBy =
+    document.querySelector("#detailsCreatedBy");
+
+const detailsUpdatedBy =
+    document.querySelector("#detailsUpdatedBy");
+
+const detailsUpdatedAt =
+    document.querySelector("#detailsUpdatedAt");
+
+const detailsNotes =
+    document.querySelector("#detailsNotes");
+
+const noteLinks =
+    document.querySelectorAll(".view-details");
 
 noteLinks.forEach(link => {
+
     link.addEventListener("click", () => {
 
-        const name = link.dataset.name;
-        const startTime = link.dataset.startTime;
-        const endTime = link.dataset.endTime;
-        const location = link.dataset.location;
-        const address = link.dataset.address;
-        const createdBy = link.dataset.createdBy;
-        const notes = link.dataset.notes;
+        const name =
+            link.dataset.name;
 
+        const startTime =
+            link.dataset.startTime;
+
+        const endTime =
+            link.dataset.endTime;
+
+        const location =
+            link.dataset.location;
+
+        const address =
+            link.dataset.address;
+
+        const createdBy =
+            link.dataset.createdBy;
+
+        const notes =
+            link.dataset.notes;
+
+        const updatedBy =
+            link.dataset.updatedBy;
+
+        const updatedAt =
+            link.dataset.updatedAt;
 
         if (detailsActivityName) {
-            detailsActivityName.textContent = name;
+
+            detailsActivityName.textContent =
+                name || "Details";
+
         }
 
         if (detailsStartTime) {
-            detailsStartTime.textContent = startTime || "-";
+
+            detailsStartTime.textContent =
+                startTime || "-";
+
         }
 
         if (detailsEndTime) {
-            detailsEndTime.textContent = endTime || "-";
+
+            detailsEndTime.textContent =
+                endTime || "-";
+
         }
 
         if (detailsLocation) {
-            detailsLocation.textContent = location || "-";
+
+            detailsLocation.textContent =
+                location || "-";
+
         }
 
         if (detailsAddress) {
-            detailsAddress.textContent = address || "-";
+
+            detailsAddress.textContent =
+                address || "-";
+
         }
 
         if (detailsCreatedBy) {
-            detailsCreatedBy.textContent = createdBy || "-";
+
+            detailsCreatedBy.textContent =
+                createdBy || "-";
+
+        }
+
+        if (detailsUpdatedBy) {
+
+            detailsUpdatedBy.textContent =
+                updatedBy || "-";
+
+        }
+
+        if (detailsUpdatedAt) {
+
+            detailsUpdatedAt.textContent =
+                updatedAt || "-";
+
         }
 
         if (detailsNotes) {
-            detailsNotes.textContent = notes || "No notes available.";
+
+            detailsNotes.textContent =
+                notes || "No notes available.";
+
         }
+
     });
+
 });
 
-// Delete activity modal
-const deleteButtons = document.querySelectorAll(".delete-activity-btn");
-const deleteForm = document.getElementById("deleteActivityForm");
-const deleteActivityName = document.getElementById("deleteActivityName");
-const deleteActivityDay = document.getElementById("deleteActivityDay");
 
-deleteButtons.forEach(button => {
+const deleteActivityButtons =
+    document.querySelectorAll(".delete-activity-btn");
+
+const deleteActivityForm =
+    document.querySelector("#deleteActivityForm");
+
+const deleteActivityName =
+    document.querySelector("#deleteActivityName");
+
+const deleteActivityDay =
+    document.querySelector("#deleteActivityDay");
+
+deleteActivityButtons.forEach(button => {
+
     button.addEventListener("click", () => {
 
-        const activityId = button.dataset.activityId;
-        const currentDay = button.dataset.currentDay;
-        const activityName = button.dataset.activityName;
+        const activityId =
+            button.dataset.activityId;
 
-        deleteForm.action = `/itinerary/delete/${activityId}`;
+        const activityName =
+            button.dataset.activityName;
 
-        deleteActivityDay.value = currentDay;
-        deleteActivityName.textContent = activityName;
+        const day =
+            button.dataset.currentDay;
+
+        if (deleteActivityForm) {
+
+            deleteActivityForm.action =
+                `/itinerary/delete/${activityId}`;
+
+        }
+
+        if (deleteActivityName) {
+
+            deleteActivityName.textContent =
+                activityName || "this activity";
+
+        }
+
+        if (deleteActivityDay) {
+
+            deleteActivityDay.value =
+                day || "";
+
+        }
+
     });
+
 });
 
-// Edit activity modal
-const editButtons = document.querySelectorAll(".edit-activity-btn");
 
-const editForm = document.querySelector("#editActivityForm");
-const editName = document.querySelector("#editActivityName");
-const editStartTime = document.querySelector("#editActivityStartTime");
-const editEndTime = document.querySelector("#editActivityEndTime");
-const editLocation = document.querySelector("#editActivityLocation");
-const editNotes = document.querySelector("#editActivityNotes");
-const editDay = document.querySelector("#editActivityDay");
+const editActivityButtons =
+    document.querySelectorAll(".edit-activity-btn");
 
-editButtons.forEach(button => {
-    button.addEventListener("click", async () => {
+const editActivityForm =
+    document.querySelector("#editActivityForm");
 
-        const activityId = button.dataset.activityId;
-        const currentLocation = button.dataset.location;
-        const currentAddress = button.dataset.address;
+const editActivityName =
+    document.querySelector("#editActivityName");
 
-        editForm.action = `/itinerary/edit/${activityId}`;
+const editActivityStartTime =
+    document.querySelector("#editActivityStartTime");
 
-        editName.value = button.dataset.activityName;
-        editStartTime.value = button.dataset.startTime;
-        editEndTime.value = button.dataset.endTime;
-        editNotes.value = button.dataset.notes;
-        editDay.value = button.dataset.currentDay;
+const editActivityEndTime =
+    document.querySelector("#editActivityEndTime");
 
-        document.getElementById("editLocation").value = currentLocation;
-        document.getElementById("editAddress").value = currentAddress;
+const editActivityNotes =
+    document.querySelector("#editActivityNotes");
 
-        await initLocationSearch(
-            "editActivityLocation",
-            currentLocation,
-            "editLocation",
-            "editAddress",
-            "editPlaceId"
-        );
+const editActivityDay =
+    document.querySelector("#editActivityDay");
+
+editActivityButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const activityId =
+            button.dataset.activityId;
+
+        const activityName =
+            button.dataset.activityName;
+
+        const startTime =
+            button.dataset.startTime;
+
+        const endTime =
+            button.dataset.endTime;
+
+        const currentLocation =
+            button.dataset.location || "";
+
+        const currentAddress =
+            button.dataset.address || "";
+
+        const notes =
+            button.dataset.notes || "";
+
+        const currentDay =
+            button.dataset.currentDay;
+
+        if (editActivityForm) {
+
+            editActivityForm.action =
+                `/itinerary/edit/${activityId}`;
+
+        }
+
+        if (editActivityName) {
+
+            editActivityName.value =
+                activityName || "";
+
+        }
+
+        if (editActivityStartTime) {
+
+            editActivityStartTime.value =
+                startTime || "";
+
+        }
+
+        if (editActivityEndTime) {
+
+            editActivityEndTime.value =
+                endTime || "";
+
+        }
+
+        if (editActivityNotes) {
+
+            editActivityNotes.value =
+                notes || "";
+
+        }
+
+        if (editActivityDay) {
+
+            editActivityDay.value =
+                currentDay || "";
+
+        }
+
+        const editLocation =
+            document.querySelector("#editLocation");
+
+        const editAddress =
+            document.querySelector("#editAddress");
+
+        if (editLocation) {
+
+            editLocation.value =
+                currentLocation;
+
+        }
+
+        if (editAddress) {
+
+            editAddress.value =
+                currentAddress;
+
+        }
+
+        // Initialise Google Places search
+        if (
+            typeof google !== "undefined" &&
+            google.maps &&
+            google.maps.importLibrary
+        ) {
+
+            initLocationSearch(
+                "editActivityLocation",
+                currentLocation,
+                "editLocation",
+                "editAddress",
+                "editPlaceId"
+            );
+
+        }
+
     });
+
 });
 
-// Add activity modal
-const addDay = document.querySelector("#addActivityDay");
+const addActivityModal =
+    document.querySelector("#addActivityModal");
 
-if (addDay && itineraryPage) {
-    addDay.value = itineraryPage.dataset.currentDay;
+if (addActivityModal) {
+
+    addActivityModal.addEventListener(
+        "shown.bs.modal",
+        () => {
+
+            if (
+                typeof google !== "undefined" &&
+                google.maps &&
+                google.maps.importLibrary
+            ) {
+
+                initLocationSearch(
+                    "addActivityLocation",
+                    "",
+                    "addLocation",
+                    "addAddress",
+                    "addPlaceId"
+                );
+
+            }
+
+        }
+    );
+
 }
 
-// Location search
+
 async function initLocationSearch(
     element_id,
     current_location,
@@ -244,70 +547,126 @@ async function initLocationSearch(
     hiddenAddressId,
     hiddenPlaceId
 ) {
-    const { PlaceAutocompleteElement } =
-        await google.maps.importLibrary("places");
 
-    const container = document.getElementById(element_id);
+    try {
 
-    if (!container) return;
+        const {
+            PlaceAutocompleteElement
+        } = await google.maps.importLibrary("places");
 
-    container.innerHTML = "";
+        const container =
+            document.getElementById(element_id);
 
-    const autocomplete = new PlaceAutocompleteElement();
+        if (!container) {
+            return;
+        }
 
-    autocomplete.placeholder = "Search location name";
+        container.innerHTML = "";
 
-    if (current_location) {
-        autocomplete.value = current_location;
+        const autocomplete =
+            new PlaceAutocompleteElement();
+
+        autocomplete.placeholder =
+            "Search location name";
+
+        if (current_location) {
+
+            autocomplete.value =
+                current_location;
+
+        }
+
+        container.appendChild(
+            autocomplete
+        );
+
+        autocomplete.addEventListener(
+            "gmp-select",
+            async ({ placePrediction }) => {
+
+                try {
+
+                    const place =
+                        placePrediction.toPlace();
+
+                    await place.fetchFields({
+                        fields: [
+                            "displayName",
+                            "formattedAddress",
+                            "location",
+                            "id"
+                        ]
+                    });
+
+                    const locationInput =
+                        document.getElementById(
+                            hiddenLocationId
+                        );
+
+                    const addressInput =
+                        document.getElementById(
+                            hiddenAddressId
+                        );
+
+                    const placeIdInput =
+                        document.getElementById(
+                            hiddenPlaceId
+                        );
+
+                    if (locationInput) {
+
+                        locationInput.value =
+                            place.displayName || "";
+
+                    }
+
+                    if (addressInput) {
+
+                        addressInput.value =
+                            place.formattedAddress || "";
+
+                    }
+
+                    if (placeIdInput) {
+
+                        placeIdInput.value =
+                            place.id || "";
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Error fetching place details:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error initialising Google Places:",
+            error
+        );
+
     }
 
-    container.appendChild(autocomplete);
-
-    autocomplete.addEventListener(
-        "gmp-select",
-        async ({ placePrediction }) => {
-
-            const place = placePrediction.toPlace();
-
-            await place.fetchFields({
-                fields: [
-                    "displayName",
-                    "formattedAddress",
-                    "location",
-                    "id"
-                ]
-            });
-
-            // Location name
-            document.getElementById(hiddenLocationId).value =
-                place.displayName;
-
-            // Address
-            document.getElementById(hiddenAddressId).value =
-                place.formattedAddress;
-
-            // Google Place ID
-            document.getElementById(hiddenPlaceId).value =
-                place.id;
-        }
-    );
 }
 
-initLocationSearch(
-    "addActivityLocation",
-    "",
-    "addLocation",
-    "addAddress",
-    "addPlaceId"
-);
+const timeline =
+    document.querySelector("#itinerary-timeline");
 
-// Drag and drop activities
-const timeline = document.querySelector("#itinerary-timeline");
-const unassignedPanel = document.querySelector("#unassigned-activities");
+const unassignedActivities =
+    document.querySelector("#unassigned-activities");
 
-const draggableActivities = document.querySelectorAll(
-    ".activity-card, .unassigned-activity"
-);
+const draggableActivities =
+    document.querySelectorAll(
+        ".activity-card, .unassigned-activity"
+    );
 
 let draggedActivityId = null;
 let draggedCard = null;
@@ -315,123 +674,157 @@ let dragOffsetY = 0;
 let draggedDurationMinutes = 60;
 let preview = null;
 
+function timeToMinutes(time) {
 
-// Convert minutes to HH:MM
-function minutesToTime(totalMinutes) {
-
-    totalMinutes = Math.max(
-        0,
-        Math.min(totalMinutes, 1440)
-    );
-
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
-}
-
-
-// Get activity duration
-function getDuration(card) {
-
-    const start = card.dataset.startTime;
-    const end = card.dataset.endTime;
-
-    if (start && end) {
-
-        const [startHour, startMinute] =
-            start.split(":").map(Number);
-
-        const [endHour, endMinute] =
-            end.split(":").map(Number);
-
-        let startMinutes =
-            startHour * 60 + startMinute;
-
-        let endMinutes =
-            endHour * 60 + endMinute;
-
-        if (endMinutes <= startMinutes) {
-            endMinutes += 1440;
-        }
-
-        return endMinutes - startMinutes;
+    if (!time) {
+        return 60;
     }
 
-    return 60;
+    const parts =
+        time.split(":");
+
+    const hours =
+        parseInt(parts[0], 10);
+
+    const minutes =
+        parseInt(parts[1], 10);
+
+    if (
+        Number.isNaN(hours) ||
+        Number.isNaN(minutes)
+    ) {
+
+        return 60;
+
+    }
+
+    return (
+        hours * 60 +
+        minutes
+    );
+
 }
 
 
-// Drag start
-draggableActivities.forEach(card => {
+function minutesToTime(totalMinutes) {
 
-    card.addEventListener("dragstart", event => {
-
-        draggedActivityId =
-            card.dataset.activityId;
-
-        draggedCard = card;
-
-        // Get mouse position inside card
-        const cardRect =
-            card.getBoundingClientRect();
-
-        dragOffsetY =
-            event.clientY - cardRect.top;
-
-        draggedDurationMinutes =
-            getDuration(card);
-
-        event.dataTransfer.setData(
-            "activityId",
-            draggedActivityId
+    totalMinutes =
+        Math.max(
+            0,
+            Math.min(
+                1439,
+                totalMinutes
+            )
         );
 
-        event.dataTransfer.effectAllowed =
-            "move";
+    const hours =
+        Math.floor(
+            totalMinutes / 60
+        );
 
-        card.classList.add("dragging");
+    const minutes =
+        totalMinutes % 60;
+
+    return (
+        String(hours).padStart(2, "0") +
+        ":" +
+        String(minutes).padStart(2, "0")
+    );
+
+}
 
 
-        // Create preview
-        if (timeline) {
+function getDuration(card) {
 
-            preview =
-                document.createElement("div");
+    const start =
+        card.dataset.startTime;
 
-            preview.className =
-                "drop-preview";
+    const end =
+        card.dataset.endTime;
 
-            const timelineHeight =
-                timeline.getBoundingClientRect().height;
+    if (!start || !end) {
+        return 60;
+    }
 
-            const heightPercent =
-                (draggedDurationMinutes / 1440) * 100;
+    const startMinutes =
+        timeToMinutes(start);
 
-            preview.style.height =
-                `${heightPercent}%`;
+    const endMinutes =
+        timeToMinutes(end);
 
-            timeline.appendChild(preview);
+    let duration =
+        endMinutes - startMinutes;
+
+    if (duration <= 0) {
+        duration = 60;
+    }
+
+    return duration;
+
+}
+
+draggableActivities.forEach(card => {
+
+    card.addEventListener(
+        "dragstart",
+        event => {
+
+            draggedActivityId =
+                card.dataset.activityId;
+
+            draggedCard =
+                card;
+
+            draggedDurationMinutes =
+                getDuration(card);
+
+            const rect =
+                card.getBoundingClientRect();
+
+            dragOffsetY =
+                event.clientY -
+                rect.top;
+
+            card.classList.add(
+                "opacity-50"
+            );
+
+            event.dataTransfer.effectAllowed =
+                "move";
+
+            event.dataTransfer.setData(
+                "text/plain",
+                draggedActivityId
+            );
+
         }
-    });
+    );
 
 
-    card.addEventListener("dragend", () => {
+    card.addEventListener(
+        "dragend",
+        () => {
 
-        card.classList.remove("dragging");
+            card.classList.remove(
+                "opacity-50"
+            );
 
-        if (preview) {
-            preview.remove();
-            preview = null;
+            if (preview) {
+
+                preview.remove();
+
+                preview = null;
+
+            }
+
+            draggedActivityId = null;
+            draggedCard = null;
+
         }
+    );
 
-        draggedActivityId = null;
-        draggedCard = null;
-    });
 });
 
-
-// Calculate drop position
 function calculateDropMinutes(event) {
 
     if (!timeline) {
@@ -441,153 +834,55 @@ function calculateDropMinutes(event) {
     const rect =
         timeline.getBoundingClientRect();
 
-    // Account for where the card was grabbed
-    const y =
+    const timelineHeight =
+        timeline.scrollHeight;
+
+    let y =
         event.clientY -
-        rect.top -
+        rect.top +
+        timeline.scrollTop -
         dragOffsetY;
 
-    const minutesPerPixel =
-        1440 / rect.height;
-
-    let minutes =
-        y * minutesPerPixel;
-
-    // Snap to 15 minutes
-    minutes =
-        Math.round(minutes / 15) * 15;
-
-    // Keep activity inside the day
-    minutes =
+    y =
         Math.max(
             0,
             Math.min(
-                minutes,
-                1440 - draggedDurationMinutes
+                timelineHeight,
+                y
             )
         );
 
-    return minutes;
+    const minutesPerPixel =
+        1440 / timelineHeight;
+
+    let minutes =
+        Math.round(
+            y * minutesPerPixel
+        );
+
+    // Snap to 15-minute intervals
+    minutes =
+        Math.round(
+            minutes / 15
+        ) * 15;
+
+    // Keep activity within the day
+    minutes =
+        Math.min(
+            minutes,
+            1440 - draggedDurationMinutes
+        );
+
+    return Math.max(
+        0,
+        minutes
+    );
+
 }
 
-
-// Update preview
 if (timeline) {
 
-    timeline.addEventListener("dragover", event => {
-
-        event.preventDefault();
-
-        event.dataTransfer.dropEffect =
-            "move";
-
-
-        if (!preview) {
-            return;
-        }
-
-
-        const minutes =
-            calculateDropMinutes(event);
-
-        const topPercent =
-            (minutes / 1440) * 100;
-
-
-        preview.style.top =
-            `${topPercent}%`;
-    });
-
-
-    // Drop into timeline
-    timeline.addEventListener("drop", async event => {
-
-        event.preventDefault();
-
-        const activityId =
-            event.dataTransfer.getData("activityId");
-
-        if (!activityId) {
-            return;
-        }
-
-
-        const newStartMinutes =
-            calculateDropMinutes(event);
-
-        const newEndMinutes =
-            newStartMinutes +
-            draggedDurationMinutes;
-
-
-        const startTime =
-            minutesToTime(newStartMinutes);
-
-        const endTime =
-            minutesToTime(newEndMinutes);
-
-
-        const selectedDate =
-            document.querySelector(
-                "#nativeDate"
-            ).value;
-
-
-        const formData =
-            new FormData();
-
-        formData.append(
-            "date",
-            selectedDate
-        );
-
-        formData.append(
-            "start_time",
-            startTime
-        );
-
-        formData.append(
-            "end_time",
-            endTime
-        );
-
-
-        const response =
-            await fetch(
-                `/itinerary/move/${activityId}`,
-                {
-                    method: "POST",
-                    body: formData
-                }
-            );
-
-
-        if (response.ok) {
-
-            // Remember scroll position
-            const timelineContainer =
-                document.querySelector(
-                    ".overflow-auto"
-                );
-
-            if (timelineContainer) {
-
-                sessionStorage.setItem(
-                    "timelineScroll",
-                    timelineContainer.scrollTop
-                );
-            }
-
-            window.location.reload();
-        }
-    });
-}
-
-
-// Drop into side panel
-if (unassignedPanel) {
-
-    unassignedPanel.addEventListener(
+    timeline.addEventListener(
         "dragover",
         event => {
 
@@ -595,86 +890,250 @@ if (unassignedPanel) {
 
             event.dataTransfer.dropEffect =
                 "move";
+
+            if (!draggedCard) {
+                return;
+            }
+
+            const dropMinutes =
+                calculateDropMinutes(event);
+
+            const timelineHeight =
+                timeline.scrollHeight;
+
+            const top =
+                (
+                    dropMinutes / 1440
+                ) * timelineHeight;
+
+            const height =
+                (
+                    draggedDurationMinutes /
+                    1440
+                ) * timelineHeight;
+
+            if (!preview) {
+
+                preview =
+                    document.createElement(
+                        "div"
+                    );
+
+                preview.className =
+                    "position-absolute border border-primary rounded-3 bg-primary bg-opacity-10";
+
+                preview.style.pointerEvents =
+                    "none";
+
+                preview.style.left =
+                    "0";
+
+                preview.style.right =
+                    "0";
+
+                preview.style.zIndex =
+                    "5";
+
+                timeline.appendChild(
+                    preview
+                );
+
+            }
+
+            preview.style.top =
+                `${top}px`;
+
+            preview.style.height =
+                `${Math.max(height, 30)}px`;
+
         }
     );
 
 
-    unassignedPanel.addEventListener(
+    timeline.addEventListener(
         "drop",
         async event => {
 
             event.preventDefault();
 
-            const activityId =
-                event.dataTransfer.getData(
-                    "activityId"
-                );
-
-            if (!activityId) {
+            if (!draggedActivityId) {
                 return;
             }
 
+            const startMinutes =
+                calculateDropMinutes(event);
 
-            const formData =
-                new FormData();
-
-            formData.append(
-                "date",
-                ""
-            );
-
-            formData.append(
-                "start_time",
-                ""
-            );
-
-            formData.append(
-                "end_time",
-                ""
-            );
-
-
-            const response =
-                await fetch(
-                    `/itinerary/move/${activityId}`,
-                    {
-                        method: "POST",
-                        body: formData
-                    }
+            const endMinutes =
+                Math.min(
+                    1440,
+                    startMinutes +
+                    draggedDurationMinutes
                 );
 
+            const startTime =
+                minutesToTime(
+                    startMinutes
+                );
 
-            if (response.ok) {
+            const endTime =
+                minutesToTime(
+                    endMinutes
+                );
+
+            const date =
+                nativeDate
+                    ? nativeDate.value
+                    : "";
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/itinerary/move/${draggedActivityId}`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify({
+                                date: date,
+                                start_time: startTime,
+                                end_time: endTime
+                            })
+                        }
+                    );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
+
+                }
+
+                sessionStorage.setItem(
+                    "itineraryScrollTop",
+                    document.querySelector(
+                        ".overflow-auto"
+                    )?.scrollTop || 0
+                );
+
                 window.location.reload();
+
+            } catch (error) {
+
+                console.error(
+                    "Error moving activity:",
+                    error
+                );
+
             }
+
         }
     );
+
 }
 
+if (unassignedActivities) {
 
-// Restore scroll position so scroll doesn't snap to the top on reload
-window.addEventListener("load", () => {
+    unassignedActivities.addEventListener(
+        "dragover",
+        event => {
 
-    const savedScroll =
-        sessionStorage.getItem(
-            "timelineScroll"
-        );
+            event.preventDefault();
 
-    const timelineContainer =
-        document.querySelector(
-            ".overflow-auto"
-        );
+            event.dataTransfer.dropEffect =
+                "move";
 
-    if (
-        savedScroll !== null &&
-        timelineContainer
-    ) {
+        }
+    );
 
-        timelineContainer.scrollTop =
-            parseInt(savedScroll, 10);
+
+    unassignedActivities.addEventListener(
+        "drop",
+        async event => {
+
+            event.preventDefault();
+
+            if (!draggedActivityId) {
+                return;
+            }
+
+            try {
+
+                const response =
+                    await fetch(
+                        `/itinerary/move/${draggedActivityId}`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify({
+                                date: null,
+                                start_time: null,
+                                end_time: null
+                            })
+                        }
+                    );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
+
+                }
+
+                window.location.reload();
+
+            } catch (error) {
+
+                console.error(
+                    "Error unassigning activity:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+}
+
+window.addEventListener(
+    "load",
+    () => {
+
+        const savedScroll =
+            sessionStorage.getItem(
+                "itineraryScrollTop"
+            );
+
+        if (!savedScroll) {
+            return;
+        }
+
+        const scrollContainer =
+            document.querySelector(
+                ".overflow-auto"
+            );
+
+        if (scrollContainer) {
+
+            scrollContainer.scrollTop =
+                parseInt(
+                    savedScroll,
+                    10
+                );
+
+        }
 
         sessionStorage.removeItem(
-            "timelineScroll"
+            "itineraryScrollTop"
         );
+
     }
-});
+);
