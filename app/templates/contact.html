@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Contact Us
+{% endblock %}
+
+
+{% block active_tab %}
+
+<!--
+  The Contact page is not one of the main trip tabs,
+  so none of these tabs are active.
+-->
+
+{% if trip %}
+
+<a
+  href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}"
+  class="nav-tab"
+>
+  Itinerary
+</a>
+
+<a
+  href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}"
+  class="nav-tab"
+>
+  Bookings
+</a>
+
+<a
+  href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}"
+  class="nav-tab"
+>
+  Inspo
+</a>
+
+<a
+  href="{{ url_for('budget.show_budget', trip_id=trip.id) }}"
+  class="nav-tab"
+>
+  Budget
+</a>
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+
+  <!-- ======================================== -->
+  <!-- PAGE HEADER -->
+  <!-- ======================================== -->
+
+  <div class="mb-5">
+
+    <h1 class="fw-bold">
+      Contact Us
+    </h1>
+
+    <p class="text-muted">
+      Get in touch with your travel consultants.
+    </p>
+
+  </div>
+
+
+  <!-- ======================================== -->
+  <!-- CONTACT MY AGENTS -->
+  <!-- ======================================== -->
+
+  <section class="mb-5">
+
+    <h2 class="fw-bold mb-4">
+      Contact my agents
+    </h2>
+
+
+    {% if my_agents %}
+
+    <div class="row g-4">
+
+      {% for agent in my_agents %}
+
+      <div class="col-md-6 col-lg-4">
+
+        <div class="card h-100 shadow-sm border-0">
+
+          <div class="card-body p-4">
+
+            <!-- ======================================== -->
+            <!-- AGENT HEADER -->
+            <!-- ======================================== -->
+
+            <div class="d-flex align-items-center mb-4">
+
+              <div
+                class="
+                  rounded-circle
+                  bg-light
+                  d-flex
+                  align-items-center
+                  justify-content-center
+                  me-3
+                "
+                style="width: 55px; height: 55px;"
+              >
+
+                <i
+                  class="bi bi-person-fill"
+                  style="font-size: 1.8rem;"
+                ></i>
+
+              </div>
+
+
+              <div>
+
+                <h4 class="mb-1">
+                  {{ agent.name }}
+                </h4>
+
+                <span class="text-muted">
+                  Your travel consultant
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- EMAIL -->
+            <!-- ======================================== -->
+
+            <div class="d-flex align-items-center mb-4">
+
+              <i class="bi bi-envelope-fill me-3"></i>
+
+              <a
+                href="mailto:{{ agent.email }}"
+                class="text-decoration-none text-dark"
+              >
+                {{ agent.email }}
+              </a>
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- CONTACT BUTTON -->
+            <!-- ======================================== -->
+
+            <a
+              href="mailto:{{ agent.email }}"
+              class="btn btn-dark w-100"
+            >
+
+              <i class="bi bi-envelope me-2"></i>
+
+              Contact agent
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- No assigned agents -->
+
+    <div class="card border-0 shadow-sm">
+
+      <div class="card-body p-4">
+
+        <p class="text-muted mb-0">
+          You currently have no travel agents assigned to your trips.
+        </p>
+
+      </div>
+
+    </div>
+
+    {% endif %}
+
+  </section>
+
+
+  <!-- ======================================== -->
+  <!-- OTHER AGENTS -->
+  <!-- ======================================== -->
+
+  <section>
+
+    <h2 class="fw-bold mb-4">
+      Other agents
+    </h2>
+
+
+    {% if other_agents %}
+
+    <div class="row g-4">
+
+      {% for agent in other_agents %}
+
+      <div class="col-md-6 col-lg-4">
+
+        <div class="card h-100 shadow-sm border-0">
+
+          <div class="card-body p-4">
+
+            <!-- ======================================== -->
+            <!-- AGENT HEADER -->
+            <!-- ======================================== -->
+
+            <div class="d-flex align-items-center mb-4">
+
+              <div
+                class="
+                  rounded-circle
+                  bg-light
+                  d-flex
+                  align-items-center
+                  justify-content-center
+                  me-3
+                "
+                style="width: 55px; height: 55px;"
+              >
+
+                <i
+                  class="bi bi-person-fill"
+                  style="font-size: 1.8rem;"
+                ></i>
+
+              </div>
+
+
+              <div>
+
+                <h4 class="mb-1">
+                  {{ agent.name }}
+                </h4>
+
+                <span class="text-muted">
+                  Travel consultant
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- EMAIL -->
+            <!-- ======================================== -->
+
+            <div class="d-flex align-items-center mb-4">
+
+              <i class="bi bi-envelope-fill me-3"></i>
+
+              <a
+                href="mailto:{{ agent.email }}"
+                class="text-decoration-none text-dark"
+              >
+                {{ agent.email }}
+              </a>
+
+            </div>
+
+
+            <!-- ======================================== -->
+            <!-- CONTACT BUTTON -->
+            <!-- ======================================== -->
+
+            <a
+              href="mailto:{{ agent.email }}"
+              class="btn btn-outline-dark w-100"
+            >
+
+              <i class="bi bi-envelope me-2"></i>
+
+              Contact agent
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- No other agents -->
+
+    <div class="card border-0 shadow-sm">
+
+      <div class="card-body p-4">
+
+        <p class="text-muted mb-0">
+          There are currently no other travel agents available.
+        </p>
+
+      </div>
+
+    </div>
+
+    {% endif %}
+
+  </section>
+
+</div>
+
+{% endblock %}
