@@ -186,8 +186,8 @@ def show_itinerary_overview(trip_id):
             "notes": activity.notes, 
             "created_by": activity.created_by_user.name,
             "type": "activity",
-            "updated_at": activity.updated_by_user.name,
-            "updated_by": activity.updated_at 
+            "updated_at": activity.updated_at,
+            "updated_by": activity.updated_by_user.name if activity.updated_by_user else None
         })
 
     # Flights
@@ -202,8 +202,8 @@ def show_itinerary_overview(trip_id):
             "address": flight.departure_address, 
             "type": "flight",
             "created_by": flight.consultant.name,
-            "updated_at": flight.updated_by_user.name,
-            "updated_by": flight.updated_at 
+            "updated_at": flight.updated_at,
+            "updated_by": flight.updated_by_user.name if flight.updated_by_user else None
         })
 
     # Accommodation
@@ -220,8 +220,8 @@ def show_itinerary_overview(trip_id):
             "address": accommodation.address, 
             "type": "accommodation",
             "created_by": accommodation.consultant.name,
-            "updated_at": accommodation.updated_by_user.name,
-            "updated_by": accommodation.updated_at 
+            "updated_at": accommodation.updated_at,
+            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
         })
 
         calendar_items.append({
@@ -235,8 +235,8 @@ def show_itinerary_overview(trip_id):
             "address": accommodation.address,
             "type": "accommodation",
             "created_by": accommodation.consultant.name,
-            "updated_at": accommodation.updated_by_user.name,
-            "updated_by": accommodation.updated_at 
+            "updated_at": accommodation.updated_at,
+            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
         })
 
     # Cruises
@@ -253,8 +253,8 @@ def show_itinerary_overview(trip_id):
                 "address": cruise.boarding_address,
                 "type": "cruise",
                 "created_by": cruise.consultant.name,
-                "updated_at": cruise.updated_by_user.name,
-                "updated_by": cruise.updated_at 
+                "updated_at": cruise.updated_at,
+                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
             })
 
             calendar_items.append({
@@ -262,14 +262,14 @@ def show_itinerary_overview(trip_id):
                 "date": cruise.end_date.date(),
                 "start_time": cruise.end_date.time(),
                 "end_time": (
-                    cruise.start_date + timedelta(minutes=30)
+                    cruise.end_date + timedelta(minutes=30)
                 ).time(),
                 "type": "cruise",
                 "location": cruise.drop_off_location, 
                 "address": cruise.drop_off_address,
                 "created_by": cruise.consultant.name,
-                "updated_at": cruise.updated_by_user.name,
-                "updated_by": cruise.updated_at
+                "updated_at": cruise.updated_at,
+                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
             })
 
     # Tours
@@ -284,8 +284,8 @@ def show_itinerary_overview(trip_id):
                 "address": tour.address,
                 "type": "tour",
                 "created_by": tour.consultant.name,
-                "updated_at": tour.updated_by_user.name,
-                "updated_by": tour.updated_at
+                "updated_at": tour.updated_at,
+                "updated_by": tour.updated_by_user.name if tour.updated_by_user else None
             })
 
     # Other bookings
@@ -298,8 +298,8 @@ def show_itinerary_overview(trip_id):
             "end_time": other.end_time.time(),
             "type": "other",
             "created_by": other.consultant.name,
-            "updated_at": other.updated_by_user.name,
-            "updated_by": other.updated_at
+            "updated_at": other.updated_at,
+            "updated_by": other.updated_by_user.name if other.updated_by_user else None
         })
 
     # Create Sunday -> Saturday dates
@@ -426,7 +426,9 @@ def show_itinerary_detailed(trip_id):
             "address": activity.address, 
             "notes": activity.notes, 
             "created_by": activity.created_by_user.name,
-            "type": "activity" 
+            "type": "activity",
+            "updated_at": activity.updated_at,
+            "updated_by": activity.updated_by_user.name if activity.updated_by_user else None
         })
 
     # Flights
@@ -440,7 +442,9 @@ def show_itinerary_detailed(trip_id):
             "location": flight.departure_airport, 
             "address": flight.departure_address, 
             "type": "flight",
-            "created_by": flight.consultant.name
+            "created_by": flight.consultant.name,
+            "updated_at": flight.updated_at,
+            "updated_by": flight.updated_by_user.name if flight.updated_by_user else None
         })
 
     # Accommodation
@@ -456,7 +460,9 @@ def show_itinerary_detailed(trip_id):
             "location": accommodation.location, 
             "address": accommodation.address, 
             "type": "accommodation",
-            "created_by": flight.consultant.name
+            "created_by": accommodation.consultant.name,
+            "updated_at": accommodation.updated_at,
+            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
         })
 
         calendar_items.append({
@@ -469,7 +475,9 @@ def show_itinerary_detailed(trip_id):
             "location": accommodation.location, 
             "address": accommodation.address,
             "type": "accommodation",
-            "created_by": flight.consultant.name
+            "created_by": accommodation.consultant.name,
+            "updated_at": accommodation.updated_at,
+            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
         })
 
     # Cruises
@@ -485,7 +493,9 @@ def show_itinerary_detailed(trip_id):
                 "location": cruise.boarding_location, 
                 "address": cruise.boarding_address,
                 "type": "cruise",
-                "created_by": cruise.consultant.name
+                "created_by": cruise.consultant.name,
+                "updated_at": cruise.updated_at,
+                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
             })
 
             calendar_items.append({
@@ -493,12 +503,14 @@ def show_itinerary_detailed(trip_id):
                 "date": cruise.end_date.date(),
                 "start_time": cruise.end_date.time(),
                 "end_time": (
-                    cruise.start_date + timedelta(minutes=30)
+                    cruise.end_date + timedelta(minutes=30)
                 ).time(),
                 "type": "cruise",
                 "location": cruise.drop_off_location, 
                 "address": cruise.drop_off_address,
-                "created_by": cruise.consultant.name
+                "created_by": cruise.consultant.name,
+                "updated_at": cruise.updated_at,
+                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
             })
 
     # Tours
@@ -512,7 +524,9 @@ def show_itinerary_detailed(trip_id):
                 "location": tour.location, 
                 "address": tour.address,
                 "type": "tour",
-                "created_by": tour.consultant.name
+                "created_by": tour.consultant.name,
+                "updated_at": tour.updated_at,
+                "updated_by": tour.updated_by_user.name if tour.updated_by_user else None
             })
 
     # Other bookings
@@ -524,7 +538,9 @@ def show_itinerary_detailed(trip_id):
             "start_time": other.start_time.time(),
             "end_time": other.end_time.time(),
             "type": "other",
-            "created_by": flight.consultant.name
+            "created_by": other.consultant.name,
+            "updated_at": other.updated_at,
+            "updated_by": other.updated_by_user.name if other.updated_by_user else None
         })
 
     # Only show activities for the selected day
@@ -694,7 +710,7 @@ def add_activity(trip_id):
         date=None,
         start_time=None,
         end_time=None,
-        created_by=current_user.id,
+        created_by=current_user.name,
     )
 
     db.session.add(activity)

@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block title %} Itinerary - Detailed {% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Itinerary - Detailed{% endblock %}
 
 {% block active_tab %}
 <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab active">Itinerary</a>
@@ -9,10 +11,10 @@
 
 {% block content %}
 <div class="container py-4 mt-3">
+
   <!-- Trip name -->
   <div class="row mb-4 text-center text-md-start">
     <div class="col-12">
-      <!--Back button-->
       <div class="d-flex flex-row align-items-center gap-4">
         <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}">
           <button
@@ -21,7 +23,8 @@
           >
             <i class="bi bi-caret-left-fill"></i>
           </button>
-        </a> 
+        </a>
+
         <h1 class="display-6 fw-bold">{{ trip.name }}</h1>
       </div>
     </div>
@@ -30,34 +33,39 @@
   <!-- Navigate between days -->
   <div class="row mb-4">
     <div class="col-12 d-flex justify-content-center">
-      <div
-        class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2"
-      >
+      <div class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2">
+
         <button
-          id="previous-day" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" 
+          id="previous-day"
+          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
           aria-label="Previous Day"
         >
           <i class="bi bi-caret-left-fill"></i>
         </button>
+
         <div class="d-flex flex-column text-center gap-2">
           <h5 id="day-counter">
-              Day {{ current_day }}
+            Day {{ current_day }}
           </h5>
+
           <input
-              type="date"
-              class="form-control"
-              id="nativeDate"
-              value="{{ selected_date.strftime('%Y-%m-%d') }}"
-              min="{{ trip.start_date.strftime('%Y-%m-%d') }}"
-              max="{{ trip.end_date.strftime('%Y-%m-%d') }}"
+            type="date"
+            class="form-control"
+            id="nativeDate"
+            value="{{ selected_date.strftime('%Y-%m-%d') }}"
+            min="{{ trip.start_date.strftime('%Y-%m-%d') }}"
+            max="{{ trip.end_date.strftime('%Y-%m-%d') }}"
           >
         </div>
+
         <button
-          id="next-day" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" 
+          id="next-day"
+          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
           aria-label="Next Day"
         >
           <i class="bi bi-caret-right-fill"></i>
         </button>
+
       </div>
     </div>
   </div>
@@ -70,15 +78,19 @@
     data-start-date="{{ trip.start_date.strftime('%Y-%m-%d') }}"
     data-itinerary-url="{{ url_for('itinerary.show_itinerary_detailed', trip_id=trip.id) }}"
   >
+
     <div class="row g-4 mb-4">
-      <!--Daily itinerary-->
+
+      <!-- Daily itinerary -->
       <div class="col-12 col-lg-8">
         <div
           class="border rounded p-3 p-md-4 text-muted text-center overflow-auto"
           style="min-height: 400px; height: 600px"
         >
+
           <div class="row m-0" style="height: 6000px">
-            <!--Times (y-axis)-->
+
+            <!-- Times -->
             <div
               class="col-auto text-end text-nowrap pe-3 text-muted border-end"
               style="width: 90px; height: 100%; font-size: 0.8rem;"
@@ -108,13 +120,19 @@
               <div style="height: 4.1667%;">10:00PM</div>
               <div style="height: 4.1667%;">11:00PM</div>
             </div>
-            <!--Activity cards-->
+
+            <!-- Activity cards -->
             <div id="itinerary-timeline" class="col position-relative py-2">
+
               {% for activity in calendar_items %}
+
               {% if activity.type == "activity" %}
+
               <div
-                class="card position-absolute text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-card activity-{{activity.type}}"
+                class="card position-absolute text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-card activity-{{ activity.type }}"
                 data-activity-id="{{ activity.id }}"
+                data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
+                data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
                 draggable="true"
                 style="
                   top: {{ activity.top_percent }}%;
@@ -124,10 +142,13 @@
                   z-index: 10;
                 "
               >
+
                 <div class="d-flex flex-row justify-content-between">
-                  <!--Activity name-->
-                  <div class="fw-bold small text-truncate">{{ activity.name }}</div>
-                  <!--Action menu-->
+
+                  <div class="fw-bold small text-truncate">
+                    {{ activity.name }}
+                  </div>
+
                   <div class="dropdown d-flex justify-content-end">
                     <button
                       class="btn btn-link link-light p-0 border-0 lh-1"
@@ -137,11 +158,12 @@
                       aria-expanded="false"
                       aria-label="Activity options"
                     >
-                    <i class="bi bi-three-dots-vertical"></i>
+                      <i class="bi bi-three-dots-vertical"></i>
                     </button>
+
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+
                       <li>
-                        <!--View details link-->
                         <a
                           class="dropdown-item d-flex align-items-center gap-2 view-details"
                           href="#"
@@ -150,22 +172,24 @@
                           data-name="{{ activity.name }}"
                           data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
                           data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
-                          data-location="{{ activity.location }}"
-                          data-address="{{ activity.address }}"
-                          data-created-by="{{ activity.created_by }}"
-                          data-notes="{{ activity.notes }}"
+                          data-location="{{ activity.location or '' }}"
+                          data-address="{{ activity.address or '' }}"
+                          data-created-by="{{ activity.created_by or '' }}"
+                          data-notes="{{ activity.notes or '' }}"
+                          data-updated-by="{{ activity.updated_by or '' }}"
+                          data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
                         </a>
-                        {% if activity.type == "activity" %}
-                        <!--Edit activity link-->
+                      </li>
+
+                      <li>
                         <a
                           class="dropdown-item d-flex align-items-center gap-2 edit-activity-btn"
                           href="#"
                           data-bs-toggle="modal"
                           data-bs-target="#editActivityModal"
-
                           data-activity-id="{{ activity.id }}"
                           data-activity-name="{{ activity.name }}"
                           data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
@@ -174,12 +198,16 @@
                           data-address="{{ activity.address or '' }}"
                           data-notes="{{ activity.notes or '' }}"
                           data-current-day="{{ current_day }}"
-                      >
+                        >
                           <i class="bi bi-pencil"></i>
                           Edit Activity
-                      </a>
+                        </a>
                       </li>
-                      <li><hr class="dropdown-divider"></li>
+
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+
                       <li>
                         <a
                           href="#"
@@ -194,31 +222,31 @@
                           Delete Activity
                         </a>
                       </li>
-                      {% endif %}
+
                     </ul>
                   </div>
                 </div>
-                <!--Activity duration-->
-                <div
-                  class="d-flex align-items-center text-white-50 small gap-2"
-                >
+
+                <!-- Activity duration -->
+                <div class="d-flex align-items-center text-white-50 small gap-2">
                   <i class="bi bi-clock"></i>
                   <span>
                     {{ activity.start_time.strftime('%I:%M %p') }}
                     -
-                    {{ activity.end_time.strftime('%I:%M %p') }}</span>
+                    {{ activity.end_time.strftime('%I:%M %p') }}
+                  </span>
                 </div>
+
+                <!-- Activity location -->
                 {% if activity.location %}
-                <!--Activity location-->
-                <div
-                  class="d-flex align-items-center text-white-50 small gap-2 text-truncate"
-                >
+                <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-geo-alt"></i>
                   <span>{{ activity.location }}</span>
                 </div>
                 {% endif %}
+
                 <!-- Created by -->
-                 {% if activity.created_by %}
+                {% if activity.created_by %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
@@ -226,10 +254,26 @@
                   </span>
                 </div>
                 {% endif %}
+
+                <!-- Updated -->
+                {% if activity.updated_by or activity.updated_at %}
+                <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
+                  <i class="bi bi-clock-history"></i>
+                  <span>
+                    Last Updated:
+                    {% if activity.updated_at %}
+                      {{ activity.updated_at.strftime("%Y-%m-%d %H:%M") }}
+                    {% endif %}
+                  </span>
+                </div>
+                {% endif %}
+
               </div>
+
               {% else %}
+
               <div
-                class="card position-absolute text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-{{activity.type}}"
+                class="card position-absolute text-white p-1 p-md-2 shadow-sm rounded-3 overflow-hidden text-start activity-{{ activity.type }}"
                 style="
                   top: {{ activity.top_percent }}%;
                   height: {{ activity.height_percent }}%;
@@ -238,10 +282,13 @@
                   z-index: 10;
                 "
               >
+
                 <div class="d-flex flex-row justify-content-between">
-                  <!--Activity name-->
-                  <div class="fw-bold small text-truncate">{{ activity.name }}</div>
-                  <!--Action menu-->
+
+                  <div class="fw-bold small text-truncate">
+                    {{ activity.name }}
+                  </div>
+
                   <div class="dropdown d-flex justify-content-end">
                     <button
                       class="btn btn-link link-light p-0 border-0 lh-1"
@@ -251,49 +298,36 @@
                       aria-expanded="false"
                       aria-label="Activity options"
                     >
-                    <i class="bi bi-three-dots-vertical"></i>
+                      <i class="bi bi-three-dots-vertical"></i>
                     </button>
+
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+
                       <li>
-                        <!--View details link-->
                         <a
                           class="dropdown-item d-flex align-items-center gap-2 view-details"
                           href="#"
                           data-bs-toggle="modal"
                           data-bs-target="#detailsModal"
                           data-name="{{ activity.name }}"
-                          data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
-                          data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
-                          data-location="{{ activity.location }}"
-                          data-address="{{ activity.address }}"
-                          data-created-by="{{ activity.created_by }}"
-                          data-notes="{{ activity.notes }}"
+                          data-start-time="{{ activity.start_time.strftime('%H:%M') if activity.start_time else '' }}"
+                          data-end-time="{{ activity.end_time.strftime('%H:%M') if activity.end_time else '' }}"
+                          data-location="{{ activity.location or '' }}"
+                          data-address="{{ activity.address or '' }}"
+                          data-created-by="{{ activity.created_by or '' }}"
+                          data-notes="{{ activity.notes or '' }}"
+                          data-updated-by="{{ activity.updated_by or '' }}"
+                          data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
                         </a>
-                        {% if activity.type == "activity" %}
-                        <!--Edit activity link-->
-                        <a
-                          class="dropdown-item d-flex align-items-center gap-2 edit-activity-btn"
-                          href="#"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editActivityModal"
-
-                          data-activity-id="{{ activity.id }}"
-                          data-activity-name="{{ activity.name }}"
-                          data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
-                          data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
-                          data-location="{{ activity.location or '' }}"
-                          data-address="{{ activity.address or '' }}"
-                          data-notes="{{ activity.notes or '' }}"
-                          data-current-day="{{ current_day }}"
-                      >
-                          <i class="bi bi-pencil"></i>
-                          Edit Activity
-                      </a>
                       </li>
-                      <li><hr class="dropdown-divider"></li>
+
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+
                       <li>
                         <a
                           href="#"
@@ -308,60 +342,73 @@
                           Delete Activity
                         </a>
                       </li>
-                      {% endif %}
+
                     </ul>
                   </div>
                 </div>
-                <!--Activity duration-->
-                <div
-                  class="d-flex align-items-center text-white-50 small gap-2"
-                >
+
+                {% if activity.start_time and activity.end_time %}
+                <div class="d-flex align-items-center text-white-50 small gap-2">
                   <i class="bi bi-clock"></i>
                   <span>
                     {{ activity.start_time.strftime('%I:%M %p') }}
                     -
-                    {{ activity.end_time.strftime('%I:%M %p') }}</span>
+                    {{ activity.end_time.strftime('%I:%M %p') }}
+                  </span>
                 </div>
+                {% endif %}
+
                 {% if activity.location %}
-                <!--Activity location-->
-                <div
-                  class="d-flex align-items-center text-white-50 small gap-2 text-truncate"
-                >
+                <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-geo-alt"></i>
                   <span>{{ activity.location }}</span>
                 </div>
                 {% endif %}
-                <!-- Created by -->
-                 {% if activity.created_by %}
+
+                {% if activity.created_by %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
                     Booked by {{ activity.created_by }}
                   </span>
                 </div>
-                
                 {% endif %}
+
+                {% if activity.updated_by or activity.updated_at %}
+                <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
+                  <i class="bi bi-clock-history"></i>
+                  <span>
+                    Last Updated:
+                    {% if activity.updated_at %}
+                      {{ activity.updated_at.strftime("%Y-%m-%d %H:%M") }}
+                    {% endif %}
+                  </span>
+                </div>
+                {% endif %}
+
               </div>
+
               {% endif %}
+
               {% endfor %}
+
             </div>
           </div>
         </div>
       </div>
 
-      <!--Unassigned activities-->
-      <!--Header-->
+      <!-- Unassigned activities -->
       <div class="col-12 col-lg-4">
         <div
           class="card shadow-sm border overflow-hidden d-flex flex-column"
           style="min-height: 400px; height: 600px"
         >
+
           <div
             class="card-header bg-white d-flex align-items-center justify-content-between p-3 border-bottom flex-shrink-0"
           >
             <h5 class="mb-0">Activities</h5>
 
-            <!--Add activities button-->
             <button
               class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
               aria-label="Add activity"
@@ -371,26 +418,30 @@
               <i class="bi bi-plus-lg"></i>
             </button>
           </div>
-          <!--Body-->
-          <!--Activity cards-->
-          <div id="unassigned-activities" class="card-body overflow-y-auto p-3 d-flex flex-column gap-3">
+
+          <div
+            id="unassigned-activities"
+            class="card-body overflow-y-auto p-3 d-flex flex-column gap-3"
+          >
+
             {% for activity in unassigned_activities %}
+
             <div
               class="card w-100 shadow-sm border unassigned-activity"
               draggable="true"
               data-activity-id="{{ activity.id }}"
+              data-start-time="{{ activity.start_time.strftime('%H:%M') if activity.start_time else '' }}"
+              data-end-time="{{ activity.end_time.strftime('%H:%M') if activity.end_time else '' }}"
             >
+
               <div class="card-body">
 
-                <!-- Header: Activity name + Action menu -->
                 <div class="d-flex flex-row justify-content-between align-items-start mb-3">
 
-                  <!-- Activity name -->
                   <h6 class="card-title fw-bold mb-0">
                     {{ activity.name }}
                   </h6>
 
-                  <!-- Action menu -->
                   <div class="dropdown">
                     <button
                       class="btn btn-link text-body p-0 border-0 lh-1"
@@ -405,7 +456,6 @@
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
 
-                      <!-- View details -->
                       <li>
                         <a
                           class="dropdown-item d-flex align-items-center gap-2 view-details"
@@ -413,7 +463,14 @@
                           data-bs-toggle="modal"
                           data-bs-target="#detailsModal"
                           data-name="{{ activity.name }}"
-                          data-notes="{{ activity.notes or 'No notes available.' }}"
+                          data-start-time="{{ activity.start_time.strftime('%H:%M') if activity.start_time else '' }}"
+                          data-end-time="{{ activity.end_time.strftime('%H:%M') if activity.end_time else '' }}"
+                          data-location="{{ activity.location or '' }}"
+                          data-address="{{ activity.address or '' }}"
+                          data-created-by="{{ activity.created_by or '' }}"
+                          data-notes="{{ activity.notes or '' }}"
+                          data-updated-by="{{ activity.updated_by or '' }}"
+                          data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
@@ -424,7 +481,6 @@
                         <hr class="dropdown-divider">
                       </li>
 
-                      <!-- Delete -->
                       <li>
                         <a
                           href="#"
@@ -444,166 +500,165 @@
                   </div>
                 </div>
 
-                <!-- Location -->
+                {% if activity.location %}
                 <div class="d-flex flex-row align-items-center gap-2 mb-1">
                   <i class="bi bi-geo-alt"></i>
                   <small class="text-body-secondary">
                     {{ activity.location }}
                   </small>
                 </div>
+                {% endif %}
 
-                <!-- Created by -->
+                {% if activity.created_by %}
                 <div class="d-flex flex-row align-items-center gap-2">
                   <i class="bi bi-person-circle"></i>
                   <small class="text-body-secondary">
-                    Created by {{ activity.created_by_user.name }}
+                    Created by {{ activity.created_by }}
                   </small>
                 </div>
+                {% endif %}
 
               </div>
             </div>
+
             {% endfor %}
+
           </div>
         </div>
       </div>
+
     </div>
   </main>
 
-  <!--Notes Modal-->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="detailsModalTitle">Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-      </div>
-      <div class="modal-body overflow-y-auto">
-        <h5>Details</h5>
-        <div class="row mt-3">
-          <div class="col-6">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <i class="bi bi-clock"></i>
-              <h6 class="m-0">Start Time:</h6>
-            </div>
-            <p id="detailsStartTime"></p>
-          </div>
-          <div class="col-6">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <i class="bi bi-clock"></i>
-              <h6 class="m-0">End Time:</h6>
-            </div>
-            <p id="detailsEndTime"></p>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-6">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <i class="bi bi-geo-alt"></i>
-              <h6 class="m-0">Location:</h6>
-            </div>
-            <p id="detailsLocation"></p>
-          </div>
-          <div class="col-6">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <i class="bi bi-building"></i>
-              <h6 class="m-0">Address:</h6>
-            </div>
-            <p id="detailsAddress"></p>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-12">
-            <div class="d-flex flex-row align-items-center gap-2">
-              <i class="bi bi-person-circle"></i>
-              <h6 class="m-0">Created by:</h6>
-            </div>
-            <p id="detailsCreatedBy"></p>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-12">
-            <h6>Notes:</h6>
-          </div>
-          <div class="col-12">
-            <p id="detailsNotes"></p>
-          </div>
-        </div>
-        </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <!-- Details Modal -->
+  <div
+    class="modal fade"
+    id="detailsModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="detailsModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
 
-<!--Add Activity Modal-->
-<div
-  class="modal fade"
-  id="addActivityModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="addActivityModalTitle"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+      <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title" id="addActivityModalTitle">
-          Add Activity
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <form id="addActivityForm" method="POST" action="{{ url_for('itinerary.add_activity', trip_id=trip.id) }}">
-        <div class="modal-body">
-          <div class="d-flex flex-column gap-4">
-            <div class="form-group">
-              <label class="mb-2">Name</label>
-              <input
-                id="addActivityName"
-                name="name"
-                type="text"
-                class="form-control"
-                placeholder="Enter activity name"
-                required
-              >
-            </div>
-            <div class="form-group">
-              <i class="bi bi-geo-alt"></i>
-              <label class="mb-2 ms-1">
-                Location
-              </label>
-              <div id="addActivityLocation"></div>
-              <input type="hidden" id="addLocation" name="location" required>
-              <input type="hidden" id="addAddress" name="address">
-              <input type="hidden" id="addPlaceId" name="place_id">
-            </div>
-            <div class="form-group">
-              <label class="mb-2">
-                Notes (Optional)
-              </label>
-              <textarea
-                id="addActivityNotes"
-                name="notes"
-                class="form-control"
-                aria-label="Activity notes"
-                maxlength="8000" 
-              ></textarea>
-            </div>
-            <input
-              type="hidden"
-              name="day"
-              id="addActivityDay"
-              value="{{ current_day }}"
-            >
-          </div>
+        <div class="modal-header">
+          <h5 class="modal-title" id="detailsModalTitle">
+            Details
+          </h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
+
+        <div class="modal-body overflow-y-auto">
+
+          <h5>Details</h5>
+
+          <!-- Times -->
+          <div class="row mt-3">
+
+            <div class="col-6">
+              <div class="d-flex flex-row align-items-center gap-2">
+                <i class="bi bi-clock"></i>
+                <h6 class="m-0">Start Time:</h6>
+              </div>
+
+              <p id="detailsStartTime"></p>
+            </div>
+
+            <div class="col-6">
+              <div class="d-flex flex-row align-items-center gap-2">
+                <i class="bi bi-clock"></i>
+                <h6 class="m-0">End Time:</h6>
+              </div>
+
+              <p id="detailsEndTime"></p>
+            </div>
+
+          </div>
+
+          <!-- Location -->
+          <div class="row mt-3">
+
+            <div class="col-6">
+              <div class="d-flex flex-row align-items-center gap-2">
+                <i class="bi bi-geo-alt"></i>
+                <h6 class="m-0">Location:</h6>
+              </div>
+
+              <p id="detailsLocation"></p>
+            </div>
+
+            <div class="col-6">
+              <div class="d-flex flex-row align-items-center gap-2">
+                <i class="bi bi-building"></i>
+                <h6 class="m-0">Address:</h6>
+              </div>
+
+              <p id="detailsAddress"></p>
+            </div>
+
+          </div>
+
+          <!-- Updated -->
+          <div class="row mt-3">
+
+            <div class="col-6">
+              <div class="d-flex flex-row align-items-center gap-2">
+                <i class="bi bi-person-circle"></i>
+                <h6 class="m-0">Updated by:</h6>
+              </div>
+
+              <p id="detailsUpdatedBy"></p>
+            </div>
+
+            <div class="col-6">
+              <div class="d-flex flex-row align-items-center gap-2">
+                <i class="bi bi-clock-history"></i>
+                <h6 class="m-0">Updated at:</h6>
+              </div>
+
+              <p id="detailsUpdatedAt"></p>
+            </div>
+
+          </div>
+
+          <!-- Created -->
+          <div class="row mt-3">
+
+            <div class="col-12">
+              <div class="d-flex flex-row align-items-center gap-2">
+                <i class="bi bi-person-circle"></i>
+                <h6 class="m-0">Created by:</h6>
+              </div>
+
+              <p id="detailsCreatedBy"></p>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="row mt-3">
+
+            <div class="col-12">
+              <h6>Notes:</h6>
+            </div>
+
+            <div class="col-12">
+              <p id="detailsNotes"></p>
+            </div>
+
+          </div>
+
+        </div>
+
         <div class="modal-footer">
+
           <button
             type="button"
             class="btn btn-secondary"
@@ -611,182 +666,381 @@
           >
             Close
           </button>
-          <button
-            type="submit"
-            class="btn btn-primary"
-          >
-            Confirm
-          </button>
+
         </div>
-      </form>
+
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Edit Activity Modal -->
-<div
-  class="modal fade"
-  id="editActivityModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="editActivityModalTitle"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+  <!-- Add Activity Modal -->
+  <div
+    class="modal fade"
+    id="addActivityModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="addActivityModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
 
-      <div class="modal-header">
-        <h5 class="modal-title" id="editActivityModalTitle">
-          Edit Activity
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <form id="editActivityForm" method="POST">
-        <div class="modal-body">
-          <div class="d-flex flex-column gap-4">
-            <div class="form-group">
-              <label class="mb-2">Name</label>
-              <input
-                id="editActivityName"
-                name="name"
-                type="text"
-                class="form-control"
-                placeholder="Enter activity name"
-                required
-              >
-            </div>
-            <div class="form-group d-flex gap-4">
-              <div class="flex-fill">
-                <label
-                  for="editActivityStartTime"
-                  class="form-label"
-                >
-                  Start Time
-                </label>
-                <input
-                  id="editActivityStartTime"
-                  name="start_time"
-                  type="time"
-                  class="form-control"
-                  required
-                >
-              </div>
-              <div class="flex-fill">
-                <label
-                  for="editActivityEndTime"
-                  class="form-label"
-                >
-                  End Time
-                </label>
-                <input
-                  id="editActivityEndTime"
-                  name="end_time"
-                  type="time"
-                  class="form-control"
-                  required
-                >
-              </div>
-            </div>
-            <div class="form-group">
-              <i class="bi bi-geo-alt"></i>
-              <label class="mb-2 ms-1">
-                Location
-              </label>
-              <div id="editActivityLocation"></div>
-              <input type="hidden" id="editAddress" name="address">
-              <input type="hidden" id="editLocation" name="address">
-              <input type="hidden" id="editPlaceId" name="place_id">
-            </div>
-            <div class="form-group">
-              <label class="mb-2">
-                Notes (Optional)
-              </label>
-              <textarea
-                id="editActivityNotes"
-                name="notes"
-                class="form-control"
-                aria-label="Activity notes"
-                maxlength="8000" 
-              ></textarea>
-            </div>
-            <input
-              type="hidden"
-              name="day"
-              id="editActivityDay"
-            >
-          </div>
-        </div>
-        <div class="modal-footer">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="addActivityModalTitle">
+            Add Activity
+          </h5>
+
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn-close"
             data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button
-            type="submit"
-            class="btn btn-primary"
-          >
-            Save changes
-          </button>
+            aria-label="Close"
+          ></button>
         </div>
-      </form>
-    </div>
-  </div>
-</div>
 
-<!--Delete Confirmation Modal-->
-<div
-  class="modal fade"
-  id="deleteModal"
-  tabindex="-1"
-  aria-labelledby="deleteModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteModalLabel">
-          Confirm Deletion
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete
-        <strong id="deleteActivityName"></strong>?
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
+        <form
+          id="addActivityForm"
+          method="POST"
+          action="{{ url_for('itinerary.add_activity', trip_id=trip.id) }}"
         >
-          Cancel
-        </button>
-        <form id="deleteActivityForm" method="POST">
-          <input type="hidden" name="day" id="deleteActivityDay">
-          <button
-            type="submit"
-            class="btn btn-danger"
-          >
-            Delete
-          </button>
+
+          <div class="modal-body">
+
+            <div class="d-flex flex-column gap-4">
+
+              <div class="form-group">
+                <label class="mb-2">Name</label>
+
+                <input
+                  id="addActivityName"
+                  name="name"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter activity name"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+
+                <i class="bi bi-geo-alt"></i>
+
+                <label class="mb-2 ms-1">
+                  Location
+                </label>
+
+                <div id="addActivityLocation"></div>
+
+                <input
+                  type="hidden"
+                  id="addLocation"
+                  name="location"
+                  required
+                >
+
+                <input
+                  type="hidden"
+                  id="addAddress"
+                  name="address"
+                >
+
+                <input
+                  type="hidden"
+                  id="addPlaceId"
+                  name="place_id"
+                >
+
+              </div>
+
+              <div class="form-group">
+
+                <label class="mb-2">
+                  Notes (Optional)
+                </label>
+
+                <textarea
+                  id="addActivityNotes"
+                  name="notes"
+                  class="form-control"
+                  aria-label="Activity notes"
+                  maxlength="8000"
+                ></textarea>
+
+              </div>
+
+              <input
+                type="hidden"
+                name="day"
+                id="addActivityDay"
+                value="{{ current_day }}"
+              >
+
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Confirm
+            </button>
+
+          </div>
+
         </form>
+
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Edit Activity Modal -->
+  <div
+    class="modal fade"
+    id="editActivityModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="editActivityModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5 class="modal-title" id="editActivityModalTitle">
+            Edit Activity
+          </h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+
+        </div>
+
+        <form id="editActivityForm" method="POST">
+
+          <div class="modal-body">
+
+            <div class="d-flex flex-column gap-4">
+
+              <div class="form-group">
+
+                <label class="mb-2">Name</label>
+
+                <input
+                  id="editActivityName"
+                  name="name"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter activity name"
+                  required
+                >
+
+              </div>
+
+              <div class="form-group d-flex gap-4">
+
+                <div class="flex-fill">
+
+                  <label
+                    for="editActivityStartTime"
+                    class="form-label"
+                  >
+                    Start Time
+                  </label>
+
+                  <input
+                    id="editActivityStartTime"
+                    name="start_time"
+                    type="time"
+                    class="form-control"
+                    required
+                  >
+
+                </div>
+
+                <div class="flex-fill">
+
+                  <label
+                    for="editActivityEndTime"
+                    class="form-label"
+                  >
+                    End Time
+                  </label>
+
+                  <input
+                    id="editActivityEndTime"
+                    name="end_time"
+                    type="time"
+                    class="form-control"
+                    required
+                  >
+
+                </div>
+
+              </div>
+
+              <div class="form-group">
+
+                <i class="bi bi-geo-alt"></i>
+
+                <label class="mb-2 ms-1">
+                  Location
+                </label>
+
+                <div id="editActivityLocation"></div>
+
+                <input
+                  type="hidden"
+                  id="editLocation"
+                  name="location"
+                >
+
+                <input
+                  type="hidden"
+                  id="editAddress"
+                  name="address"
+                >
+
+                <input
+                  type="hidden"
+                  id="editPlaceId"
+                  name="place_id"
+                >
+
+              </div>
+
+              <div class="form-group">
+
+                <label class="mb-2">
+                  Notes (Optional)
+                </label>
+
+                <textarea
+                  id="editActivityNotes"
+                  name="notes"
+                  class="form-control"
+                  aria-label="Activity notes"
+                  maxlength="8000"
+                ></textarea>
+
+              </div>
+
+              <input
+                type="hidden"
+                name="day"
+                id="editActivityDay"
+              >
+
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Save changes
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="deleteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <h5 class="modal-title" id="deleteModalLabel">
+            Confirm Deletion
+          </h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+
+        </div>
+
+        <div class="modal-body">
+          Are you sure you want to delete
+          <strong id="deleteActivityName"></strong>?
+        </div>
+
+        <div class="modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+
+          <form id="deleteActivityForm" method="POST">
+
+            <input
+              type="hidden"
+              name="day"
+              id="deleteActivityDay"
+            >
+
+            <button
+              type="submit"
+              class="btn btn-danger"
+            >
+              Delete
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </div>
 {% endblock %}
