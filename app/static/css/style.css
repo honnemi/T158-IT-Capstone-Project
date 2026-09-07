@@ -9,7 +9,7 @@
 body {
     margin: 0;
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f4f4f4;
+    background: #FFFFFF;
     color: #111;
 }
 
@@ -17,7 +17,8 @@ body {
 /* TOP NAVIGATION BAR */
 /* ======================================== */
 .navbar {
-    background: #A60107;
+    /* main header */
+    background: #D40119; 
     height: 80px;
 }
 
@@ -87,6 +88,7 @@ body {
 /* Active top tab */
 .nav-tab.active {
     background: #ffffff;
+    color: #111;
 }
 
 /* Sidebar */
