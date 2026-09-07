@@ -83,7 +83,7 @@
         {% for booking in others %}
           <div class="flight-card other-card">
             <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
-              <h2>{{ booking.name }}</h2>
+              <h5>{{ booking.name }}</h5>
 
               {% if booking.consultant %}
                 <span class="booked-by">Booked by {{ booking.consultant.name }}</span>

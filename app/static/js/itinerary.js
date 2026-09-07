@@ -1,4 +1,5 @@
 // Daily navigation
+// Daily navigation
 const itineraryPage = document.querySelector("#itinerary-page");
 
 const previousDayButton = document.querySelector("#previous-day");
@@ -19,7 +20,10 @@ if (itineraryPage) {
     const itineraryUrl =
         itineraryPage.dataset.itineraryUrl;
 
+    // Disable buttons at the limits
     if (previousDayButton) {
+        previousDayButton.disabled = currentDay <= 1;
+
         previousDayButton.addEventListener("click", () => {
             if (currentDay > 1) {
                 window.location.href =
@@ -29,6 +33,8 @@ if (itineraryPage) {
     }
 
     if (nextDayButton) {
+        nextDayButton.disabled = currentDay >= maxDay;
+
         nextDayButton.addEventListener("click", () => {
             if (currentDay < maxDay) {
                 window.location.href =
@@ -37,6 +43,7 @@ if (itineraryPage) {
         });
     }
 
+    // Date picker navigation
     if (nativeDate) {
         nativeDate.addEventListener("change", () => {
             if (nativeDate.value) {
@@ -45,76 +52,6 @@ if (itineraryPage) {
             }
         });
     }
-}
-
-// Weekly navigation
-const previousWeekButton = document.querySelector("#previous-week");
-const nextWeekButton = document.querySelector("#next-week");
-const weekCounter = document.querySelector("#week-counter");
-const weekDate = document.querySelector("#week-dates");
-
-let currentWeek = 1;
-let maxWeek = 2;
-
-function formatDate(date) {
-    return date.toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-    });
-}
-
-function updateWeek() {
-    if (!itineraryPage) {
-        return;
-    }
-
-    const startDateString = itineraryPage.dataset.startDate;
-
-    if (!startDateString) {
-        return;
-    }
-
-    const startDate = new Date(startDateString + "T00:00:00");
-
-    const weekStart = new Date(startDate);
-
-    weekStart.setDate(
-        startDate.getDate() + (currentWeek - 1) * 7
-    );
-
-    const weekEnd = new Date(weekStart);
-
-    weekEnd.setDate(
-        weekStart.getDate() + 6
-    );
-
-    if (weekCounter) {
-        weekCounter.textContent = `Week ${currentWeek}`;
-    }
-
-    if (weekDate) {
-        weekDate.textContent =
-            `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
-    }
-}
-
-if (previousWeekButton) {
-    previousWeekButton.addEventListener("click", () => {
-        if (currentWeek > 1) {
-            currentWeek--;
-            updateWeek();
-        }
-    });
-}
-
-if (nextWeekButton) {
-    nextWeekButton.addEventListener("click", () => {
-        if (currentWeek < maxWeek) {
-            currentWeek++;
-            updateWeek();
-        }
-    });
 }
 
 // Details modal update

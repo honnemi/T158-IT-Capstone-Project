@@ -16,13 +16,13 @@
       <div class="d-flex flex-row align-items-center gap-4">
         <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}">
           <button
-            class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+            class="btn primary-white-btn d-inline-flex align-items-center justify-content-center"
             aria-label="Back to Overview"
           >
             <i class="bi bi-caret-left-fill"></i>
           </button>
         </a> 
-        <h1 class="display-6 fw-bold">{{ trip.name }}</h1>
+        <h1 class="display-6">{{ trip.name }}</h1>
       </div>
     </div>
   </div>
@@ -34,13 +34,13 @@
         class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2"
       >
         <button
-          id="previous-day" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" 
+          id="previous-day" class="btn primary-white-btn d-inline-flex align-items-center justify-content-center" 
           aria-label="Previous Day"
         >
           <i class="bi bi-caret-left-fill"></i>
         </button>
         <div class="d-flex flex-column text-center gap-2">
-          <h5 id="day-counter">
+          <h5 id="day-counter" class="mb-0 fs-6 fs-sm-5">
               Day {{ current_day }}
           </h5>
           <input
@@ -53,7 +53,7 @@
           >
         </div>
         <button
-          id="next-day" class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center" 
+          id="next-day" class="btn primary-white-btn d-inline-flex align-items-center justify-content-center" 
           aria-label="Next Day"
         >
           <i class="bi bi-caret-right-fill"></i>
@@ -74,13 +74,13 @@
       <!--Daily itinerary-->
       <div class="col-12 col-lg-8">
         <div
-          class="border rounded p-3 p-md-4 text-muted text-center overflow-auto"
+          class="border rounded p-3 p-md-4 md-gray-text text-center overflow-auto"
           style="min-height: 400px; height: 600px"
         >
           <div class="row m-0" style="height: 6000px">
             <!--Times (y-axis)-->
             <div
-              class="col-auto text-end text-nowrap pe-3 text-muted border-end"
+              class="col-auto text-end text-nowrap pe-3 md-gray-text border-end"
               style="width: 90px; height: 100%; font-size: 0.8rem;"
             >
               <div style="height: 4.1667%;">12:00AM</div>
@@ -126,7 +126,7 @@
               >
                 <div class="d-flex flex-row justify-content-between">
                   <!--Activity name-->
-                  <div class="fw-bold small text-truncate">{{ activity.name }}</div>
+                  <div class="small text-truncate">{{ activity.name }}</div>
                   <!--Action menu-->
                   <div class="dropdown d-flex justify-content-end">
                     <button
@@ -240,7 +240,7 @@
               >
                 <div class="d-flex flex-row justify-content-between">
                   <!--Activity name-->
-                  <div class="fw-bold small text-truncate">{{ activity.name }}</div>
+                  <div class="small text-truncate">{{ activity.name }}</div>
                   <!--Action menu-->
                   <div class="dropdown d-flex justify-content-end">
                     <button
@@ -362,7 +362,7 @@
 
             <!--Add activities button-->
             <button
-              class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+              class="btn primary-white-btn d-inline-flex align-items-center justify-content-center"
               aria-label="Add activity"
               data-bs-toggle="modal"
               data-bs-target="#addActivityModal"
@@ -385,7 +385,7 @@
                 <div class="d-flex flex-row justify-content-between align-items-start mb-3">
 
                   <!-- Activity name -->
-                  <h6 class="card-title fw-bold mb-0">
+                  <h6 class="card-title mb-0">
                     {{ activity.name }}
                   </h6>
 
@@ -446,7 +446,7 @@
                 <!-- Location -->
                 <div class="d-flex flex-row align-items-center gap-2 mb-1">
                   <i class="bi bi-geo-alt"></i>
-                  <small class="text-body-secondary">
+                  <small class="md-gray-text">
                     {{ activity.location }}
                   </small>
                 </div>
@@ -454,7 +454,7 @@
                 <!-- Created by -->
                 <div class="d-flex flex-row align-items-center gap-2">
                   <i class="bi bi-person-circle"></i>
-                  <small class="text-body-secondary">
+                  <small class="md-gray-text">
                     Created by {{ activity.created_by_user.name }}
                   </small>
                 </div>
@@ -529,7 +529,7 @@
         </div>
         </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+        <button type="button" class="btn primary-white-btn" data-bs-dismiss="modal" aria-label="Close">Close</button>
       </div>
     </div>
   </div>
@@ -605,14 +605,14 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn primary-white-btn"
             data-bs-dismiss="modal"
           >
             Close
           </button>
           <button
             type="submit"
-            class="btn btn-primary"
+            class="btn primary-blue-btn"
           >
             Confirm
           </button>
@@ -723,14 +723,14 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn primary-white-btn"
             data-bs-dismiss="modal"
           >
             Close
           </button>
           <button
             type="submit"
-            class="btn btn-primary"
+            class="btn primary-blue-btn"
           >
             Save changes
           </button>
@@ -768,7 +768,7 @@
       <div class="modal-footer">
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn primary-white-btn"
           data-bs-dismiss="modal"
         >
           Cancel

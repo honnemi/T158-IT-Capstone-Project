@@ -48,7 +48,7 @@ Budget
 
     <div class="col">
 
-      <h1 class="display-6 fw-bold">
+      <h1 class="display-6">
         {{ trip.name }} Budget
       </h1>
 
@@ -81,8 +81,8 @@ Budget
             Spending for {{ trip.name }}
           </h5>
 
-          <h6 class="text-body-secondary mb-3">
-            Current trip expenses
+          <h6 class="md-gray-text mb-3">
+            Current Trip Expenses
           </h6>
 
 
@@ -200,7 +200,7 @@ Budget
           <div class="card-body">
 
 
-            <h5 class="fw-bold mb-4">
+            <h5 class="mb-4">
               Budget Summary
             </h5>
 
@@ -230,7 +230,7 @@ Budget
 
                 <div>
 
-                  <small class="text-muted">
+                  <small class="md-gray-text">
 
                     Last updated
                     {{ budget.updated_at.strftime('%d %b %Y at %H:%M') }}
@@ -354,7 +354,7 @@ Budget
             <div class="dropdown">
 
 
-              <button class="btn btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+              <button class="btn primary-white-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"
                 style="width: 40px; height: 40px;">
 
                 <i class="bi bi-plus-lg"></i>
@@ -430,11 +430,11 @@ Budget
 
                   <div>
 
-                    <h6 class="card-title fw-bold mb-1">
+                    <h6 class="card-title mb-1">
                       {{ item.name }}
                     </h6>
 
-                    <small class="text-muted">
+                    <small class="md-gray-text">
                       {{ item.type }}
                     </small>
 
@@ -465,7 +465,7 @@ Budget
 
                     <i class="bi bi-geo-alt"></i>
 
-                    <small class="text-body-secondary">
+                    <small class="md-gray-text">
 
                       {{ item.location }}
 
@@ -488,7 +488,7 @@ Budget
                     <i class="bi bi-clock-history"></i>
 
 
-                    <small class="text-body-secondary">
+                    <small class="md-gray-text">
 
 
                       {% if item.updated_at %}
@@ -526,7 +526,7 @@ Budget
 
                     <i class="bi bi-person"></i>
 
-                    <small class="text-body-secondary">
+                    <small class="md-gray-text">
 
                       Updated by {{ item.updated_by }}
 
@@ -551,7 +551,7 @@ Budget
             {% else %}
 
 
-            <p class="text-muted">
+            <p class="md-gray-text">
 
               No expenses have been added to this trip yet.
 

@@ -1,23 +1,181 @@
-/* To remove visible scrollbar */
-.no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-
-/* ======================================== */
-/* GLOBAL STYLES */
-/* ======================================== */
-body {
-    margin: 0;
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #FFFFFF;
-    color: #111;
+/* Define fonts */
+@font-face {
+  font-family: 'gillSansNova';
+  src: url('../fonts/gillsansnova_book.ttf');
 }
 
-/* ======================================== */
-/* TOP NAVIGATION BAR */
-/* ======================================== */
+@font-face {
+  font-family: 'robotoRegular';
+  src: url('../fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'robotoMedium';
+  src: url('../fonts/Roboto-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'robotoBold';
+  src: url('../fonts/Roboto-Bold.ttf');
+}
+
+/* GLOBAL STYLES */
+body {
+    margin: 0;
+    font-family: 'robotoRegular', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #FFFFFF;
+    color: #212121;
+}
+
+/* Headings */
+h1 {
+    font-family: 'gillSansNova';
+}
+
+h2 {
+    font-family: 'gillSansNova';
+}
+
+h3, h4, h5, h6 {
+    font-family: 'robotoMedium';
+}
+
+
+strong {
+    font-family: 'robotoMedium' !important;
+}
+
+small {
+    font-family: 'robotoRegular' !important;
+    color: #9E9E9E !important;
+}
+
+/* Footer */
+footer {
+    background-color: #F5F5F5;
+}
+
+/* Buttons */
+.primary-blue-btn {
+    font-family: 'robotoMedium';
+    border: none;
+    background-color: #0072EA;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    box-shadow: -3px 4px 12px rgba(0, 0, 0, 0.1);
+
+    transition:
+        background-color 0.3s ease-in-out,
+        color 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+}
+
+.primary-blue-btn:hover {
+    background-color: color-mix(in srgb, #0072EA, #000 15%);
+    color: #FFFFFF;
+    box-shadow: -5px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.primary-blue-btn:active,
+.primary-blue-btn:focus:active {
+    background-color: color-mix(in srgb, #0072EA, #000 25%);
+    color: #FFFFFF;
+    box-shadow: -2px 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* White primary button */
+.primary-white-btn {
+    font-family: 'robotoMedium';
+    border-color: #0072EA;
+    color: #0072EA;
+    text-transform: uppercase;
+    box-shadow: -3px 4px 12px rgba(0, 0, 0, 0.1);
+
+    transition:
+        background-color 0.3s ease-in-out,
+        color 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+}
+
+.primary-white-btn:hover {
+    background-color: #0072EA;
+    color: #FFFFFF;
+    box-shadow: -5px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.primary-white-btn:active,
+.primary-white-btn:focus:active {
+    background-color: color-mix(in srgb, #0072EA, #000 25%);
+    border-color: color-mix(in srgb, #0072EA, #000 25%);
+    color: #FFFFFF;
+    box-shadow: -2px 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Secondary white button */
+.secondary-white-btn {
+    font-family: 'robotoMedium';
+    border-color: #0072EA;
+    color: #0072EA;
+    text-transform: uppercase;
+    box-shadow: -3px 4px 12px rgba(0, 0, 0, 0.1);
+
+    transition:
+        background-color 0.3s ease-in-out,
+        color 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+}
+
+.secondary-white-btn:hover {
+    background-color: #0072EA;
+    color: #FFFFFF;
+    box-shadow: -5px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.secondary-white-btn:active,
+.secondary-white-btn:focus:active {
+    background-color: color-mix(in srgb, #0072EA, #000 25%);
+    border-color: color-mix(in srgb, #0072EA, #000 25%);
+    color: #FFFFFF;
+    box-shadow: -2px 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Disabled buttons */
+.primary-blue-btn:disabled,
+.primary-white-btn:disabled,
+.secondary-white-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Prevent hover styling on disabled buttons */
+.primary-blue-btn:disabled:hover,
+.primary-white-btn:disabled:hover,
+.secondary-white-btn:disabled:hover {
+    background-color: inherit;
+    color: inherit;
+    box-shadow: none;
+}
+
+/* Gray */
+.light-gray-bg {
+    background-color: #F5F5F5 !important;
+}
+
+.light-gray-text {
+    color: #F5F5F5 !important;
+}
+
+.md-gray-text {
+    color: #9E9E9E !important;
+}
+
+
+
+
+/* NAVBAR */
+
 .navbar {
-    /* main header */
     background: #D40119; 
     height: 80px;
 }
@@ -76,7 +234,7 @@ body {
     text-align: center;
     text-decoration: none;
     background: #F5F5F5;
-    color: #111;
+    color: #212121;
     padding: 15px;
     border-radius: 12px 12px 0 0;
     font-weight: 700;
@@ -88,7 +246,7 @@ body {
 /* Active top tab */
 .nav-tab.active {
     background: #ffffff;
-    color: #111;
+    color: #212121;
 }
 
 /* Sidebar */
@@ -97,9 +255,10 @@ body {
     transition: transform 0.35s ease-in-out !important;
 }
 
-/* ======================================== */
-/* MAIN PAGE LAYOUT */
-/* ======================================== */
+
+
+
+/* BOOKINGS PAGE */
 
 .main-layout {
     height: calc(100vh - 60px);
@@ -113,10 +272,8 @@ body {
 }
 
 
-/* ======================================== */
-/* LEFT SIDEBAR / TIMELINE */
-/* ======================================== */
 
+/* Timeline sidebar */
 .timeline-sidebar {
     height: 100%;
 
@@ -143,7 +300,6 @@ body {
 
 
 /* Timeline item */
-
 .timeline-item {
     display: flex;
     align-items: flex-start;
@@ -155,7 +311,6 @@ body {
 
 
 /* Colored dot */
-
 .timeline-item::before {
     content: "";
     width: 16px;
@@ -167,7 +322,6 @@ body {
 
 
 /* Timeline colors */
-
 .timeline-item.red::before {
     background: #A60107;
 }
@@ -182,7 +336,6 @@ body {
 
 
 /* Timeline text */
-
 .timeline-item strong {
     display: block;
     font-size: 0.88rem;
@@ -195,10 +348,7 @@ body {
 }
 
 
-/* ======================================== */
-/* MAIN CONTENT AREA */
-/* ======================================== */
-
+/* Main content area */
 .content-area {
     height: 100%;
 
@@ -213,10 +363,7 @@ body {
 }
 
 
-/* ======================================== */
-/* SECONDARY BOOKING TABS */
-/* ======================================== */
-
+/* Booking tabs */
 .booking-tabs {
     gap: 32px;
     margin-bottom: 24px;
@@ -245,10 +392,7 @@ body {
 }
 
 
-/* ======================================== */
-/* FLIGHT CARDS */
-/* ======================================== */
-
+/* Flight cards */
 .flight-card {
     background: #fff;
     border: 1px solid #A60107;
@@ -269,7 +413,6 @@ body {
 
 
 /* Flight card heading */
-
 .flight-card h2 {
     font-size: 1.25rem;
     margin-bottom: 3px;
@@ -287,7 +430,6 @@ body {
 
 
 /* Flight details */
-
 .flight-detail {
     display: flex;
     align-items: center;
@@ -303,7 +445,6 @@ body {
 
 
 /* Edit button */
-
 .edit-btn {
     border: none;
     background: transparent;
@@ -315,19 +456,13 @@ body {
     color: #A60107;
 }
 
-
-/* ======================================== */
-/* REMOVE HORIZONTAL SCROLL */
-/* ======================================== */
-
+/* Remove horizontal scroll */
 html,
 body {
     overflow-x: hidden;
 }
 
-/* ======================================== */
-/* RESPONSIVE ADJUSTMENTS */
-/* ======================================== */
+/* Responsive adjustments */
 @media (max-width: 991px) {
 
     /* Keep booking layout at 25% / 75% */
@@ -364,9 +499,7 @@ body {
 }
 
 
-/* ======================================== */
-/* KEBAB MENU BUTTON + DROPDOWN */
-/* ======================================== */
+/* Kebab menu */
 .kebab-btn {
     border: none;
     background: transparent;
@@ -410,9 +543,10 @@ body {
     background: #f7f7f7;
 }
 
-/* ======================================== */
-/* AUTH PAGES (Login / Forgot / Reset) */
-/* ======================================== */
+
+
+
+/* AUTH PAGES */
 .auth-body {
     margin: 0;
     padding: 0;
@@ -475,11 +609,6 @@ body {
     margin-bottom: 18px;
 }
 
-.auth-form input:focus {
-    outline: none;
-    border-color: #b61010;
-}
-
 .auth-link {
     text-align: center;
     font-size: 0.85rem;
@@ -488,41 +617,10 @@ body {
     margin-bottom: 18px;
 }
 
-/* Buttons */
-.auth-btn {
-    background: #b61010;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
 
-.auth-btn:hover {
-    background: #8f0c0c;
-}
 
-.auth-btn-secondary {
-    background: #e5e5e5;
-    color: #333;
-    border: none;
-    border-radius: 8px;
-    padding: 10px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-align: center;
-    text-decoration: none;
-    margin-top: 10px;
-}
 
-.auth-btn-secondary:hover {
-    background: #d5d5d5;
-}
-
-/* Home page */
+/* HOME PAGE */
 .img-container {
   width: 50%; 
   height: 250px; 
@@ -537,7 +635,7 @@ body {
   object-position: center; 
 }
 
-/* Inspo page */
+/* INSPO PAGE */
 .toolbar {
     display: flex;
     justify-content: center;
@@ -631,6 +729,10 @@ body {
     border-radius: 100px;
 }
 
+
+
+
+/* ITINERARY PAGES */
 .activity-card {
     cursor: grab;
 }
