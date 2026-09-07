@@ -63,7 +63,11 @@ def seed_database():
             email="priya@globetrottertravel.com"
         )
 
-        db.session.add(consultant,consultant_two, consultant_three)
+        db.session.add_all([
+            consultant,
+            consultant_two,
+            consultant_three
+        ])
         db.session.commit()
 
         trip = Trip(
