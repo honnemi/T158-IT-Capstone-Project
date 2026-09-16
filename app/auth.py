@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, flash, request, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash
 from app.models import User, db
 from app.forms import LoginForm, ResetPasswordForm
@@ -60,13 +60,27 @@ def reset_password(user_id):
 
     user = db.session.get(User, user_id)
 
+    if user is None:
+        flash("User not found.", "error")
+        return redirect(url_for("auth.show_login"))
+
+    # If already logged in, only allow users to reset their own password
+    if current_user.is_authenticated and current_user.id != user.id:
+        flash("You cannot reset another user's password.", "error")
+        return redirect(url_for("home.show_home"))
+
     if form.validate_on_submit():
+
         if user.check_password(form.new_password.data):
             flash("You must not re-use your existing password.", "error")
-            return render_template("reset-password.html", form=form)
+            return render_template(
+                "reset-password.html",
+                form=form
+            )
 
-
-        user.password = generate_password_hash(form.new_password.data)
+        user.password = generate_password_hash(
+            form.new_password.data
+        )
 
         user.password_changed = True
 
@@ -74,7 +88,14 @@ def reset_password(user_id):
 
         login_user(user)
 
-        flash("Password updated successfully!", "success")
+        flash(
+            "Password updated successfully!",
+            "success"
+        )
+
         return redirect(url_for("auth.show_login"))
 
-    return render_template("reset-password.html", form=form)
+    return render_template(
+        "reset-password.html",
+        form=form
+    )
