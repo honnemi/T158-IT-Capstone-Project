@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-
 {% block title %}
 Budget
 {% endblock %}
@@ -29,7 +28,6 @@ Budget
 
 {% block content %}
 
-
 <!-- ======================================== -->
 <!-- CHART.JS -->
 <!-- ======================================== -->
@@ -44,13 +42,48 @@ Budget
   <!-- PAGE HEADER -->
   <!-- ======================================== -->
 
-  <div class="row mb-4 text-center text-md-start">
+  <div class="row mb-4 align-items-center">
 
-    <div class="col">
+    <div class="col-md-6 text-center text-md-start">
 
       <h1 class="display-6">
         {{ trip.name }} Budget
       </h1>
+
+    </div>
+
+
+    <!-- ======================================== -->
+    <!-- CURRENCY SELECTOR -->
+    <!-- ======================================== -->
+
+    <div class="col-md-6 mt-3 mt-md-0">
+
+      <div class="d-flex justify-content-md-end align-items-center gap-2">
+
+        <label for="currencySelect" class="fw-semibold">
+          Currency:
+        </label>
+
+        <select
+          id="currencySelect"
+          class="form-select"
+          style="max-width: 180px;"
+        >
+          <option value="AUD" selected>AUD - Australian Dollar</option>
+          <option value="USD">USD - US Dollar</option>
+          <option value="GBP">GBP - British Pound</option>
+          <option value="EUR">EUR - Euro</option>
+          <option value="JPY">JPY - Japanese Yen</option>
+          <option value="NZD">NZD - New Zealand Dollar</option>
+          <option value="CAD">CAD - Canadian Dollar</option>
+          <option value="SGD">SGD - Singapore Dollar</option>
+          <option value="CNY">CNY - Chinese Yuan</option>
+          <option value="KRW">KRW - South Korean Won</option>
+          <option value="INR">INR - Indian Rupee</option>
+        </select>
+
+      </div>
 
     </div>
 
@@ -73,9 +106,10 @@ Budget
         <!-- SPENDING CHART -->
         <!-- ======================================== -->
 
-        <div class="card shadow-sm border
-                 d-flex flex-column
-                 align-items-center" style="min-height: 400px;">
+        <div
+          class="card shadow-sm border d-flex flex-column align-items-center"
+          style="min-height: 400px;"
+        >
 
           <h5 class="text-body-primary mt-5">
             Spending for {{ trip.name }}
@@ -86,13 +120,15 @@ Budget
           </h6>
 
 
-          <canvas id="Total_Spending" 
+          <canvas
+            id="Total_Spending"
             data-flight-total="{{ flight_total }}"
             data-accommodation-total="{{ accommodation_total }}"
             data-tour-total="{{ tour_total }}"
-            data-cruise-total="{{ cruise_total }}" 
+            data-cruise-total="{{ cruise_total }}"
             data-other-total="{{ other_total }}"
-            style="width:100%; max-width:70%;">
+            style="width:100%; max-width:70%;"
+          >
           </canvas>
 
 
@@ -106,81 +142,74 @@ Budget
 
               <tbody>
 
-
-                <!-- Flights -->
-
                 <tr>
-
                   <th scope="row">
                     Flights
                   </th>
 
-                  <td>
-                    ${{ "%.2f"|format(flight_total) }}
+                  <td
+                    class="currency-value"
+                    data-aud="{{ flight_total }}"
+                  >
+                    A$ {{ "%.2f"|format(flight_total) }}
                   </td>
-
                 </tr>
 
 
-                <!-- Accommodation -->
-
                 <tr>
-
                   <th scope="row">
                     Accommodation
                   </th>
 
-                  <td>
-                    ${{ "%.2f"|format(accommodation_total) }}
+                  <td
+                    class="currency-value"
+                    data-aud="{{ accommodation_total }}"
+                  >
+                    A$ {{ "%.2f"|format(accommodation_total) }}
                   </td>
-
                 </tr>
 
 
-                <!-- Tours -->
-
                 <tr>
-
                   <th scope="row">
                     Tours
                   </th>
 
-                  <td>
-                    ${{ "%.2f"|format(tour_total) }}
+                  <td
+                    class="currency-value"
+                    data-aud="{{ tour_total }}"
+                  >
+                    A$ {{ "%.2f"|format(tour_total) }}
                   </td>
-
                 </tr>
 
 
-                <!-- Cruises -->
-
                 <tr>
-
                   <th scope="row">
                     Cruises
                   </th>
 
-                  <td>
-                    ${{ "%.2f"|format(cruise_total) }}
+                  <td
+                    class="currency-value"
+                    data-aud="{{ cruise_total }}"
+                  >
+                    A$ {{ "%.2f"|format(cruise_total) }}
                   </td>
-
                 </tr>
 
 
-                <!-- Other -->
-
                 <tr>
-
                   <th scope="row">
                     Other
                   </th>
 
-                  <td>
-                    ${{ "%.2f"|format(other_total) }}
+                  <td
+                    class="currency-value"
+                    data-aud="{{ other_total }}"
+                  >
+                    A$ {{ "%.2f"|format(other_total) }}
                   </td>
-
                 </tr>
-
 
               </tbody>
 
@@ -199,32 +228,28 @@ Budget
 
           <div class="card-body">
 
-
             <h5 class="mb-4">
               Budget Summary
             </h5>
 
 
-            <!-- ======================================== -->
             <!-- TOTAL BUDGET -->
-            <!-- ======================================== -->
 
-            <div class="
+            <div
+              class="
                 d-flex
                 justify-content-between
                 align-items-start
                 border-bottom
                 py-3
-              ">
+              "
+            >
 
               <div>
 
                 <span>
                   Total Budget
                 </span>
-
-
-                <!-- Last budget update -->
 
                 {% if budget and budget.updated_at %}
 
@@ -250,58 +275,64 @@ Budget
               </div>
 
 
-              <strong>
-                ${{ "%.2f"|format(total_budget) }}
+              <strong
+                class="currency-value"
+                data-aud="{{ total_budget }}"
+              >
+                A$ {{ "%.2f"|format(total_budget) }}
               </strong>
 
             </div>
 
 
-            <!-- ======================================== -->
             <!-- TOTAL SPENT -->
-            <!-- ======================================== -->
 
-            <div class="
+            <div
+              class="
                 d-flex
                 justify-content-between
                 border-bottom
                 py-3
-              ">
+              "
+            >
 
               <span>
                 Total Spent
               </span>
 
-              <strong>
-                ${{ "%.2f"|format(total_spent) }}
+              <strong
+                class="currency-value"
+                data-aud="{{ total_spent }}"
+              >
+                A$ {{ "%.2f"|format(total_spent) }}
               </strong>
 
             </div>
 
 
-            <!-- ======================================== -->
             <!-- REMAINING -->
-            <!-- ======================================== -->
 
-            <div class="
+            <div
+              class="
                 d-flex
                 justify-content-between
                 py-3
-              ">
+              "
+            >
 
               <span>
                 Remaining Budget
               </span>
 
 
-              <strong {% if remaining_budget < 0 %} class="text-danger" {% else %} class="text-success" {% endif %}>
-
-                ${{ "%.2f"|format(remaining_budget) }}
-
+              <strong
+                class="currency-value {% if remaining_budget < 0 %}text-danger{% else %}text-success{% endif %}"
+                data-aud="{{ remaining_budget }}"
+              >
+                A$ {{ "%.2f"|format(remaining_budget) }}
               </strong>
 
             </div>
-
 
           </div>
 
@@ -316,22 +347,22 @@ Budget
 
       <div class="col-12 col-lg-4">
 
-
-        <div class="
+        <div
+          class="
             card
             shadow-sm
             border
             overflow-hidden
             d-flex
             flex-column
-          " style="min-height: 400px; height: 600px;">
+          "
+        >
 
 
-          <!-- ======================================== -->
           <!-- BUDGET ITEMS HEADER -->
-          <!-- ======================================== -->
 
-          <div class="
+          <div
+            class="
               card-header
               bg-white
               d-flex
@@ -339,40 +370,37 @@ Budget
               justify-content-between
               p-3
               border-bottom
-            ">
-
+            "
+          >
 
             <h5 class="mb-0">
               Budget Items
             </h5>
 
 
-            <!-- ======================================== -->
-            <!-- PLUS BUTTON -->
-            <!-- ======================================== -->
-
             <div class="dropdown">
 
-
-              <button class="btn primary-white-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                style="width: 40px; height: 40px;">
+              <button
+                class="btn primary-white-btn"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="width: 40px; height: 40px;"
+              >
 
                 <i class="bi bi-plus-lg"></i>
 
               </button>
 
 
-              <!-- ======================================== -->
-              <!-- PLUS MENU -->
-              <!-- ======================================== -->
-
               <ul class="dropdown-menu dropdown-menu-end">
-
 
                 <li>
 
-                  <a class="dropdown-item"
-                    href="mailto:{{ trip.consultant.email }}?subject=Request new budget for {{ trip.name }}">
+                  <a
+                    class="dropdown-item"
+                    href="mailto:{{ trip.consultant.email }}?subject=Request new budget for {{ trip.name }}"
+                  >
 
                     <i class="bi bi-wallet2 me-2"></i>
 
@@ -381,7 +409,6 @@ Budget
                   </a>
 
                 </li>
-
 
               </ul>
 
@@ -394,39 +421,33 @@ Budget
           <!-- BUDGET ITEM LIST -->
           <!-- ======================================== -->
 
-          <div class="
+          <div
+            class="
               card-body
               overflow-y-auto
               p-3
               d-flex
               flex-column
               gap-3
-            ">
-
+            "
+          >
 
             {% if budget_items %}
 
-
             {% for item in budget_items %}
-
 
             <div class="card w-100 shadow-sm border">
 
-
               <div class="card-body">
 
-
-                <!-- ======================================== -->
-                <!-- ITEM HEADER -->
-                <!-- ======================================== -->
-
-                <div class="
-                        d-flex
-                        justify-content-between
-                        align-items-start
-                        mb-3
-                      ">
-
+                <div
+                  class="
+                    d-flex
+                    justify-content-between
+                    align-items-start
+                    mb-3
+                  "
+                >
 
                   <div>
 
@@ -441,55 +462,52 @@ Budget
                   </div>
 
 
-                  <strong>
-                    ${{ "%.2f"|format(item.cost) }}
+                  <strong
+                    class="currency-value"
+                    data-aud="{{ item.cost }}"
+                  >
+                    A$ {{ "%.2f"|format(item.cost) }}
                   </strong>
-
 
                 </div>
 
 
                 <div class="d-flex flex-column gap-2">
 
-
-                  <!-- ======================================== -->
                   <!-- LOCATION -->
-                  <!-- ======================================== -->
 
-                  <div class="
-                          d-flex
-                          flex-row
-                          align-items-center
-                          gap-2
-                        ">
+                  <div
+                    class="
+                      d-flex
+                      flex-row
+                      align-items-center
+                      gap-2
+                    "
+                  >
 
                     <i class="bi bi-geo-alt"></i>
 
                     <small class="md-gray-text">
-
                       {{ item.location }}
-
                     </small>
 
                   </div>
 
 
-                  <!-- ======================================== -->
                   <!-- LAST UPDATED -->
-                  <!-- ======================================== -->
 
-                  <div class="
-                          d-flex
-                          flex-row
-                          align-items-center
-                          gap-2
-                        ">
+                  <div
+                    class="
+                      d-flex
+                      flex-row
+                      align-items-center
+                      gap-2
+                    "
+                  >
 
                     <i class="bi bi-clock-history"></i>
 
-
                     <small class="md-gray-text">
-
 
                       {% if item.updated_at %}
 
@@ -504,39 +522,33 @@ Budget
 
                       {% endif %}
 
-
                     </small>
 
                   </div>
 
 
-                  <!-- ======================================== -->
                   <!-- UPDATED BY -->
-                  <!-- ======================================== -->
 
                   {% if item.updated_by %}
 
-
-                  <div class="
-                            d-flex
-                            flex-row
-                            align-items-center
-                            gap-2
-                          ">
+                  <div
+                    class="
+                      d-flex
+                      flex-row
+                      align-items-center
+                      gap-2
+                    "
+                  >
 
                     <i class="bi bi-person"></i>
 
                     <small class="md-gray-text">
-
                       Updated by {{ item.updated_by }}
-
                     </small>
 
                   </div>
 
-
                   {% endif %}
-
 
                 </div>
 
@@ -544,22 +556,15 @@ Budget
 
             </div>
 
-
             {% endfor %}
-
 
             {% else %}
 
-
             <p class="md-gray-text">
-
               No expenses have been added to this trip yet.
-
             </p>
 
-
             {% endif %}
-
 
           </div>
 
@@ -575,10 +580,149 @@ Budget
 
 
 <!-- ======================================== -->
-<!-- DATABASE-DRIVEN CHART -->
+<!-- CURRENCY + CHART JAVASCRIPT -->
 <!-- ======================================== -->
+
 <script>
-  const spendingChart = document.getElementById("Total_Spending");
+
+  // ========================================
+  // CURRENCY CONVERSION RATES
+  // Base currency = AUD
+  // ========================================
+
+  const currencyRates = {
+    AUD: 1,
+    USD: 0.66,
+    GBP: 0.49,
+    EUR: 0.56,
+    JPY: 98.00,
+    NZD: 1.09,
+    CAD: 0.91,
+    SGD: 0.85,
+    CNY: 4.69,
+    KRW: 915.00,
+    INR: 59.00
+  };
+
+
+  // ========================================
+  // CURRENCY SYMBOLS
+  // ========================================
+
+  const currencySymbols = {
+    AUD: "A$",
+    USD: "US$",
+    GBP: "£",
+    EUR: "€",
+    JPY: "¥",
+    NZD: "NZ$",
+    CAD: "C$",
+    SGD: "S$",
+    CNY: "CN¥",
+    KRW: "₩",
+    INR: "₹"
+  };
+
+
+  // ========================================
+  // CURRENT CURRENCY
+  // ========================================
+
+  let currentCurrency = "AUD";
+
+
+  // ========================================
+  // FORMAT MONEY
+  // ========================================
+
+  function formatCurrency(amount, currency) {
+
+    return new Intl.NumberFormat("en-AU", {
+      style: "currency",
+      currency: currency,
+      minimumFractionDigits:
+        currency === "JPY" || currency === "KRW" ? 0 : 2,
+      maximumFractionDigits:
+        currency === "JPY" || currency === "KRW" ? 0 : 2
+    }).format(amount);
+
+  }
+
+
+  // ========================================
+  // CONVERT ALL DISPLAYED VALUES
+  // ========================================
+
+  function updateCurrency(currency) {
+
+    currentCurrency = currency;
+
+    const rate = currencyRates[currency];
+
+
+    document
+      .querySelectorAll(".currency-value")
+      .forEach(function(element) {
+
+        const audAmount = Number(element.dataset.aud);
+
+        const convertedAmount =
+          audAmount * rate;
+
+        element.textContent =
+          formatCurrency(
+            convertedAmount,
+            currency
+          );
+
+      });
+
+
+    // Update chart values
+    if (window.budgetChart) {
+
+      window.budgetChart.data.datasets[0].data =
+        originalChartValues.map(function(value) {
+          return value * rate;
+        });
+
+      window.budgetChart.update();
+
+    }
+
+  }
+
+
+  // ========================================
+  // CURRENCY DROPDOWN
+  // ========================================
+
+  const currencySelect =
+    document.getElementById("currencySelect");
+
+
+  currencySelect.addEventListener(
+    "change",
+    function() {
+
+      updateCurrency(
+        currencySelect.value
+      );
+
+    }
+  );
+
+
+  // ========================================
+  // CHART
+  // ========================================
+
+  const spendingChart =
+    document.getElementById("Total_Spending");
+
+
+  let originalChartValues = [];
+
 
   if (spendingChart) {
 
@@ -590,13 +734,15 @@ Budget
       "Other"
     ];
 
-    const spendingItemValues = [
+
+    originalChartValues = [
       Number(spendingChart.dataset.flightTotal),
       Number(spendingChart.dataset.accommodationTotal),
       Number(spendingChart.dataset.tourTotal),
       Number(spendingChart.dataset.cruiseTotal),
       Number(spendingChart.dataset.otherTotal)
     ];
+
 
     const barColors = [
       "#A60107",
@@ -606,31 +752,73 @@ Budget
       "#3B82F6"
     ];
 
-    new Chart(spendingChart, {
-      type: "doughnut",
 
-      data: {
-        labels: spendingItems,
+    window.budgetChart =
+      new Chart(
+        spendingChart,
+        {
 
-        datasets: [
-          {
-            backgroundColor: barColors,
-            data: spendingItemValues
+          type: "doughnut",
+
+          data: {
+
+            labels: spendingItems,
+
+            datasets: [
+              {
+                backgroundColor: barColors,
+                data: originalChartValues
+              }
+            ]
+
+          },
+
+
+          options: {
+
+            responsive: true,
+
+            plugins: {
+
+              legend: {
+                position: "bottom"
+              },
+
+
+              tooltip: {
+
+                callbacks: {
+
+                  label: function(context) {
+
+                    return (
+                      context.label +
+                      ": " +
+                      formatCurrency(
+                        context.raw,
+                        currentCurrency
+                      )
+                    );
+
+                  }
+
+                }
+
+              }
+
+            }
+
           }
-        ]
-      },
 
-      options: {
-        responsive: true,
-
-        plugins: {
-          legend: {
-            position: "bottom"
-          }
         }
-      }
-    });
+      );
+
   }
+
+
+  // Start in AUD
+  updateCurrency("AUD");
+
 </script>
 
 

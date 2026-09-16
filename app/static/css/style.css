@@ -648,7 +648,23 @@ body {
     margin-bottom: 18px;
 }
 
+   /* BUDGET ITEMS */
+.budget-items-card {
+    height: calc(100vh - 180px);
+    min-height: 500px;
+}
 
+/* Keep the header visible */
+.budget-items-card .card-header {
+    flex-shrink: 0;
+}
+
+/* Only the list itself scrolls */
+.budget-items-card .card-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
 
 
 /* HOME PAGE */
