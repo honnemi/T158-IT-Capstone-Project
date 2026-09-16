@@ -171,7 +171,8 @@
                           data-bs-target="#detailsModal"
                           data-name="{{ activity.name }}"
                           data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
-                          data-end-time="{{ activity.end_time.strftime('%H:%M %Z') }}"
+                          data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
+                          data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
                           data-created-by="{{ activity.created_by or '' }}"
@@ -234,7 +235,9 @@
                     {{ activity.start_time.strftime('%I:%M %p') }}
                     -
                     {{ activity.end_time.strftime('%I:%M %p') }}
-                    {{ activity.timezone }}
+                    {% if activity.timezone %}
+                      {{ activity.timezone }}
+                    {% endif %}
                   </span>
                 </div>
 
@@ -313,6 +316,7 @@
                           data-name="{{ activity.name }}"
                           data-start-time="{{ activity.start_time.strftime('%H:%M') if activity.start_time else '' }}"
                           data-end-time="{{ activity.end_time.strftime('%H:%M') if activity.end_time else '' }}"
+                          data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
                           data-created-by="{{ activity.created_by or '' }}"
@@ -355,7 +359,9 @@
                     {{ activity.start_time.strftime('%I:%M %p') }}
                     -
                     {{ activity.end_time.strftime('%I:%M %p') }}
-                    {{ activity.timezone }}
+                    {% if activity.timezone %}
+                      {{ activity.timezone }}
+                    {% endif %}
                   </span>
                 </div>
                 {% endif %}
@@ -467,6 +473,7 @@
                           data-name="{{ activity.name }}"
                           data-start-time="{{ activity.start_time.strftime('%H:%M') if activity.start_time else '' }}"
                           data-end-time="{{ activity.end_time.strftime('%H:%M') if activity.end_time else '' }}"
+                          data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
                           data-created-by="{{ activity.created_by or '' }}"
@@ -502,6 +509,20 @@
                   </div>
                 </div>
 
+                {% if activity.start_time and activity.end_time %}
+                <div class="d-flex flex-row align-items-center gap-2 mb-1">
+                  <i class="bi bi-clock"></i>
+                  <small class="md-gray-text">
+                    {{ activity.start_time.strftime('%I:%M %p') }}
+                    -
+                    {{ activity.end_time.strftime('%I:%M %p') }}
+                    {% if activity.timezone %}
+                      {{ activity.timezone }}
+                    {% endif %}
+                  </small>
+                </div>
+                {% endif %}
+
                 {% if activity.location %}
                 <div class="d-flex flex-row align-items-center gap-2 mb-1">
                   <i class="bi bi-geo-alt"></i>
@@ -511,11 +532,11 @@
                 </div>
                 {% endif %}
 
-                {% if activity.created_by %}
+                {% if activity.created_by_user %}
                 <div class="d-flex flex-row align-items-center gap-2">
                   <i class="bi bi-person-circle"></i>
                   <small class="text-body-secondary">
-                    Created by {{ activity.created_by }}
+                    Created by {{ activity.created_by_user.name }}
                   </small>
                 </div>
                 {% endif %}
@@ -642,6 +663,7 @@
 
               <p id="detailsCreatedBy"></p>
             </div>
+
           </div>
 
           <!-- Notes -->
@@ -668,6 +690,7 @@
           >
             Close
           </button>
+
         </div>
 
       </div>

@@ -18,7 +18,6 @@ if (itineraryPage) {
     const itineraryUrl =
         itineraryPage.dataset.itineraryUrl;
 
-    // Disable buttons at the limits
     if (previousDayButton) {
 
         previousDayButton.addEventListener("click", () => {
@@ -53,7 +52,6 @@ if (itineraryPage) {
 
     }
 
-    // Date picker navigation
     if (nativeDate) {
 
         nativeDate.addEventListener("change", () => {
@@ -168,7 +166,6 @@ if (previousWeekButton) {
             if (currentWeek > 1) {
 
                 currentWeek--;
-
                 updateWeek();
 
             }
@@ -187,7 +184,6 @@ if (nextWeekButton) {
             if (currentWeek < maxWeek) {
 
                 currentWeek++;
-
                 updateWeek();
 
             }
@@ -242,6 +238,9 @@ noteLinks.forEach(link => {
         const endTime =
             link.dataset.endTime;
 
+        const timezone =
+            link.dataset.timezone;
+
         const location =
             link.dataset.location;
 
@@ -270,14 +269,18 @@ noteLinks.forEach(link => {
         if (detailsStartTime) {
 
             detailsStartTime.textContent =
-                startTime || "-";
+                startTime
+                    ? `${startTime}${timezone ? ` ${timezone}` : ""}`
+                    : "-";
 
         }
 
         if (detailsEndTime) {
 
             detailsEndTime.textContent =
-                endTime || "-";
+                endTime
+                    ? `${endTime}${timezone ? ` ${timezone}` : ""}`
+                    : "-";
 
         }
 
@@ -326,7 +329,6 @@ noteLinks.forEach(link => {
     });
 
 });
-
 
 const deleteActivityButtons =
     document.querySelectorAll(".delete-activity-btn");
@@ -377,7 +379,6 @@ deleteActivityButtons.forEach(button => {
     });
 
 });
-
 
 const editActivityButtons =
     document.querySelectorAll(".edit-activity-btn");
@@ -490,7 +491,6 @@ editActivityButtons.forEach(button => {
 
         }
 
-        // Initialise Google Places search
         if (
             typeof google !== "undefined" &&
             google.maps &&
@@ -540,7 +540,6 @@ if (addActivityModal) {
     );
 
 }
-
 
 async function initLocationSearch(
     element_id,
@@ -707,7 +706,6 @@ function timeToMinutes(time) {
 
 }
 
-
 function minutesToTime(totalMinutes) {
 
     totalMinutes =
@@ -734,7 +732,6 @@ function minutesToTime(totalMinutes) {
     );
 
 }
-
 
 function getDuration(card) {
 
@@ -802,7 +799,6 @@ draggableActivities.forEach(card => {
         }
     );
 
-
     card.addEventListener(
         "dragend",
         () => {
@@ -814,7 +810,6 @@ draggableActivities.forEach(card => {
             if (preview) {
 
                 preview.remove();
-
                 preview = null;
 
             }
@@ -862,13 +857,11 @@ function calculateDropMinutes(event) {
             y * minutesPerPixel
         );
 
-    // Snap to 15-minute intervals
     minutes =
         Math.round(
             minutes / 15
         ) * 15;
 
-    // Keep activity within the day
     minutes =
         Math.min(
             minutes,
@@ -950,7 +943,6 @@ if (timeline) {
 
         }
     );
-
 
     timeline.addEventListener(
         "drop",
@@ -1050,7 +1042,6 @@ if (unassignedActivities) {
 
         }
     );
-
 
     unassignedActivities.addEventListener(
         "drop",

@@ -881,9 +881,11 @@ def move_activity(activity_id):
     if current_user not in trip.users:
         abort(403)
 
-    date_string = request.form.get("date")
-    start_time = request.form.get("start_time")
-    end_time = request.form.get("end_time")
+    data = request.get_json(silent=True) or {}
+
+    date_string = data.get("date")
+    start_time = data.get("start_time")
+    end_time = data.get("end_time")
 
     if not date_string:
 
@@ -943,7 +945,7 @@ def add_activity(trip_id):
         date=None,
         start_time=None,
         end_time=None,
-        created_by=current_user.name,
+        created_by=current_user.id,
         timezone_id=trip.timezone_id
     )
 
