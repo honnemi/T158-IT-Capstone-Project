@@ -329,27 +329,42 @@ footer {
 /* Colored dot */
 .timeline-item::before {
     content: "";
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    flex-shrink: 0;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    flex: 0 0 16px !important;
+    border-radius: 50% !important;
     margin-top: 3px;
 }
 
+/* Timeline colours */
 
-/* Timeline colors */
-.timeline-item.red::before {
-    background: #A60107;
+/* Flight */
+.timeline-item.flight::before {
+    background-color: #A60107 !important;
 }
 
-.timeline-item.orange::before {
-    background: #F97316;
+/* Accommodation */
+.timeline-item.accommodation::before {
+    background-color: #F97316 !important;
 }
 
-.timeline-item.blue::before {
-    background: #3B82F6;
+/* Other */
+.timeline-item.other::before {
+    background-color: #3B82F6 !important;
 }
 
+/* Tour */
+.timeline-item.tour::before {
+    background-color: #7C3AED !important;
+}
+
+/* Cruise */
+.timeline-item.cruise::before {
+    background-color: #0891B2 !important;
+}
 
 /* Timeline text */
 .timeline-item strong {

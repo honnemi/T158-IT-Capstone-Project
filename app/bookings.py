@@ -75,14 +75,14 @@ def _build_booking_timeline(booking_data):
             "sort_time": flight.departure_time,
             "title": f"{flight.departure_airport} → {flight.arrival_airport} Departure",
             "time": flight.departure_time.strftime("%H:%M"),
-            "colour": "red",
+            "colour": "flight",
         })
         events.append({
             "date": flight.arrival_time.date(),
             "sort_time": flight.arrival_time,
             "title": f"{flight.departure_airport} → {flight.arrival_airport} Arrival",
             "time": flight.arrival_time.strftime("%H:%M"),
-            "colour": "red",
+            "colour": "flight",
         })
 
     for accommodation in booking_data["accommodations"]:
@@ -91,14 +91,14 @@ def _build_booking_timeline(booking_data):
             "sort_time": accommodation.check_in,
             "title": f"{accommodation.name} Check-in",
             "time": accommodation.check_in.strftime("%H:%M"),
-            "colour": "orange",
+            "colour": "accommodation",
         })
         events.append({
             "date": accommodation.check_out.date(),
             "sort_time": accommodation.check_out,
             "title": f"{accommodation.name} Check-out",
             "time": accommodation.check_out.strftime("%H:%M"),
-            "colour": "orange",
+            "colour": "accommodation",
         })
 
     for cruise in booking_data["cruises"]:
@@ -107,7 +107,7 @@ def _build_booking_timeline(booking_data):
             "sort_time": cruise.start_date,
             "title": cruise.name,
             "time": cruise.start_date.strftime("%H:%M"),
-            "colour": "purple",
+            "colour": "cruise",
         })
 
     for tour in booking_data["tours"]:
@@ -116,7 +116,7 @@ def _build_booking_timeline(booking_data):
             "sort_time": tour.start_time,
             "title": tour.name,
             "time": f"{tour.start_time.strftime('%H:%M')}-{tour.end_time.strftime('%H:%M')}",
-            "colour": "blue",
+            "colour": "tour",
         })
 
     for other in booking_data["others"]:
@@ -125,7 +125,7 @@ def _build_booking_timeline(booking_data):
             "sort_time": other.start_time,
             "title": other.name,
             "time": f"{other.start_time.strftime('%H:%M')}-{other.end_time.strftime('%H:%M')}",
-            "colour": "green",
+            "colour": "other",
         })
 
     events.sort(key=lambda event: event["sort_time"])
