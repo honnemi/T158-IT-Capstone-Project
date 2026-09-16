@@ -3,12 +3,30 @@ from flask_login import login_required, current_user
 from app.models import Trip, Activity, Flight, Accommodation, Cruise, Tour, Other
 from datetime import datetime, timedelta
 from app import db
+from zoneinfo import ZoneInfo
+
 
 itinerary_bp = Blueprint(
     "itinerary",
     __name__,
     url_prefix="/itinerary"
 )
+
+
+def get_timezone_name(date_value, time_value, timezone_id):
+    timezone = ZoneInfo(timezone_id)
+
+    if isinstance(time_value, datetime):
+        aware_datetime = time_value.replace(tzinfo=timezone)
+    else:
+        aware_datetime = datetime.combine(
+            date_value,
+            time_value,
+            tzinfo=timezone
+        )
+
+    return aware_datetime.strftime("%Z")
+
 
 def position_overlapping_items(calendar_items):
     items_by_date = {}
@@ -109,6 +127,7 @@ def position_overlapping_items(calendar_items):
 
     return calendar_items
 
+
 @itinerary_bp.route("/overview/<int:trip_id>", methods=["GET"])
 @login_required
 def show_itinerary_overview(trip_id):
@@ -125,18 +144,16 @@ def show_itinerary_overview(trip_id):
     trip_duration = (trip.end_date - trip_start).days + 1
     max_week = (trip_duration + 6) // 7
 
-    # Find the Sunday at the start of the first calendar week
     first_sunday = trip_start - timedelta(
         days=(trip_start.weekday() + 1) % 7
     )
 
-    # Calculate this week's Sunday
-    week_start = first_sunday + timedelta(days=(week - 1) * 7)
+    week_start = first_sunday + timedelta(
+        days=(week - 1) * 7
+    )
 
-    # Calculate Saturday
     week_end = week_start + timedelta(days=6)
 
-    # Don't allow weeks completely after the trip
     if week_start > trip.end_date:
         week = 1
         week_start = first_sunday
@@ -155,12 +172,12 @@ def show_itinerary_overview(trip_id):
     ).all()
 
     cruises = Cruise.query.filter_by(
-            trip_id=trip.id
-        ).all()
+        trip_id=trip.id
+    ).all()
 
     tours = Tour.query.filter_by(
-            trip_id=trip.id
-        ).all()
+        trip_id=trip.id
+    ).all()
 
     others = Other.query.filter_by(
         trip_id=trip.id
@@ -168,141 +185,251 @@ def show_itinerary_overview(trip_id):
 
     calendar_items = []
 
-    # Activities
     for activity in activities:
 
-        # Ignore unscheduled activities
         if activity.date is None:
             continue
 
-        calendar_items.append({ 
-            "id": activity.id, 
-            "name": activity.name, 
-            "date": activity.date, 
-            "start_time": activity.start_time, 
-            "end_time": activity.end_time, 
-            "location": activity.location, 
-            "address": activity.address, 
-            "notes": activity.notes, 
+        timezone = ZoneInfo(activity.timezone_id)
+
+        start_dt = datetime.combine(
+            activity.date,
+            activity.start_time,
+            tzinfo=timezone
+        )
+
+        end_dt = datetime.combine(
+            activity.date,
+            activity.end_time,
+            tzinfo=timezone
+        )
+
+        calendar_items.append({
+            "id": activity.id,
+            "name": activity.name,
+            "date": activity.date,
+            "start_time": activity.start_time,
+            "end_time": activity.end_time,
+            "timezone": get_timezone_name(
+                activity.date,
+                activity.start_time,
+                activity.timezone_id
+            ),
+            "location": activity.location,
+            "address": activity.address,
+            "notes": activity.notes,
             "created_by": activity.created_by_user.name,
             "type": "activity",
             "updated_at": activity.updated_at,
-            "updated_by": activity.updated_by_user.name if activity.updated_by_user else None
+            "updated_by": (
+                activity.updated_by_user.name
+                if activity.updated_by_user
+                else None
+            )
         })
 
-    # Flights
     for flight in flights:
+
+        departure_timezone = ZoneInfo(
+            flight.departure_timezone_id
+        )
+
+        arrival_timezone = ZoneInfo(
+            flight.timezone_id
+        )
+
+        departure_dt = flight.departure_time.replace(
+            tzinfo=departure_timezone
+        )
+
+        arrival_dt = flight.arrival_time.replace(
+            tzinfo=arrival_timezone
+        )
 
         calendar_items.append({
             "name": flight.name,
             "date": flight.departure_time.date(),
-            "start_time": flight.departure_time.time(),
-            "end_time": flight.arrival_time.time(),
-            "location": flight.departure_airport, 
-            "address": flight.departure_address, 
+            "start_time": departure_dt,
+            "end_time": arrival_dt,
+            "timezone": departure_dt.strftime("%Z"),
+            "start_timezone": departure_dt.strftime("%Z"),
+            "end_timezone": arrival_dt.strftime("%Z"),
+            "location": flight.departure_airport,
+            "address": flight.departure_address,
             "type": "flight",
             "created_by": flight.consultant.name,
             "updated_at": flight.updated_at,
-            "updated_by": flight.updated_by_user.name if flight.updated_by_user else None
+            "updated_by": (
+                flight.updated_by_user.name
+                if flight.updated_by_user
+                else None
+            )
         })
 
-    # Accommodation
     for accommodation in accommodations:
 
-        calendar_items.append({
-            "name": accommodation.name + " - Check-in",
-            "date": accommodation.check_in.date(),
-            "start_time": accommodation.check_in.time(),
-            "end_time": (
-                accommodation.check_in + timedelta(minutes=30)
-            ).time(),
-            "location": accommodation.location, 
-            "address": accommodation.address, 
-            "type": "accommodation",
-            "created_by": accommodation.consultant.name,
-            "updated_at": accommodation.updated_at,
-            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
-        })
+        timezone = ZoneInfo(
+            accommodation.timezone_id
+        )
+
+        check_in_dt = accommodation.check_in.replace(
+            tzinfo=timezone
+        )
+
+        check_out_dt = accommodation.check_out.replace(
+            tzinfo=timezone
+        )
 
         calendar_items.append({
-            "name": accommodation.name + " - Check-out",
-            "date": accommodation.check_out.date(),
-            "start_time": accommodation.check_out.time(),
-            "end_time": (
-                accommodation.check_out + timedelta(minutes=30)
-            ).time(),
-            "location": accommodation.location, 
+            "name": f"{accommodation.name} - Check-in",
+            "date": accommodation.check_in.date(),
+            "start_time": check_in_dt,
+            "end_time": check_in_dt + timedelta(minutes=30),
+            "timezone": check_in_dt.strftime("%Z"),
+            "location": accommodation.location,
             "address": accommodation.address,
             "type": "accommodation",
             "created_by": accommodation.consultant.name,
             "updated_at": accommodation.updated_at,
-            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
+            "updated_by": (
+                accommodation.updated_by_user.name
+                if accommodation.updated_by_user
+                else None
+            )
         })
 
-    # Cruises
-        for cruise in cruises:
-    
-            calendar_items.append({
-                "name": cruise.name + " - Boarding",
-                "date": cruise.start_date.date(),
-                "start_time": cruise.start_date.time(),
-                "end_time": (
-                    cruise.start_date + timedelta(minutes=30)
-                ).time(),
-                "location": cruise.boarding_location, 
-                "address": cruise.boarding_address,
-                "type": "cruise",
-                "created_by": cruise.consultant.name,
-                "updated_at": cruise.updated_at,
-                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
-            })
+        calendar_items.append({
+            "name": f"{accommodation.name} - Check-out",
+            "date": accommodation.check_out.date(),
+            "start_time": check_out_dt,
+            "end_time": check_out_dt + timedelta(minutes=30),
+            "timezone": check_out_dt.strftime("%Z"),
+            "location": accommodation.location,
+            "address": accommodation.address,
+            "type": "accommodation",
+            "created_by": accommodation.consultant.name,
+            "updated_at": accommodation.updated_at,
+            "updated_by": (
+                accommodation.updated_by_user.name
+                if accommodation.updated_by_user
+                else None
+            )
+        })
 
-            calendar_items.append({
-                "name": cruise.name + " - Drop-off",
-                "date": cruise.end_date.date(),
-                "start_time": cruise.end_date.time(),
-                "end_time": (
-                    cruise.end_date + timedelta(minutes=30)
-                ).time(),
-                "type": "cruise",
-                "location": cruise.drop_off_location, 
-                "address": cruise.drop_off_address,
-                "created_by": cruise.consultant.name,
-                "updated_at": cruise.updated_at,
-                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
-            })
+    for cruise in cruises:
 
-    # Tours
-        for tour in tours:
-    
-            calendar_items.append({
-                "name": tour.name,
-                "date": tour.start_time.date(),
-                "start_time": tour.start_time.time(),
-                "end_time": tour.end_time.time(),
-                "location": tour.location, 
-                "address": tour.address,
-                "type": "tour",
-                "created_by": tour.consultant.name,
-                "updated_at": tour.updated_at,
-                "updated_by": tour.updated_by_user.name if tour.updated_by_user else None
-            })
+        timezone = ZoneInfo(
+            cruise.timezone_id
+        )
 
-    # Other bookings
+        start_dt = cruise.start_date.replace(
+            tzinfo=timezone
+        )
+
+        end_dt = cruise.end_date.replace(
+            tzinfo=timezone
+        )
+
+        calendar_items.append({
+            "name": f"{cruise.name} - Boarding",
+            "date": cruise.start_date.date(),
+            "start_time": start_dt,
+            "end_time": start_dt + timedelta(minutes=30),
+            "timezone": start_dt.strftime("%Z"),
+            "location": cruise.boarding_location,
+            "address": cruise.boarding_address,
+            "type": "cruise",
+            "created_by": cruise.consultant.name,
+            "updated_at": cruise.updated_at,
+            "updated_by": (
+                cruise.updated_by_user.name
+                if cruise.updated_by_user
+                else None
+            )
+        })
+
+        calendar_items.append({
+            "name": f"{cruise.name} - Drop-off",
+            "date": cruise.end_date.date(),
+            "start_time": end_dt,
+            "end_time": end_dt + timedelta(minutes=30),
+            "timezone": end_dt.strftime("%Z"),
+            "type": "cruise",
+            "location": cruise.drop_off_location,
+            "address": cruise.drop_off_address,
+            "created_by": cruise.consultant.name,
+            "updated_at": cruise.updated_at,
+            "updated_by": (
+                cruise.updated_by_user.name
+                if cruise.updated_by_user
+                else None
+            )
+        })
+
+    for tour in tours:
+
+        timezone = ZoneInfo(
+            tour.timezone_id
+        )
+
+        start_dt = tour.start_time.replace(
+            tzinfo=timezone
+        )
+
+        end_dt = tour.end_time.replace(
+            tzinfo=timezone
+        )
+
+        calendar_items.append({
+            "name": tour.name,
+            "date": tour.start_time.date(),
+            "start_time": start_dt,
+            "end_time": end_dt,
+            "timezone": start_dt.strftime("%Z"),
+            "location": tour.location,
+            "address": tour.address,
+            "type": "tour",
+            "created_by": tour.consultant.name,
+            "updated_at": tour.updated_at,
+            "updated_by": (
+                tour.updated_by_user.name
+                if tour.updated_by_user
+                else None
+            )
+        })
+
     for other in others:
+
+        timezone = ZoneInfo(
+            other.timezone_id
+        )
+
+        start_dt = other.start_time.replace(
+            tzinfo=timezone
+        )
+
+        end_dt = other.end_time.replace(
+            tzinfo=timezone
+        )
 
         calendar_items.append({
             "name": other.name,
             "date": other.start_time.date(),
-            "start_time": other.start_time.time(),
-            "end_time": other.end_time.time(),
+            "start_time": start_dt,
+            "end_time": end_dt,
+            "timezone": start_dt.strftime("%Z"),
+            "location": getattr(other, "location", None),
+            "address": getattr(other, "address", None),
             "type": "other",
             "created_by": other.consultant.name,
             "updated_at": other.updated_at,
-            "updated_by": other.updated_by_user.name if other.updated_by_user else None
+            "updated_by": (
+                other.updated_by_user.name
+                if other.updated_by_user
+                else None
+            )
         })
 
-    # Create Sunday -> Saturday dates
     week_dates = []
 
     current_date = week_start
@@ -311,15 +438,15 @@ def show_itinerary_overview(trip_id):
         week_dates.append(current_date)
         current_date += timedelta(days=1)
 
-    # Only keep items belonging to this week
     calendar_items = [
         item
         for item in calendar_items
         if week_start <= item["date"] <= week_end
     ]
 
-    # Calculate positions of each activity on the calendar
-    calendar_items = position_overlapping_items(calendar_items)
+    calendar_items = position_overlapping_items(
+        calendar_items
+    )
 
     return render_template(
         "itinerary-overview.html",
@@ -342,11 +469,9 @@ def show_itinerary_detailed(trip_id):
     if current_user not in trip.users:
         abort(403)
 
-    # Get day/date from URL
     date_string = request.args.get("date")
     current_day = request.args.get("day", type=int)
 
-    # If user selected a date from the date picker
     if date_string:
 
         try:
@@ -362,27 +487,22 @@ def show_itinerary_detailed(trip_id):
         except ValueError:
             current_day = 1
 
-    # Default to Day 1
     elif current_day is None:
         current_day = 1
 
-    # Trip duration
     trip_duration = (
         trip.end_date - trip.start_date
     ).days + 1
 
-    # Keep day inside trip
     current_day = max(
         1,
         min(current_day, trip_duration)
     )
 
-    # Calculate date from day number
     selected_date = trip.start_date + timedelta(
         days=current_day - 1
     )
 
-    # Get itinerary items from DB
     activities = Activity.query.filter_by(
         trip_id=trip.id
     ).all()
@@ -396,12 +516,12 @@ def show_itinerary_detailed(trip_id):
     ).all()
 
     tours = Tour.query.filter_by(
-            trip_id=trip.id
-        ).all()
+        trip_id=trip.id
+    ).all()
 
     cruises = Cruise.query.filter_by(
-            trip_id=trip.id
-        ).all()
+        trip_id=trip.id
+    ).all()
 
     others = Other.query.filter_by(
         trip_id=trip.id
@@ -409,156 +529,268 @@ def show_itinerary_detailed(trip_id):
 
     calendar_items = []
 
-    # Activities
     for activity in activities:
 
-        # Ignore unscheduled activities
         if activity.date is None:
             continue
 
-        calendar_items.append({ 
-            "id": activity.id, 
-            "name": activity.name, 
-            "date": activity.date, 
-            "start_time": activity.start_time, 
-            "end_time": activity.end_time, 
-            "location": activity.location, 
-            "address": activity.address, 
-            "notes": activity.notes, 
+        timezone = ZoneInfo(
+            activity.timezone_id
+        )
+
+        start_dt = datetime.combine(
+            activity.date,
+            activity.start_time,
+            tzinfo=timezone
+        )
+
+        end_dt = datetime.combine(
+            activity.date,
+            activity.end_time,
+            tzinfo=timezone
+        )
+
+        calendar_items.append({
+            "id": activity.id,
+            "name": activity.name,
+            "date": activity.date,
+            "start_time": activity.start_time,
+            "end_time": activity.end_time,
+            "timezone": get_timezone_name(
+                activity.date,
+                activity.start_time,
+                activity.timezone_id
+            ),
+            "location": activity.location,
+            "address": activity.address,
+            "notes": activity.notes,
             "created_by": activity.created_by_user.name,
             "type": "activity",
             "updated_at": activity.updated_at,
-            "updated_by": activity.updated_by_user.name if activity.updated_by_user else None
+            "updated_by": (
+                activity.updated_by_user.name
+                if activity.updated_by_user
+                else None
+            )
         })
 
-    # Flights
     for flight in flights:
+
+        departure_timezone = ZoneInfo(
+            flight.departure_timezone_id
+        )
+
+        arrival_timezone = ZoneInfo(
+            flight.timezone_id
+        )
+
+        departure_dt = flight.departure_time.replace(
+            tzinfo=departure_timezone
+        )
+
+        arrival_dt = flight.arrival_time.replace(
+            tzinfo=arrival_timezone
+        )
 
         calendar_items.append({
             "name": flight.name,
             "date": flight.departure_time.date(),
-            "start_time": flight.departure_time.time(),
-            "end_time": flight.arrival_time.time(),
-            "location": flight.departure_airport, 
-            "address": flight.departure_address, 
+            "start_time": departure_dt,
+            "end_time": arrival_dt,
+            "timezone": departure_dt.strftime("%Z"),
+            "start_timezone": departure_dt.strftime("%Z"),
+            "end_timezone": arrival_dt.strftime("%Z"),
+            "location": flight.departure_airport,
+            "address": flight.departure_address,
             "type": "flight",
             "created_by": flight.consultant.name,
             "updated_at": flight.updated_at,
-            "updated_by": flight.updated_by_user.name if flight.updated_by_user else None
+            "updated_by": (
+                flight.updated_by_user.name
+                if flight.updated_by_user
+                else None
+            )
         })
 
-    # Accommodation
     for accommodation in accommodations:
 
-        calendar_items.append({
-            "name": accommodation.name + " - Check-in",
-            "date": accommodation.check_in.date(),
-            "start_time": accommodation.check_in.time(),
-            "end_time": (
-                accommodation.check_in + timedelta(minutes=30)
-            ).time(),
-            "location": accommodation.location, 
-            "address": accommodation.address, 
-            "type": "accommodation",
-            "created_by": accommodation.consultant.name,
-            "updated_at": accommodation.updated_at,
-            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
-        })
+        timezone = ZoneInfo(
+            accommodation.timezone_id
+        )
+
+        check_in_dt = accommodation.check_in.replace(
+            tzinfo=timezone
+        )
+
+        check_out_dt = accommodation.check_out.replace(
+            tzinfo=timezone
+        )
 
         calendar_items.append({
-            "name": accommodation.name + " - Check-out",
-            "date": accommodation.check_out.date(),
-            "start_time": accommodation.check_out.time(),
-            "end_time": (
-                accommodation.check_out + timedelta(minutes=30)
-            ).time(),
-            "location": accommodation.location, 
+            "name": f"{accommodation.name} - Check-in",
+            "date": accommodation.check_in.date(),
+            "start_time": check_in_dt,
+            "end_time": check_in_dt + timedelta(minutes=30),
+            "timezone": check_in_dt.strftime("%Z"),
+            "location": accommodation.location,
             "address": accommodation.address,
             "type": "accommodation",
             "created_by": accommodation.consultant.name,
             "updated_at": accommodation.updated_at,
-            "updated_by": accommodation.updated_by_user.name if accommodation.updated_by_user else None
+            "updated_by": (
+                accommodation.updated_by_user.name
+                if accommodation.updated_by_user
+                else None
+            )
         })
 
-    # Cruises
-        for cruise in cruises:
-    
-            calendar_items.append({
-                "name": cruise.name + " - Boarding",
-                "date": cruise.start_date.date(),
-                "start_time": cruise.start_date.time(),
-                "end_time": (
-                    cruise.start_date + timedelta(minutes=30)
-                ).time(),
-                "location": cruise.boarding_location, 
-                "address": cruise.boarding_address,
-                "type": "cruise",
-                "created_by": cruise.consultant.name,
-                "updated_at": cruise.updated_at,
-                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
-            })
+        calendar_items.append({
+            "name": f"{accommodation.name} - Check-out",
+            "date": accommodation.check_out.date(),
+            "start_time": check_out_dt,
+            "end_time": check_out_dt + timedelta(minutes=30),
+            "timezone": check_out_dt.strftime("%Z"),
+            "location": accommodation.location,
+            "address": accommodation.address,
+            "type": "accommodation",
+            "created_by": accommodation.consultant.name,
+            "updated_at": accommodation.updated_at,
+            "updated_by": (
+                accommodation.updated_by_user.name
+                if accommodation.updated_by_user
+                else None
+            )
+        })
 
-            calendar_items.append({
-                "name": cruise.name + " - Drop-off",
-                "date": cruise.end_date.date(),
-                "start_time": cruise.end_date.time(),
-                "end_time": (
-                    cruise.end_date + timedelta(minutes=30)
-                ).time(),
-                "type": "cruise",
-                "location": cruise.drop_off_location, 
-                "address": cruise.drop_off_address,
-                "created_by": cruise.consultant.name,
-                "updated_at": cruise.updated_at,
-                "updated_by": cruise.updated_by_user.name if cruise.updated_by_user else None
-            })
+    for cruise in cruises:
 
-    # Tours
-        for tour in tours:
-    
-            calendar_items.append({
-                "name": tour.name,
-                "date": tour.start_time.date(),
-                "start_time": tour.start_time.time(),
-                "end_time": tour.end_time.time(),
-                "location": tour.location, 
-                "address": tour.address,
-                "type": "tour",
-                "created_by": tour.consultant.name,
-                "updated_at": tour.updated_at,
-                "updated_by": tour.updated_by_user.name if tour.updated_by_user else None
-            })
+        timezone = ZoneInfo(
+            cruise.timezone_id
+        )
 
-    # Other bookings
+        start_dt = cruise.start_date.replace(
+            tzinfo=timezone
+        )
+
+        end_dt = cruise.end_date.replace(
+            tzinfo=timezone
+        )
+
+        calendar_items.append({
+            "name": f"{cruise.name} - Boarding",
+            "date": cruise.start_date.date(),
+            "start_time": start_dt,
+            "end_time": start_dt + timedelta(minutes=30),
+            "timezone": start_dt.strftime("%Z"),
+            "location": cruise.boarding_location,
+            "address": cruise.boarding_address,
+            "type": "cruise",
+            "created_by": cruise.consultant.name,
+            "updated_at": cruise.updated_at,
+            "updated_by": (
+                cruise.updated_by_user.name
+                if cruise.updated_by_user
+                else None
+            )
+        })
+
+        calendar_items.append({
+            "name": f"{cruise.name} - Drop-off",
+            "date": cruise.end_date.date(),
+            "start_time": end_dt,
+            "end_time": end_dt + timedelta(minutes=30),
+            "timezone": end_dt.strftime("%Z"),
+            "type": "cruise",
+            "location": cruise.drop_off_location,
+            "address": cruise.drop_off_address,
+            "created_by": cruise.consultant.name,
+            "updated_at": cruise.updated_at,
+            "updated_by": (
+                cruise.updated_by_user.name
+                if cruise.updated_by_user
+                else None
+            )
+        })
+
+    for tour in tours:
+
+        timezone = ZoneInfo(
+            tour.timezone_id
+        )
+
+        start_dt = tour.start_time.replace(
+            tzinfo=timezone
+        )
+
+        end_dt = tour.end_time.replace(
+            tzinfo=timezone
+        )
+
+        calendar_items.append({
+            "name": tour.name,
+            "date": tour.start_time.date(),
+            "start_time": start_dt,
+            "end_time": end_dt,
+            "timezone": start_dt.strftime("%Z"),
+            "location": tour.location,
+            "address": tour.address,
+            "type": "tour",
+            "created_by": tour.consultant.name,
+            "updated_at": tour.updated_at,
+            "updated_by": (
+                tour.updated_by_user.name
+                if tour.updated_by_user
+                else None
+            )
+        })
+
     for other in others:
+
+        timezone = ZoneInfo(
+            other.timezone_id
+        )
+
+        start_dt = other.start_time.replace(
+            tzinfo=timezone
+        )
+
+        end_dt = other.end_time.replace(
+            tzinfo=timezone
+        )
 
         calendar_items.append({
             "name": other.name,
             "date": other.start_time.date(),
-            "start_time": other.start_time.time(),
-            "end_time": other.end_time.time(),
+            "start_time": start_dt,
+            "end_time": end_dt,
+            "timezone": start_dt.strftime("%Z"),
+            "location": getattr(other, "location", None),
+            "address": getattr(other, "address", None),
             "type": "other",
             "created_by": other.consultant.name,
             "updated_at": other.updated_at,
-            "updated_by": other.updated_by_user.name if other.updated_by_user else None
+            "updated_by": (
+                other.updated_by_user.name
+                if other.updated_by_user
+                else None
+            )
         })
 
-    # Only show activities for the selected day
     calendar_items = [
         item
         for item in calendar_items
         if item["date"] == selected_date
     ]
 
-    # Show unassigned activities in separate panel
     unassigned_activities = [
         activity
         for activity in activities
         if activity.date is None
     ]
 
-    # Calculate positions of each activity on the calendar
-    calendar_items = position_overlapping_items(calendar_items)
+    calendar_items = position_overlapping_items(
+        calendar_items
+    )
 
     return render_template(
         "itinerary-detailed.html",
@@ -570,23 +802,21 @@ def show_itinerary_detailed(trip_id):
         unassigned_activities=unassigned_activities
     )
 
+
 @itinerary_bp.route("/delete/<int:activity_id>", methods=["POST"])
 @login_required
 def delete_activity(activity_id):
 
     activity = Activity.query.get_or_404(activity_id)
 
-    # Get the trip using the activity's trip_id
     trip = Trip.query.get_or_404(activity.trip_id)
 
-    # Make sure the current user belongs to this trip
     if current_user not in trip.users:
         abort(403)
 
     db.session.delete(activity)
     db.session.commit()
 
-    # Keep the user on the day they were viewing
     day = request.form.get("day", type=int)
 
     return redirect(url_for(
@@ -594,6 +824,7 @@ def delete_activity(activity_id):
         trip_id=trip.id,
         day=day or 1
     ))
+
 
 @itinerary_bp.route("/edit/<int:activity_id>", methods=["POST"])
 @login_required
@@ -638,6 +869,7 @@ def edit_activity(activity_id):
         day=day or 1
     ))
 
+
 @itinerary_bp.route("/move/<int:activity_id>", methods=["POST"])
 @login_required
 def move_activity(activity_id):
@@ -653,14 +885,14 @@ def move_activity(activity_id):
     start_time = request.form.get("start_time")
     end_time = request.form.get("end_time")
 
-    # Dropped back into unassigned panel
     if not date_string:
+
         activity.date = None
         activity.start_time = None
         activity.end_time = None
 
-    # Dropped onto timeline
     else:
+
         activity.date = datetime.strptime(
             date_string,
             "%Y-%m-%d"
@@ -679,6 +911,7 @@ def move_activity(activity_id):
     db.session.commit()
 
     return {"success": True}
+
 
 @itinerary_bp.route("/add/<int:trip_id>", methods=["POST"])
 @login_required
@@ -711,6 +944,7 @@ def add_activity(trip_id):
         start_time=None,
         end_time=None,
         created_by=current_user.name,
+        timezone_id=trip.timezone_id
     )
 
     db.session.add(activity)
@@ -723,4 +957,3 @@ def add_activity(trip_id):
         trip_id=trip.id,
         day=day or 1
     ))
-

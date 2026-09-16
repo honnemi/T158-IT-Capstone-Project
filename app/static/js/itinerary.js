@@ -18,6 +18,7 @@ if (itineraryPage) {
     const itineraryUrl =
         itineraryPage.dataset.itineraryUrl;
 
+    // Disable buttons at the limits
     if (previousDayButton) {
 
         previousDayButton.addEventListener("click", () => {
@@ -52,6 +53,7 @@ if (itineraryPage) {
 
     }
 
+    // Date picker navigation
     if (nativeDate) {
 
         nativeDate.addEventListener("change", () => {

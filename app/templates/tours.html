@@ -83,7 +83,7 @@
         {% for tour in tours %}
           <div class="flight-card tour-card">
             <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
-              <h2>{{ tour.name }}</h2>
+              <h5>{{ tour.name }}</h5>
 
               {% if tour.consultant %}
                 <span class="booked-by">Booked by {{ tour.consultant.name }}</span>

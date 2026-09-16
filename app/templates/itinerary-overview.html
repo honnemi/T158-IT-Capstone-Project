@@ -11,7 +11,7 @@
   <!--Trip name-->
   <div class="row mb-4 text-center text-md-start">
     <div class="col">
-      <h1 class="display-6 fw-bold">{{ trip.name }}</h1>
+      <h1 class="display-6">{{ trip.name }}</h1>
     </div>
   </div>
 
@@ -23,14 +23,14 @@
         <a
           href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id, week=week-1) }}"
           id="previous-week"
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          class="btn primary-white-btn d-inline-flex align-items-center justify-content-center"
           aria-label="Previous Week"
         >
           <i class="bi bi-caret-left-fill"></i>
         </a>
       {% else %}
         <button
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          class="btn primary-white-btn d-inline-flex align-items-center justify-content-center"
           aria-label="Previous Week"
           disabled
         >
@@ -39,11 +39,11 @@
       {% endif %}
 
       <div class="d-flex flex-column text-center">
-        <h5 id="week-counter" class="mb-0 fs-6 fs-sm-5 fw-bold">
+        <h5 id="week-counter" class="mb-0 fs-6 fs-sm-5">
           Week {{ week }}
         </h5>
 
-        <div id="week-dates" class="text-muted" style="font-size: 0.85rem">
+        <div id="week-dates" class="md-gray-text" style="font-size: 0.85rem">
           {{ week_start.strftime('%d %b %Y') }} -
           {{ week_end.strftime('%d %b %Y') }}
         </div>
@@ -53,14 +53,14 @@
         <a
           href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id, week=week+1) }}"
           id="next-week"
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          class="btn primary-white-btn d-inline-flex align-items-center justify-content-center"
           aria-label="Next Week"
         >
           <i class="bi bi-caret-right-fill"></i>
         </a>
       {% else %}
         <button
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          class="btn primary-white-btn d-inline-flex align-items-center justify-content-center"
           aria-label="Next Week"
           disabled
         >
@@ -73,7 +73,7 @@
     <!--Navigate to daily view (detailed itinerary)-->
     <div class="col-12 col-md-4 d-flex justify-content-center justify-content-md-end">
       <a href="{{ url_for('itinerary.show_itinerary_detailed', trip_id=trip.id) }}"
-        class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto">
+        class="btn primary-blue-btn d-inline-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto">
         Switch to Daily View
         <i class="bi bi-calendar-event ms-2"></i>
       </a>
@@ -85,8 +85,8 @@
       <div class="overflow-x-auto">
         <div style="min-width: 720px">
           <!--Calendar Header-->
-          <div class="row text-center border-bottom pb-2 pt-3 mb-0 fw-bold overflow-y-hidden m-0 bg-light">
-            <div class="col-auto text-end text-nowrap pe-3 text-muted" style="width: 90px">
+          <div class="row text-center border-bottom pb-2 pt-3 mb-0 overflow-y-hidden m-0 light-gray-bg">
+            <div class="col-auto text-end text-nowrap pe-3 md-gray-text" style="width: 90px">
               <h6>Time</h6>
             </div>
             <!--Could write a loop to optimise this-->
@@ -120,7 +120,7 @@
 
             <div class="row m-0" style="height: 3000px">
               <div
-                class="col-auto d-flex flex-column justify-content-around text-end text-nowrap pe-3 text-muted border-end"
+                class="col-auto d-flex flex-column justify-content-around text-end text-nowrap pe-3 md-gray-text border-end"
                 style="
                   width: 90px;
                   height: 100%;
@@ -173,7 +173,7 @@
                       "
                     >
 
-                      <div class="fw-bold small text-truncate">
+                      <div class="small text-truncate">
                         {{ activity.name }}
                       </div>
 
