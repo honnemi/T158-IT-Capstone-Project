@@ -77,6 +77,7 @@ class Trip(db.Model):
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
     whiteboard = db.Column(db.Text, nullable=True)
+    timezone_id = db.Column(db.String(64), nullable=False)
 
     consultant_id = db.Column(
         db.Integer,
@@ -107,6 +108,7 @@ class Activity(db.Model):
     notes = db.Column(db.String(8000), nullable=True)
     location = db.Column(db.String(200), nullable=True)
     address = db.Column(db.String(500), nullable=True)
+    timezone_id = db.Column(db.String(64), nullable=False)
 
     created_by = db.Column(
         db.Integer,
@@ -138,8 +140,8 @@ class Activity(db.Model):
 
     updated_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=datetime.now,
+        onupdate=datetime.now
     )
 
 
@@ -151,6 +153,7 @@ class Booking(db.Model):
     cost = db.Column(db.Float, nullable=False)
     location = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(500), nullable=True)
+    timezone_id = db.Column(db.String(64), nullable=False)
     
     updated_by = db.Column(
         db.Integer,
@@ -168,8 +171,8 @@ class Booking(db.Model):
 
     updated_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=datetime.now,
+        onupdate=datetime.now
     )
 
     @declared_attr
@@ -197,6 +200,8 @@ class Flight(Booking):
 
     arrival_airport = db.Column(db.String(100), nullable=False)
     arrival_address = db.Column(db.String(500), nullable=True)
+    
+    departure_timezone_id = db.Column(db.String(64), nullable=False)
 
     flight_number = db.Column(db.String(20), nullable=False)
     departure_time = db.Column(db.DateTime, nullable=False)
@@ -294,6 +299,6 @@ class Budget(db.Model):
 
     updated_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=datetime.now,
+        onupdate=datetime.now
     )

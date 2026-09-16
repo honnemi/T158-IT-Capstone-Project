@@ -24,6 +24,10 @@ def seed_database():
         db.drop_all()
         db.create_all()
 
+        # =========================
+        # Users
+        # =========================
+
         alex = User(
             name="Alex Morgan",
             email="alex@example.com",
@@ -48,6 +52,10 @@ def seed_database():
         db.session.add_all([alex, sam, jordan])
         db.session.commit()
 
+        # =========================
+        # Consultants
+        # =========================
+
         consultant = Consultant(
             name="Sarah Jenkins",
             email="sarah@globetrottertravel.com"
@@ -55,7 +63,7 @@ def seed_database():
 
         consultant_two = Consultant(
             name="Daniel Kim",
-             email="daniel@globetrottertravel.com"
+            email="daniel@globetrottertravel.com"
         )
 
         consultant_three = Consultant(
@@ -70,10 +78,15 @@ def seed_database():
         ])
         db.session.commit()
 
+        # =========================
+        # Trip
+        # =========================
+
         trip = Trip(
             name="Tokyo Adventure",
             start_date=date(2026, 10, 10),
             end_date=date(2026, 10, 17),
+            timezone_id="Asia/Tokyo",
             consultant=consultant,
             users=[alex, sam, jordan]
         )
@@ -81,17 +94,27 @@ def seed_database():
         db.session.add(trip)
         db.session.commit()
 
+        # =========================
+        # Budget
+        # =========================
+
         budget = Budget(
             name="Tokyo Travel Fund",
             total_amount=5000,
             trip_id=trip.id
         )
 
+        # =========================
+        # Flights
+        # =========================
+
         flight_outbound = Flight(
             name="Outbound Flight - LAX to NRT",
             cost=650,
             location="Los Angeles International Airport",
             address="1 World Way, Los Angeles, CA 90045, USA",
+            timezone_id="America/Los_Angeles",
+            departure_timezone_id="America/Los_Angeles",
             trip_id=trip.id,
             consultant=consultant,
             departure_airport="LAX",
@@ -108,6 +131,8 @@ def seed_database():
             cost=700,
             location="Narita International Airport",
             address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
+            timezone_id="Asia/Tokyo",
+            departure_timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             departure_airport="NRT",
@@ -119,11 +144,16 @@ def seed_database():
             arrival_time=datetime(2026, 10, 18, 10, 45)
         )
 
+        # =========================
+        # Accommodation
+        # =========================
+
         hotel = Accommodation(
             name="Shinjuku Park Hotel",
             cost=1400,
             location="Shinjuku",
             address="3-7-1 Nishi-Shinjuku, Shinjuku City, Tokyo, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             check_in=datetime(2026, 10, 11, 15, 0),
@@ -134,11 +164,16 @@ def seed_database():
             contact_phone="+81 3 1234 5678"
         )
 
+        # =========================
+        # Other Bookings
+        # =========================
+
         jr_pass = Other(
             name="Japan Rail Pass",
             cost=500,
             location="Tokyo Station",
             address="1 Chome Marunouchi, Chiyoda City, Tokyo, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             start_time=datetime(2026, 10, 11, 16, 0),
@@ -150,6 +185,7 @@ def seed_database():
             cost=120,
             location="Narita International Airport",
             address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             start_time=datetime(2026, 10, 11, 16, 0),
@@ -161,17 +197,23 @@ def seed_database():
             cost=180,
             location="Shibuya",
             address="Shibuya, Tokyo, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             start_time=datetime(2026, 10, 12, 19, 0),
             end_time=datetime(2026, 10, 12, 21, 0)
         )
 
+        # =========================
+        # Tours
+        # =========================
+
         tokyo_food_tour = Tour(
             name="Tokyo Food Tour",
             cost=150,
             location="Tsukiji",
             address="Tsukiji, Chuo City, Tokyo, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             start_time=datetime(2026, 10, 13, 18, 0),
@@ -183,17 +225,23 @@ def seed_database():
             cost=100,
             location="Asakusa",
             address="Asakusa, Taito City, Tokyo, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             start_time=datetime(2026, 10, 14, 10, 30),
             end_time=datetime(2026, 10, 14, 13, 0)
         )
 
+        # =========================
+        # Cruises
+        # =========================
+
         tokyo_bay_cruise = Cruise(
             name="Tokyo Bay Dinner Cruise",
             cost=250,
             location="Tokyo Bay",
             address="Tokyo Bay, Tokyo, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             start_date=datetime(2026, 10, 15, 18, 0),
@@ -210,6 +258,7 @@ def seed_database():
             cost=600,
             location="Yokohama",
             address="Yokohama Port, Yokohama, Japan",
+            timezone_id="Asia/Tokyo",
             trip_id=trip.id,
             consultant=consultant,
             start_date=datetime(2026, 10, 16, 8, 0),
@@ -235,6 +284,12 @@ def seed_database():
             japan_coastal_cruise
         ])
 
+        db.session.commit()
+
+        # =========================
+        # Activities
+        # =========================
+
         activities = [
             Activity(
                 name="Arrive in Tokyo",
@@ -244,9 +299,11 @@ def seed_database():
                 notes="Arrive at Narita Airport and collect luggage.",
                 location="Narita International Airport",
                 address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=alex.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Check in to Hotel",
                 date=date(2026, 10, 11),
@@ -255,9 +312,11 @@ def seed_database():
                 notes="Check in and settle into the hotel.",
                 location="Shinjuku",
                 address="3-7-1 Nishi-Shinjuku, Shinjuku City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=sam.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Visit Senso-ji Temple",
                 date=date(2026, 10, 12),
@@ -266,9 +325,11 @@ def seed_database():
                 notes="Explore Tokyo's oldest temple.",
                 location="Senso-ji Temple",
                 address="2 Chome-3-1 Asakusa, Taito City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=alex.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Asakusa Market",
                 date=date(2026, 10, 12),
@@ -277,9 +338,11 @@ def seed_database():
                 notes="Browse local food and souvenir stalls.",
                 location="Nakamise Shopping Street",
                 address="1 Chome-36-3 Asakusa, Taito City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=sam.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Shibuya Crossing",
                 date=date(2026, 10, 12),
@@ -288,9 +351,11 @@ def seed_database():
                 notes="Visit the famous Shibuya Crossing.",
                 location="Shibuya Crossing",
                 address="2 Chome-24-1 Shibuya, Shibuya City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=jordan.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="teamLab Planets",
                 date=date(2026, 10, 12),
@@ -299,9 +364,11 @@ def seed_database():
                 notes="Visit the immersive digital art museum.",
                 location="teamLab Planets TOKYO",
                 address="6 Chome-1-16 Toyosu, Koto City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=sam.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Tokyo Skytree",
                 date=date(2026, 10, 13),
@@ -310,9 +377,11 @@ def seed_database():
                 notes="Visit the Tokyo Skytree observation decks.",
                 location="Tokyo Skytree",
                 address="1 Chome-1-2 Oshiage, Sumida City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=alex.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Lunch in Akihabara",
                 date=date(2026, 10, 13),
@@ -321,9 +390,11 @@ def seed_database():
                 notes="Lunch and explore local restaurants.",
                 location="Akihabara",
                 address="Akihabara, Taito City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=jordan.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Akihabara Shopping",
                 date=date(2026, 10, 13),
@@ -332,9 +403,11 @@ def seed_database():
                 notes="Shop for electronics, games and anime merchandise.",
                 location="Akihabara",
                 address="Akihabara, Taito City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=sam.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Meiji Shrine",
                 date=date(2026, 10, 14),
@@ -343,9 +416,11 @@ def seed_database():
                 notes="Visit the famous Shinto shrine.",
                 location="Meiji Jingu",
                 address="1-1 Yoyogikamizonocho, Shibuya City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=alex.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Harajuku Exploration",
                 date=date(2026, 10, 14),
@@ -354,9 +429,11 @@ def seed_database():
                 notes="Explore Takeshita Street and surrounding shops.",
                 location="Harajuku",
                 address="Harajuku, Shibuya City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=jordan.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Shinjuku Gyoen",
                 date=date(2026, 10, 14),
@@ -365,9 +442,11 @@ def seed_database():
                 notes="Walk through the gardens and relax.",
                 location="Shinjuku Gyoen National Garden",
                 address="11 Naitomachi, Shinjuku City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=sam.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Mount Fuji Day Trip",
                 date=date(2026, 10, 15),
@@ -376,9 +455,11 @@ def seed_database():
                 notes="Full-day trip to Mount Fuji.",
                 location="Mount Fuji",
                 address="Mount Fuji, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=alex.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Tsukiji Outer Market",
                 date=date(2026, 10, 16),
@@ -387,9 +468,11 @@ def seed_database():
                 notes="Explore the market and try local seafood.",
                 location="Tsukiji Outer Market",
                 address="4 Chome-16-2 Tsukiji, Chuo City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=sam.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Imperial Palace",
                 date=date(2026, 10, 16),
@@ -398,9 +481,11 @@ def seed_database():
                 notes="Explore the Imperial Palace grounds.",
                 location="Imperial Palace",
                 address="1-1 Chiyoda, Chiyoda City, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=jordan.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Tokyo Night Tour",
                 date=date(2026, 10, 16),
@@ -409,9 +494,11 @@ def seed_database():
                 notes="Explore Tokyo's nightlife.",
                 location="Shinjuku",
                 address="Shinjuku, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=alex.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Final Shopping",
                 date=date(2026, 10, 17),
@@ -420,9 +507,11 @@ def seed_database():
                 notes="Last-minute shopping and souvenirs.",
                 location="Shibuya",
                 address="Shibuya, Tokyo, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=sam.id,
                 trip_id=trip.id
             ),
+
             Activity(
                 name="Return to Narita Airport",
                 date=date(2026, 10, 17),
@@ -431,6 +520,7 @@ def seed_database():
                 notes="Travel from Tokyo to Narita Airport.",
                 location="Narita International Airport",
                 address="1-1 Furugome, Narita, Chiba 282-0004, Japan",
+                timezone_id="Asia/Tokyo",
                 created_by=alex.id,
                 trip_id=trip.id
             )
@@ -439,8 +529,13 @@ def seed_database():
         db.session.add_all(activities)
         db.session.commit()
 
+        # =========================
+        # Output
+        # =========================
+
         print("Database seeded successfully.")
         print()
+
         print(f"Users: {User.query.count()}")
         print(f"Consultants: {Consultant.query.count()}")
         print(f"Trips: {Trip.query.count()}")
@@ -457,24 +552,29 @@ def seed_database():
             print(
                 f"Flight: {flight.name} | "
                 f"{flight.departure_airport} → {flight.arrival_airport} | "
+                f"Timezone: {flight.timezone_id} | "
+                f"Departure timezone: {flight.departure_timezone_id} | "
                 f"Consultant: {flight.consultant.name}"
             )
 
         for accommodation in Accommodation.query.all():
             print(
                 f"Accommodation: {accommodation.name} | "
+                f"Timezone: {accommodation.timezone_id} | "
                 f"Consultant: {accommodation.consultant.name}"
             )
 
         for other in Other.query.all():
             print(
                 f"Other: {other.name} | "
+                f"Timezone: {other.timezone_id} | "
                 f"Consultant: {other.consultant.name}"
             )
 
         for tour in Tour.query.all():
             print(
                 f"Tour: {tour.name} | "
+                f"Timezone: {tour.timezone_id} | "
                 f"Consultant: {tour.consultant.name}"
             )
 
@@ -482,7 +582,16 @@ def seed_database():
             print(
                 f"Cruise: {cruise.name} | "
                 f"{cruise.boarding_location} → {cruise.drop_off_location} | "
+                f"Timezone: {cruise.timezone_id} | "
                 f"Consultant: {cruise.consultant.name}"
+            )
+
+        for activity in Activity.query.all():
+            print(
+                f"Activity: {activity.name} | "
+                f"Date: {activity.date} | "
+                f"Timezone: {activity.timezone_id} | "
+                f"Created by: {activity.created_by_user.name}"
             )
 
 
