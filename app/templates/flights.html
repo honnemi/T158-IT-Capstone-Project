@@ -75,9 +75,21 @@
             <span class="airline">{{ flight.flight_number }}</span>
           </div>
 
-          {% if flight.consultant %}
-          <span class="booked-by">Booked by {{ flight.consultant.name }}</span>
-          {% endif %}
+          <div class="text-end text-nowrap">
+
+            {% if flight.consultant %}
+            <div class="booked-by">
+              Booked by {{ flight.consultant.name }}
+            </div>
+            {% endif %}
+
+            {% if flight.updated_at %}
+            <div class="booked-by">
+              Last updated {{ flight.updated_at.strftime('%d %b %Y at %H:%M') }}
+            </div>
+            {% endif %}
+
+          </div>
         </div>
 
         <div class="flight-detail">

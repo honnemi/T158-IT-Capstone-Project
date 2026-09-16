@@ -12,67 +12,53 @@
 <div class="container-fluid main-layout">
   <div class="row g-4">
     <aside class="col-lg-3 timeline-sidebar">
-          {% if grouped_timeline %}
-            {% for date, events in grouped_timeline.items() %}
-              <div class="day-group">
-                <h5>{{ date.strftime('%A %d %b')|replace(' 0', ' ') }}</h5>
-    
-                {% for event in events %}
-                  <div class="timeline-item {{ event.colour }}">
-                    <div>
-                      <strong>{{ event.title }}</strong>
-                      <small>{{ event.time }}</small>
-                    </div>
-                  </div>
-                {% endfor %}
-              </div>
-            {% endfor %}
-          {% else %}
-            <div class="day-group">
-              <h5>No bookings yet</h5>
-              <small>Booking dates will appear here once they are added.</small>
-            </div>
-          {% endif %}
-        </aside>
+      {% if grouped_timeline %}
+      {% for date, events in grouped_timeline.items() %}
+      <div class="day-group">
+        <h5>{{ date.strftime('%A %d %b')|replace(' 0', ' ') }}</h5>
+
+        {% for event in events %}
+        <div class="timeline-item {{ event.colour }}">
+          <div>
+            <strong>{{ event.title }}</strong>
+            <small>{{ event.time }}</small>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="day-group">
+        <h5>No bookings yet</h5>
+        <small>Booking dates will appear here once they are added.</small>
+      </div>
+      {% endif %}
+    </aside>
 
     <main class="col-lg-9 content-area">
-<div class="booking-tabs d-flex flex-wrap">
-        <a
-          href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+      <div class="booking-tabs d-flex flex-wrap">
+        <a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="booking-tab text-decoration-none">
           <i class="bi bi-airplane-fill me-2"></i>
           Flights
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_accommodations', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_accommodations', trip_id=trip.id) }}"
+          class="booking-tab text-decoration-none">
           <i class="bi bi-building-fill me-2"></i>
           Accommodations
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_cruises', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_cruises', trip_id=trip.id) }}" class="booking-tab text-decoration-none">
           <i class="bi bi-water me-2"></i>
           Cruises
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_tours', trip_id=trip.id) }}"
-          class="booking-tab active text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_tours', trip_id=trip.id) }}" class="booking-tab active text-decoration-none">
           <i class="bi bi-map-fill me-2"></i>
           Tours
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_other', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_other', trip_id=trip.id) }}" class="booking-tab text-decoration-none">
           <i class="bi bi-ticket-perforated-fill me-2"></i>
           Other
         </a>
@@ -80,59 +66,72 @@
       </div>
 
       {% if tours %}
-        {% for tour in tours %}
-          <div class="flight-card tour-card">
-            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
-              <h5>{{ tour.name }}</h5>
+      {% for tour in tours %}
+      <div class="flight-card tour-card">
+        <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
+          <h5>{{ tour.name }}</h5>
 
-              {% if tour.consultant %}
-                <span class="booked-by">Booked by {{ tour.consultant.name }}</span>
-              {% endif %}
+          <div class="text-end text-nowrap">
+
+            {% if tour.consultant %}
+            <div class="booked-by">
+              Booked by {{ tour.consultant.name }}
             </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-calendar"></i>
-              <span>{{ tour.start_time.strftime('%A %d %b %Y')|replace(' 0', ' ') }}</span>
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-clock"></i>
-              <span>{{ tour.start_time.strftime('%H:%M') }} - {{ tour.end_time.strftime('%H:%M') }}</span>
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-geo-alt"></i>
-              <span>{{ tour.location }}</span>
-            </div>
-
-            {% if tour.address %}
-              <div class="flight-detail">
-                <i class="bi bi-signpost"></i>
-                <span>{{ tour.address }}</span>
-              </div>
             {% endif %}
 
-            <div class="flight-detail">
-              <i class="bi bi-tag"></i>
-              <span>${{ '%.2f'|format(tour.cost) }}</span>
+            {% if tour.updated_at %}
+            <div class="booked-by">
+              Last updated {{ tour.updated_at.strftime('%d %b %Y at %H:%M') }}
             </div>
+            {% endif %}
 
-            <div class="text-end mt-3" style="position: relative">
-              <button class="kebab-btn" type="button" onclick="toggleMenu(this)">
-                <i class="bi bi-three-dots-vertical"></i>
-              </button>
-              <div class="accom-menu">
-                <a href="#" class="accom-menu-item">View tour details</a>
-                <a href="{{ url_for('contact.show_contact') }}" class="accom-menu-item">Contact consultant</a>
-              </div>
-            </div>
           </div>
-        {% endfor %}
-      {% else %}
-        <div class="booking-empty-state">
-          <h3>No tours booked</h3>
-          <p>Tours added to this trip will appear here.</p>
+
         </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-calendar"></i>
+          <span>{{ tour.start_time.strftime('%A %d %b %Y')|replace(' 0', ' ') }}</span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-clock"></i>
+          <span>{{ tour.start_time.strftime('%H:%M') }} - {{ tour.end_time.strftime('%H:%M') }}</span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-geo-alt"></i>
+          <span>{{ tour.location }}</span>
+        </div>
+
+        {% if tour.address %}
+        <div class="flight-detail">
+          <i class="bi bi-signpost"></i>
+          <span>{{ tour.address }}</span>
+        </div>
+        {% endif %}
+
+        <div class="flight-detail">
+          <i class="bi bi-tag"></i>
+          <span>${{ '%.2f'|format(tour.cost) }}</span>
+        </div>
+
+        <div class="text-end mt-3" style="position: relative">
+          <button class="kebab-btn" type="button" onclick="toggleMenu(this)">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <div class="accom-menu">
+            <a href="#" class="accom-menu-item">View tour details</a>
+            <a href="{{ url_for('contact.show_contact') }}" class="accom-menu-item">Contact consultant</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="booking-empty-state">
+        <h3>No tours booked</h3>
+        <p>Tours added to this trip will appear here.</p>
+      </div>
       {% endif %}
     </main>
   </div>
