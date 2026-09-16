@@ -12,67 +12,54 @@
 <div class="container-fluid main-layout">
   <div class="row g-4">
     <aside class="col-lg-3 timeline-sidebar">
-          {% if grouped_timeline %}
-            {% for date, events in grouped_timeline.items() %}
-              <div class="day-group">
-                <h5>{{ date.strftime('%A %d %b')|replace(' 0', ' ') }}</h5>
-    
-                {% for event in events %}
-                  <div class="timeline-item {{ event.colour }}">
-                    <div>
-                      <strong>{{ event.title }}</strong>
-                      <small>{{ event.time }}</small>
-                    </div>
-                  </div>
-                {% endfor %}
-              </div>
-            {% endfor %}
-          {% else %}
-            <div class="day-group">
-              <h5>No bookings yet</h5>
-              <small>Booking dates will appear here once they are added.</small>
-            </div>
-          {% endif %}
-        </aside>
+      {% if grouped_timeline %}
+      {% for date, events in grouped_timeline.items() %}
+      <div class="day-group">
+        <h5>{{ date.strftime('%A %d %b')|replace(' 0', ' ') }}</h5>
+
+        {% for event in events %}
+        <div class="timeline-item {{ event.colour }}">
+          <div>
+            <strong>{{ event.title }}</strong>
+            <small>{{ event.time }}</small>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="day-group">
+        <h5>No bookings yet</h5>
+        <small>Booking dates will appear here once they are added.</small>
+      </div>
+      {% endif %}
+    </aside>
 
     <main class="col-lg-9 content-area">
-<div class="booking-tabs d-flex flex-wrap">
-        <a
-          href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+      <div class="booking-tabs d-flex flex-wrap">
+        <a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="booking-tab text-decoration-none">
           <i class="bi bi-airplane-fill me-2"></i>
           Flights
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_accommodations', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_accommodations', trip_id=trip.id) }}"
+          class="booking-tab text-decoration-none">
           <i class="bi bi-building-fill me-2"></i>
           Accommodations
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_cruises', trip_id=trip.id) }}"
-          class="booking-tab active text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_cruises', trip_id=trip.id) }}"
+          class="booking-tab active text-decoration-none">
           <i class="bi bi-water me-2"></i>
           Cruises
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_tours', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_tours', trip_id=trip.id) }}" class="booking-tab text-decoration-none">
           <i class="bi bi-map-fill me-2"></i>
           Tours
         </a>
 
-        <a
-          href="{{ url_for('bookings.show_other', trip_id=trip.id) }}"
-          class="booking-tab text-decoration-none"
-        >
+        <a href="{{ url_for('bookings.show_other', trip_id=trip.id) }}" class="booking-tab text-decoration-none">
           <i class="bi bi-ticket-perforated-fill me-2"></i>
           Other
         </a>
@@ -80,69 +67,84 @@
       </div>
 
       {% if cruises %}
-        {% for cruise in cruises %}
-          <div class="flight-card cruise-card">
-            <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
-              <div>
-                <h5>{{ cruise.name }}</h5>
-                {% if cruise.cruise_line %}
-                  <span class="airline">{{ cruise.cruise_line }}</span>
-                {% endif %}
-              </div>
-
-              {% if cruise.consultant %}
-                <span class="booked-by">Booked by {{ cruise.consultant.name }}</span>
-              {% endif %}
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-calendar"></i>
-              <span>
-                {{ cruise.start_date.strftime('%a %d %b %Y')|replace(' 0', ' ') }} -
-                {{ cruise.end_date.strftime('%a %d %b %Y')|replace(' 0', ' ') }}
-              </span>
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-clock"></i>
-              <span>{{ cruise.start_date.strftime('%H:%M') }} - {{ cruise.end_date.strftime('%H:%M') }}</span>
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-box-arrow-right"></i>
-              <span>
-                Board: {{ cruise.boarding_location }}{% if cruise.boarding_address %} — {{ cruise.boarding_address }}{% endif %}
-              </span>
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-box-arrow-in-right"></i>
-              <span>
-                Drop-off: {{ cruise.drop_off_location }}{% if cruise.drop_off_address %} — {{ cruise.drop_off_address }}{% endif %}
-              </span>
-            </div>
-
-            <div class="flight-detail">
-              <i class="bi bi-tag"></i>
-              <span>${{ '%.2f'|format(cruise.cost) }}</span>
-            </div>
-
-            <div class="text-end mt-3" style="position: relative">
-              <button class="kebab-btn" type="button" onclick="toggleMenu(this)">
-                <i class="bi bi-three-dots-vertical"></i>
-              </button>
-              <div class="accom-menu">
-                <a href="#" class="accom-menu-item">View cruise details</a>
-                <a href="{{ url_for('contact.show_contact') }}" class="accom-menu-item">Contact consultant</a>
-              </div>
-            </div>
+      {% for cruise in cruises %}
+      <div class="flight-card cruise-card">
+        <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
+          <div>
+            <h5>{{ cruise.name }}</h5>
+            {% if cruise.cruise_line %}
+            <span class="airline">{{ cruise.cruise_line }}</span>
+            {% endif %}
           </div>
-        {% endfor %}
-      {% else %}
-        <div class="booking-empty-state">
-          <h3>No cruises booked</h3>
-          <p>Cruises added to this trip will appear here.</p>
+
+          <div class="text-end text-nowrap">
+
+            {% if cruise.consultant %}
+            <div class="booked-by">
+              Booked by {{ cruise.consultant.name }}
+            </div>
+            {% endif %}
+
+            {% if cruise.updated_at %}
+            <div class="booked-by">
+              Last updated {{ cruise.updated_at.strftime('%d %b %Y at %H:%M') }}
+            </div>
+            {% endif %}
+
+          </div>
+
         </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-calendar"></i>
+          <span>
+            {{ cruise.start_date.strftime('%a %d %b %Y')|replace(' 0', ' ') }} -
+            {{ cruise.end_date.strftime('%a %d %b %Y')|replace(' 0', ' ') }}
+          </span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-clock"></i>
+          <span>{{ cruise.start_date.strftime('%H:%M') }} - {{ cruise.end_date.strftime('%H:%M') }}</span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>
+            Board: {{ cruise.boarding_location }}{% if cruise.boarding_address %} — {{ cruise.boarding_address }}{%
+            endif %}
+          </span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>
+            Drop-off: {{ cruise.drop_off_location }}{% if cruise.drop_off_address %} — {{ cruise.drop_off_address }}{%
+            endif %}
+          </span>
+        </div>
+
+        <div class="flight-detail">
+          <i class="bi bi-tag"></i>
+          <span>${{ '%.2f'|format(cruise.cost) }}</span>
+        </div>
+
+        <div class="text-end mt-3" style="position: relative">
+          <button class="kebab-btn" type="button" onclick="toggleMenu(this)">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <div class="accom-menu">
+            <a href="#" class="accom-menu-item">View cruise details</a>
+            <a href="{{ url_for('contact.show_contact') }}" class="accom-menu-item">Contact consultant</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="booking-empty-state">
+        <h3>No cruises booked</h3>
+        <p>Cruises added to this trip will appear here.</p>
+      </div>
       {% endif %}
     </main>
   </div>
