@@ -46,9 +46,17 @@ Budget
 
     <div class="col-md-6 text-center text-md-start">
 
-      <h1 class="display-6">
-        {{ trip.name }} Budget
-      </h1>
+      <div class="d-flex flex-row align-items-center gap-4">
+
+        <h1 class="display-6">{{ trip.name }}</h1>
+
+        {% if is_past_trip %}
+        <span class="badge bg-secondary">
+          View only
+        </span>
+        {% endif %}
+        
+      </div>
 
     </div>
 
@@ -377,7 +385,7 @@ Budget
               Budget Items
             </h5>
 
-
+            {% if not is_past_trip %}
             <div class="dropdown">
 
               <button
@@ -413,6 +421,7 @@ Budget
               </ul>
 
             </div>
+            {% endif %}
 
           </div>
 

@@ -14,6 +14,9 @@ itinerary_bp = Blueprint(
 
 
 def get_timezone_name(date_value, time_value, timezone_id):
+    if date_value is None or time_value is None or not timezone_id:
+        return None
+
     timezone = ZoneInfo(timezone_id)
 
     if isinstance(time_value, datetime):
@@ -28,10 +31,24 @@ def get_timezone_name(date_value, time_value, timezone_id):
     return aware_datetime.strftime("%Z")
 
 
+def has_calendar_time(item):
+    return (
+        item.get("date") is not None
+        and item.get("start_time") is not None
+        and item.get("end_time") is not None
+    )
+
+
 def position_overlapping_items(calendar_items):
     items_by_date = {}
 
+    valid_items = []
+
     for item in calendar_items:
+        if not has_calendar_time(item):
+            continue
+
+        valid_items.append(item)
         items_by_date.setdefault(item["date"], []).append(item)
 
     for date_items in items_by_date.values():
@@ -121,11 +138,11 @@ def position_overlapping_items(calendar_items):
                     * item["width_percent"]
                 )
 
-    for item in calendar_items:
+    for item in valid_items:
         item.pop("_start_minutes", None)
         item.pop("_end_minutes", None)
 
-    return calendar_items
+    return valid_items
 
 
 @itinerary_bp.route("/overview/<int:trip_id>", methods=["GET"])
@@ -187,7 +204,11 @@ def show_itinerary_overview(trip_id):
 
     for activity in activities:
 
-        if activity.date is None:
+        if (
+            activity.date is None
+            or activity.start_time is None
+            or activity.end_time is None
+        ):
             continue
 
         timezone = ZoneInfo(activity.timezone_id)
@@ -448,6 +469,8 @@ def show_itinerary_overview(trip_id):
         calendar_items
     )
 
+    is_past_trip = datetime.now().date() > trip.end_date
+
     return render_template(
         "itinerary-overview.html",
         trip=trip,
@@ -456,7 +479,8 @@ def show_itinerary_overview(trip_id):
         week=week,
         max_week=max_week,
         week_start=week_start,
-        week_end=week_end
+        week_end=week_end,
+        is_past_trip=is_past_trip
     )
 
 
@@ -531,7 +555,11 @@ def show_itinerary_detailed(trip_id):
 
     for activity in activities:
 
-        if activity.date is None:
+        if (
+            activity.date is None
+            or activity.start_time is None
+            or activity.end_time is None
+        ):
             continue
 
         timezone = ZoneInfo(
@@ -780,17 +808,24 @@ def show_itinerary_detailed(trip_id):
         item
         for item in calendar_items
         if item["date"] == selected_date
+        and has_calendar_time(item)
     ]
 
     unassigned_activities = [
         activity
         for activity in activities
-        if activity.date is None
+        if (
+            activity.date is None
+            or activity.start_time is None
+            or activity.end_time is None
+        )
     ]
 
     calendar_items = position_overlapping_items(
         calendar_items
     )
+
+    is_past_trip = datetime.now().date() > trip.end_date
 
     return render_template(
         "itinerary-detailed.html",
@@ -799,7 +834,8 @@ def show_itinerary_detailed(trip_id):
         current_day=current_day,
         max_day=trip_duration,
         selected_date=selected_date,
-        unassigned_activities=unassigned_activities
+        unassigned_activities=unassigned_activities,
+        is_past_trip=is_past_trip
     )
 
 
@@ -850,12 +886,16 @@ def edit_activity(activity_id):
             start_time,
             "%H:%M"
         ).time()
+    else:
+        activity.start_time = None
 
     if end_time:
         activity.end_time = datetime.strptime(
             end_time,
             "%H:%M"
         ).time()
+    else:
+        activity.end_time = None
 
     activity.updated_by = current_user.id
 
@@ -887,7 +927,7 @@ def move_activity(activity_id):
     start_time = data.get("start_time")
     end_time = data.get("end_time")
 
-    if not date_string:
+    if not date_string or not start_time or not end_time:
 
         activity.date = None
         activity.start_time = None
@@ -895,20 +935,29 @@ def move_activity(activity_id):
 
     else:
 
-        activity.date = datetime.strptime(
-            date_string,
-            "%Y-%m-%d"
-        ).date()
+        try:
+            activity.date = datetime.strptime(
+                date_string,
+                "%Y-%m-%d"
+            ).date()
 
-        activity.start_time = datetime.strptime(
-            start_time,
-            "%H:%M"
-        ).time()
+            activity.start_time = datetime.strptime(
+                start_time,
+                "%H:%M"
+            ).time()
 
-        activity.end_time = datetime.strptime(
-            end_time,
-            "%H:%M"
-        ).time()
+            activity.end_time = datetime.strptime(
+                end_time,
+                "%H:%M"
+            ).time()
+
+        except (ValueError, TypeError):
+
+            activity.date = None
+            activity.start_time = None
+            activity.end_time = None
+
+    activity.updated_by = current_user.id
 
     db.session.commit()
 

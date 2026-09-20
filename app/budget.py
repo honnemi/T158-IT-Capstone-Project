@@ -252,6 +252,9 @@ def show_budget(trip_id):
         reverse=True
     )
 
+    # Check if past trip
+    is_past_trip = datetime.now().date() > trip.end_date
+
 
     # ========================================
     # LOAD PAGE
@@ -269,5 +272,6 @@ def show_budget(trip_id):
         tour_total=tour_total,
         cruise_total=cruise_total,
         other_total=other_total,
-        budget_items=budget_items
+        budget_items=budget_items,
+        is_past_trip=is_past_trip
     )

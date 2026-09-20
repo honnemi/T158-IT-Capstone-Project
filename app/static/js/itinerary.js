@@ -1,71 +1,95 @@
-const itineraryPage = document.querySelector("#itinerary-page");
-const previousDayButton = document.querySelector("#previous-day");
-const nextDayButton = document.querySelector("#next-day");
-const nativeDate = document.querySelector("#nativeDate");
+const itineraryPage =
+    document.querySelector("#itinerary-page");
+
+const previousDayButton =
+    document.querySelector("#previous-day");
+
+const nextDayButton =
+    document.querySelector("#next-day");
+
+const nativeDate =
+    document.querySelector("#nativeDate");
 
 if (itineraryPage) {
 
-    const currentDay = parseInt(
-        itineraryPage.dataset.currentDay,
-        10
-    );
+    const currentDay =
+        parseInt(
+            itineraryPage.dataset.currentDay,
+            10
+        );
 
-    const maxDay = parseInt(
-        itineraryPage.dataset.maxDay,
-        10
-    );
+    const maxDay =
+        parseInt(
+            itineraryPage.dataset.maxDay,
+            10
+        );
 
     const itineraryUrl =
         itineraryPage.dataset.itineraryUrl;
 
     if (previousDayButton) {
 
-        previousDayButton.addEventListener("click", () => {
+        previousDayButton.disabled =
+            currentDay <= 1;
 
-            if (currentDay > 1) {
+        previousDayButton.addEventListener(
+            "click",
+            () => {
 
-                window.location.href =
-                    itineraryUrl +
-                    "?day=" +
-                    (currentDay - 1);
+                if (currentDay > 1) {
+
+                    window.location.href =
+                        itineraryUrl +
+                        "?day=" +
+                        (currentDay - 1);
+
+                }
 
             }
-
-        });
+        );
 
     }
 
     if (nextDayButton) {
 
-        nextDayButton.addEventListener("click", () => {
+        nextDayButton.disabled =
+            currentDay >= maxDay;
 
-            if (currentDay < maxDay) {
+        nextDayButton.addEventListener(
+            "click",
+            () => {
 
-                window.location.href =
-                    itineraryUrl +
-                    "?day=" +
-                    (currentDay + 1);
+                if (currentDay < maxDay) {
+
+                    window.location.href =
+                        itineraryUrl +
+                        "?day=" +
+                        (currentDay + 1);
+
+                }
 
             }
-
-        });
+        );
 
     }
 
     if (nativeDate) {
 
-        nativeDate.addEventListener("change", () => {
+        nativeDate.addEventListener(
+            "change",
+            () => {
 
-            if (nativeDate.value) {
+                if (nativeDate.value) {
 
-                window.location.href =
-                    itineraryUrl +
-                    "?date=" +
-                    nativeDate.value;
+                    window.location.href =
+                        itineraryUrl +
+                        "?date=" +
+                        nativeDate.value;
+
+                }
 
             }
-
-        });
+        );
 
     }
 

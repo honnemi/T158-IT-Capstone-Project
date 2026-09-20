@@ -1,14 +1,6 @@
 {% extends 'base.html' %}
 
-<<<<<<< HEAD
-{% block title %}
-Inspo
-=======
-{% block title %} Inspo {% endblock %}
-
-{% block active_tab %} <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">Itinerary</a> <a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">Bookings</a> <a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab active">Inspo</a> <a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
->>>>>>> 900f97aa75e36cbf8bcdf0249af629a1388fa4c5
-{% endblock %}
+{% block title %}Inspo{% endblock %}
 
 {% block active_tab %}
 <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab">
@@ -28,132 +20,37 @@ Inspo
 </a>
 {% endblock %}
 
-
 {% block content %}
 
 <main>
 
-    <div class="container-fluid py-4 mt-3">
-        <div class="row justify-content-center mb-2">
-<<<<<<< HEAD
+<div class="container-fluid py-4 mt-3">
+    <div class="row justify-content-center mb-2">
 
-            <!-- LEFT TOOLBAR -->
-            <div class="col-2 d-flex justify-content-center align-items-center">
-                <div class="toolbar d-flex flex-column align-items-center gap-2">
-                    <button id="pen" class="tool btn btn-primary-outline" title="Pen">
-                        <i class="bi bi-pen-fill"></i>
-                    </button>
-
-                    <button id="eraser" class="tool btn btn-primary-outline" title="Eraser">
-                        <i class="bi bi-eraser-fill"></i>
-                    </button>
-
-                    <button id="square" class="tool btn btn-primary-outline" title="Square">
-                        <i class="bi bi-square"></i>
-                    </button>
-
-                    <button id="circle" class="tool btn btn-primary-outline" title="Circle">
-                        <i class="bi bi-circle"></i>
-                    </button>
-
-                    <button id="arrow" class="tool btn btn-primary-outline" title="Arrow">
-                        <i class="bi bi-arrow-up-right"></i>
-                    </button>
-
-                    <button id="text" class="tool btn btn-primary-outline" title="Text">
-                        <i class="bi bi-fonts"></i>
-                    </button>
-
-                    <button id="image" class="tool btn btn-primary-outline" title="Upload Image">
-                        <i class="bi bi-image"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- WHITEBOARD -->
-
-            <div class="col-8 d-flex justify-content-center align-items-center">
-                <div id="whiteboard-container" class="border border-2 rounded w-100">
-                    <canvas id="whiteboard"></canvas>
-                </div>
-            </div>
-
-            <!-- RIGHT TOOLBARS -->
-
-            <div class="col-2 d-flex justify-content-center align-items-center">
-
-                <div class="d-flex align-items-center gap-3">
-
-                    <!-- COLOUR SWATCHES -->
-
-                    <div class="toolbar d-flex flex-column align-items-center gap-2">
-
-                        <button id="black" class="colour btn btn-primary-outline" data-color="#1F2937"></button>
-
-                        <button id="red" class="colour btn btn-primary-outline" data-color="#EF4444"></button>
-
-                        <button id="orange" class="colour btn btn-primary-outline" data-color="#F97316"></button>
-
-                        <button id="yellow" class="colour btn btn-primary-outline" data-color="#FACC15"></button>
-
-                        <button id="green" class="colour btn btn-primary-outline" data-color="#22C55E"></button>
-
-                        <button id="blue" class="colour btn btn-primary-outline" data-color="#3B82F6"></button>
-
-                        <button id="purple" class="colour btn btn-primary-outline" data-color="#8B5CF6"></button>
-
-                        <button id="pink" class="colour btn btn-primary-outline" data-color="#EC4899"></button>
-
-                        <button id="cyan" class="colour btn btn-primary-outline" data-color="#06B6D4"></button>
-
-                    </div>
-
-                    <!-- SOCIAL MEDIA TOOLBAR -->
-
-                    <div class="toolbar social-toolbar d-flex flex-column align-items-center gap-3">
-
-                        <!-- Facebook -->
-                        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" class="social-btn"
-                            title="Open Facebook" aria-label="Open Facebook">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-
-                        <!-- Instagram -->
-                        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"
-                            class="social-btn" title="Open Instagram" aria-label="Open Instagram">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-
-                        <!-- TikTok -->
-                        <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" class="social-btn"
-                            title="Open TikTok" aria-label="Open TikTok">
-                            <i class="bi bi-tiktok"></i>
-                        </a>
-
-                        <!-- Pinterest -->
-                        <a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer"
-                            class="social-btn" title="Open Pinterest" aria-label="Open Pinterest">
-                            <i class="bi bi-pinterest"></i>
-                        </a>
-                    </div>
-                </div>
-
-
-        <!-- Tools -->
+        {% if not view_only %}
         <div class="col-2 d-flex justify-content-center align-items-center">
+
             <div class="toolbar d-flex flex-column align-items-center gap-2">
 
-                <!-- Pen -->
-                <button id="pen" class="tool btn btn-primary-outline">
+                <button id="pen" class="tool btn btn-primary-outline" title="Pen">
                     <i class="bi bi-pen-fill"></i>
                 </button>
 
-                <!-- Brush Size - only shown when Pen is selected -->
-                <div id="brush-size-control"
-                     class="brush-size-control"
-                     style="display: flex; flex-direction: column; text-align: center;">
-
-                    <label for="brush-size" style="font-weight: bold;">Size</label>
+                <div
+                    id="brush-size-control"
+                    class="brush-size-control"
+                    style="
+                        display: none;
+                        flex-direction: column;
+                        text-align: center;
+                        position: relative;
+                        z-index: 100;
+                        pointer-events: auto;
+                    "
+                >
+                    <label for="brush-size" style="font-weight: bold;">
+                        Size
+                    </label>
 
                     <input
                         type="range"
@@ -161,108 +58,174 @@ Inspo
                         min="1"
                         max="30"
                         value="3"
-                        style="width: 100%;"
+                        style="
+                            width: 100%;
+                            position: relative;
+                            z-index: 101;
+                            pointer-events: auto;
+                            cursor: pointer;
+                        "
                     >
 
                     <span id="brush-size-value">3px</span>
                 </div>
 
-                <!-- Eraser -->
-                <button id="eraser" class="tool btn btn-primary-outline">
+                <button id="eraser" class="tool btn btn-primary-outline" title="Eraser">
                     <i class="bi bi-eraser-fill"></i>
                 </button>
 
-                <!-- Square -->
-                <button id="square" class="tool btn btn-primary-outline">
+                <button id="square" class="tool btn btn-primary-outline" title="Square">
                     <i class="bi bi-square"></i>
                 </button>
 
-                <!-- Circle -->
-                <button id="circle" class="tool btn btn-primary-outline">
+                <button id="circle" class="tool btn btn-primary-outline" title="Circle">
                     <i class="bi bi-circle"></i>
                 </button>
 
-                <!-- Arrow -->
-                <button id="arrow" class="tool btn btn-primary-outline">
+                <button id="arrow" class="tool btn btn-primary-outline" title="Arrow">
                     <i class="bi bi-arrow-up-right"></i>
                 </button>
 
-                <!-- Text -->
-                <button id="text" class="tool btn btn-primary-outline">
+                <button id="text" class="tool btn btn-primary-outline" title="Text">
                     <i class="bi bi-fonts"></i>
                 </button>
 
-                <!-- Image -->
-                <button id="image"
-                        class="tool btn btn-primary-outline"
-                        title="Upload Image">
+                <button id="image" class="tool btn btn-primary-outline" title="Upload Image">
                     <i class="bi bi-image"></i>
                 </button>
 
             </div>
-        </div>
 
-        <!-- Whiteboard -->
+        </div>
+        {% else %}
+        <div class="col-2"></div>
+        {% endif %}
+
         <div class="col-8 d-flex justify-content-center align-items-center">
-            <div id="whiteboard-container"
-                 class="border border-2 rounded w-100">
 
+            <div
+                id="whiteboard-container"
+                class="border border-2 rounded w-100"
+            >
                 <canvas id="whiteboard"></canvas>
-
             </div>
+
         </div>
 
-        <!-- Colour Swatches -->
         <div class="col-2 d-flex justify-content-center align-items-center">
-            <div class="toolbar d-flex flex-column align-items-center gap-2">
 
-                <button id="black"
+            <div class="d-flex align-items-center gap-3">
+
+                {% if not view_only %}
+                <div class="toolbar d-flex flex-column align-items-center gap-2">
+
+                    <button
+                        id="black"
                         class="colour btn btn-primary-outline"
-                        data-color="#1F2937">
-                </button>
+                        data-color="#1F2937"
+                    ></button>
 
-                <button id="red"
+                    <button
+                        id="red"
                         class="colour btn btn-primary-outline"
-                        data-color="#EF4444">
-                </button>
+                        data-color="#EF4444"
+                    ></button>
 
-                <button id="orange"
+                    <button
+                        id="orange"
                         class="colour btn btn-primary-outline"
-                        data-color="#F97316">
-                </button>
+                        data-color="#F97316"
+                    ></button>
 
-                <button id="yellow"
+                    <button
+                        id="yellow"
                         class="colour btn btn-primary-outline"
-                        data-color="#FACC15">
-                </button>
+                        data-color="#FACC15"
+                    ></button>
 
-                <button id="green"
+                    <button
+                        id="green"
                         class="colour btn btn-primary-outline"
-                        data-color="#22C55E">
-                </button>
+                        data-color="#22C55E"
+                    ></button>
 
-                <button id="blue"
+                    <button
+                        id="blue"
                         class="colour btn btn-primary-outline"
-                        data-color="#3B82F6">
-                </button>
+                        data-color="#3B82F6"
+                    ></button>
 
-                <button id="purple"
+                    <button
+                        id="purple"
                         class="colour btn btn-primary-outline"
-                        data-color="#8B5CF6">
-                </button>
+                        data-color="#8B5CF6"
+                    ></button>
 
-                <button id="pink"
+                    <button
+                        id="pink"
                         class="colour btn btn-primary-outline"
-                        data-color="#EC4899">
-                </button>
+                        data-color="#EC4899"
+                    ></button>
 
-                <button id="cyan"
+                    <button
+                        id="cyan"
                         class="colour btn btn-primary-outline"
-                        data-color="#06B6D4">
-                </button>
+                        data-color="#06B6D4"
+                    ></button>
 
->>>>>>> 900f97aa75e36cbf8bcdf0249af629a1388fa4c5
+                </div>
+
+                <div class="toolbar social-toolbar d-flex flex-column align-items-center gap-3">
+
+                    <a
+                        href="https://www.facebook.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-btn"
+                        title="Open Facebook"
+                        aria-label="Open Facebook"
+                    >
+                        <i class="bi bi-facebook"></i>
+                    </a>
+
+                    <a
+                        href="https://www.instagram.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-btn"
+                        title="Open Instagram"
+                        aria-label="Open Instagram"
+                    >
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <a
+                        href="https://www.tiktok.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-btn"
+                        title="Open TikTok"
+                        aria-label="Open TikTok"
+                    >
+                        <i class="bi bi-tiktok"></i>
+                    </a>
+
+                    <a
+                        href="https://www.pinterest.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="social-btn"
+                        title="Open Pinterest"
+                        aria-label="Open Pinterest"
+                    >
+                        <i class="bi bi-pinterest"></i>
+                    </a>
+
+                </div>
+                {% endif %}
+
             </div>
+
         </div>
 
     </div>
@@ -270,23 +233,14 @@ Inspo
 
 </main>
 
-<<<<<<< HEAD
-<!-- HIDDEN IMAGE UPLOAD -->
-<input type="file" id="image-loader" accept="image/*" style="display: none;">
-=======
-<!-- Hidden image upload -->
-
 <input
-type="file"
-id="image-loader"
-accept="image/*"
-style="display: none;"
-
+    type="file"
+    id="image-loader"
+    accept="image/*"
+    style="display: none;"
 >
->>>>>>> 900f97aa75e36cbf8bcdf0249af629a1388fa4c5
 
 {% endblock %}
-
 
 {% block scripts %}
 
@@ -294,34 +248,17 @@ style="display: none;"
 
 <script>
     const tripId = {{ trip.id | tojson }};
-<<<<<<< HEAD
-    const saveWhiteboardUrl =
-        {{ url_for('inspo.save_whiteboard', trip_id = trip.id) | tojson }};
-=======
+    const viewOnly = {{ view_only | tojson }};
 
     const saveWhiteboardUrl =
         {{ url_for('inspo.save_whiteboard', trip_id=trip.id) | tojson }};
 
->>>>>>> 900f97aa75e36cbf8bcdf0249af629a1388fa4c5
     const savedWhiteboard =
         {{ trip.whiteboard | tojson }};
 </script>
 
-<!-- Fabric.js -->
-
-<<<<<<< HEAD
-<!-- Fabric.js for whiteboard functionality -->
 <script src="https://cdn.jsdelivr.net/npm/fabric@6.4.3/dist/index.js"></script>
 
 <script src="{{ url_for('static', filename='js/whiteboard.js') }}"></script>
 
 {% endblock %}
-=======
-<script src="https://cdn.jsdelivr.net/npm/fabric@6.4.3/dist/index.js"></script>
-
-<!-- Whiteboard functionality -->
-
-<script src="{{ url_for('static', filename='js/whiteboard.js') }}"></script>
-
-{% endblock %}
->>>>>>> 900f97aa75e36cbf8bcdf0249af629a1388fa4c5

@@ -2,436 +2,361 @@ const whiteboardElement = document.getElementById("whiteboard");
 const whiteboardContainer = document.getElementById("whiteboard-container");
 
 if (whiteboardElement && whiteboardContainer) {
-let currentColour = "#1F2937";
-let currentBrushSize = 3;
+    let currentColour = "#1F2937";
+    let currentBrushSize = 3;
 
-// Create canvas
-const canvas = new fabric.Canvas("whiteboard");
+    const canvas = new fabric.Canvas("whiteboard");
 
-// Set canvas dimensions
-canvas.setDimensions({
-    width: whiteboardContainer.clientWidth,
-    height: whiteboardContainer.clientHeight
-});
-
-// Save whiteboard as JSON
-let saveTimeout;
-
-function saveWhiteboard() {
-    const whiteboardData = JSON.stringify(canvas.toJSON());
-
-    fetch(saveWhiteboardUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            whiteboard: whiteboardData
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Save failed: ${response.status}`);
-        }
-
-        return response.json();
-    })
-    .then(data => {
-        console.log("Whiteboard saved:", data);
-    })
-    .catch(error => {
-        console.error("Failed to save whiteboard:", error);
-    });
-}
-
-// Delay saves slightly so requests aren't too frequent
-function scheduleSave() {
-    clearTimeout(saveTimeout);
-    saveTimeout = setTimeout(saveWhiteboard, 500);
-}
-
-// Set pen properties
-canvas.isDrawingMode = false;
-canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-canvas.freeDrawingBrush.width = currentBrushSize;
-canvas.freeDrawingBrush.color = currentColour;
-
-// Track tool states
-let isArrowModeActive = false;
-let isDrawingArrow = false;
-
-let line;
-let arrowhead;
-
-// Brush size controls
-const brushSizeControl = document.getElementById("brush-size-control");
-const brushSizeSlider = document.getElementById("brush-size");
-const brushSizeValue = document.getElementById("brush-size-value");
-
-// Reset tool states
-function clearToolState() {
-    isArrowModeActive = false;
-    isDrawingArrow = false;
-    line = null;
-    arrowhead = null;
-
-    canvas.isDrawingMode = false;
-    canvas.selection = true;
-    canvas.defaultCursor = "default";
-}
-
-// Tool buttons
-const tools = document.querySelectorAll(".tool");
-
-tools.forEach(tool => {
-    tool.addEventListener("click", () => {
-
-        // Remove active state from all tools
-        tools.forEach(t => t.classList.remove("active"));
-
-        // Activate clicked tool
-        tool.classList.add("active");
-
-        // Reset previous tool
-        clearToolState();
-
-        // Show brush size only for pen
-        if (brushSizeControl) {
-            if (tool.id === "pen") {
-                brushSizeControl.style.display = "flex";
-            } else {
-                brushSizeControl.style.display = "none";
-            }
-        }
-    });
-});
-
-// Colour swatches
-const colourButtons = document.querySelectorAll(".colour");
-
-colourButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        colourButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        currentColour = button.dataset.color;
-
-        if (canvas.freeDrawingBrush) {
-            canvas.freeDrawingBrush.color = currentColour;
-        }
-    });
-});
-
-// Brush size
-if (brushSizeSlider) {
-    brushSizeSlider.addEventListener("input", () => {
-        currentBrushSize = Number(brushSizeSlider.value);
-
-        if (canvas.freeDrawingBrush) {
-            canvas.freeDrawingBrush.width = currentBrushSize;
-        }
-
-        if (brushSizeValue) {
-            brushSizeValue.textContent = `${currentBrushSize}px`;
-        }
-    });
-}
-
-// Pen tool
-const penButton = document.getElementById("pen");
-
-if (penButton) {
-    penButton.addEventListener("click", () => {
-        canvas.isDrawingMode = true;
-        canvas.selection = false;
-        canvas.freeDrawingBrush.color = currentColour;
-        canvas.freeDrawingBrush.width = currentBrushSize;
-        canvas.defaultCursor = "crosshair";
-    });
-}
-
-// Erase tool
-const eraserButton = document.getElementById("eraser");
-
-if (eraserButton) {
-    eraserButton.addEventListener("click", () => {
-        clearToolState();
-
-        const activeObjects = canvas.getActiveObjects();
-
-        if (activeObjects.length > 0) {
-            activeObjects.forEach(object => {
-                canvas.remove(object);
-            });
-
-            canvas.discardActiveObject();
-            canvas.requestRenderAll();
-        }
-    });
-}
-
-// Square tool
-const squareButton = document.getElementById("square");
-
-if (squareButton) {
-    squareButton.addEventListener("click", () => {
-        clearToolState();
-
-        const rectangle = new fabric.Rect({
-            left: 100,
-            top: 100,
-            width: 100,
-            height: 100,
-            fill: "transparent",
-            stroke: currentColour,
-            strokeWidth: 2,
-            strokeUniform: true
-        });
-
-        canvas.add(rectangle);
-        canvas.setActiveObject(rectangle);
-        canvas.renderAll();
-    });
-}
-
-// Circle tool
-const circleButton = document.getElementById("circle");
-
-if (circleButton) {
-    circleButton.addEventListener("click", () => {
-        clearToolState();
-
-        const circle = new fabric.Ellipse({
-            left: 100,
-            top: 100,
-            rx: 50,
-            ry: 50,
-            fill: "transparent",
-            stroke: currentColour,
-            strokeWidth: 2,
-            strokeUniform: true
-        });
-
-        canvas.add(circle);
-        canvas.setActiveObject(circle);
-        canvas.renderAll();
-    });
-}
-
-// Text tool
-const textButton = document.getElementById("text");
-
-if (textButton) {
-    textButton.addEventListener("click", () => {
-        clearToolState();
-
-        const text = new fabric.IText("Text", {
-            left: 100,
-            top: 100,
-            fontSize: 20,
-            fill: currentColour,
-            fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif'
-        });
-
-        canvas.add(text);
-        canvas.setActiveObject(text);
-        text.enterEditing();
-        canvas.renderAll();
-    });
-}
-
-// Arrow tool
-const arrowButton = document.getElementById("arrow");
-
-if (arrowButton) {
-    arrowButton.addEventListener("click", () => {
-        clearToolState();
-
-        isArrowModeActive = true;
-        canvas.selection = false;
-        canvas.defaultCursor = "crosshair";
-    });
-}
-
-// Draw arrow
-canvas.on("mouse:down", options => {
-    if (!isArrowModeActive || options.target) return;
-
-    isDrawingArrow = true;
-
-    const pointer = canvas.getPointer(options.e);
-    const color = currentColour;
-
-    line = new fabric.Line(
-        [pointer.x, pointer.y, pointer.x, pointer.y],
-        {
-            strokeWidth: 3,
-            stroke: color,
-            fill: "transparent",
-            originX: "center",
-            originY: "center",
-            selectable: false,
-            hoverCursor: "default"
-        }
-    );
-
-    arrowhead = new fabric.Triangle({
-        width: 15,
-        height: 15,
-        fill: color,
-        left: pointer.x,
-        top: pointer.y,
-        originX: "center",
-        originY: "center",
-        selectable: false,
-        angle: 0,
-        hoverCursor: "default"
-    });
-
-    canvas.add(line, arrowhead);
-});
-
-canvas.on("mouse:move", options => {
-    if (!isDrawingArrow || !line || !arrowhead) return;
-
-    const pointer = canvas.getPointer(options.e);
-
-    line.set({
-        x2: pointer.x,
-        y2: pointer.y
-    });
-
-    const dx = pointer.x - line.x1;
-    const dy = pointer.y - line.y1;
-
-    let angle = Math.atan2(dy, dx) * (180 / Math.PI);
-    angle += 90;
-
-    arrowhead.set({
-        left: pointer.x,
-        top: pointer.y,
-        angle: angle
-    });
-
-    canvas.renderAll();
-});
-
-canvas.on("mouse:up", () => {
-    if (!isDrawingArrow) return;
-
-    isDrawingArrow = false;
-
-    if (line && arrowhead) {
-        const dx = line.x2 - line.x1;
-        const dy = line.y2 - line.y1;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 5) {
-            canvas.remove(line, arrowhead);
-        } else {
-            const arrowGroup = new fabric.Group([line, arrowhead], {
-                selectable: true,
-                hasBorders: true,
-                hasControls: true
-            });
-
-            canvas.remove(line, arrowhead);
-            canvas.add(arrowGroup);
-
-            arrowGroup.setCoords();
-            canvas.setActiveObject(arrowGroup);
-        }
-    }
-
-    line = null;
-    arrowhead = null;
-    canvas.renderAll();
-});
-
-// Image tool
-const imageToolBtn = document.getElementById("image");
-const imageLoader = document.getElementById("image-loader");
-
-if (imageToolBtn && imageLoader) {
-    imageToolBtn.addEventListener("click", () => {
-        imageLoader.click();
-    });
-
-    imageLoader.addEventListener("change", function(e) {
-        const file = e.target.files[0];
-
-        if (!file) return;
-
-        const reader = new FileReader();
-
-        reader.onload = function(event) {
-            const imgDataUrl = event.target.result;
-
-            fabric.Image.fromURL(imgDataUrl).then(fabricImg => {
-                const maxDimension =
-                    Math.min(canvas.width, canvas.height) * 0.6;
-
-                if (
-                    fabricImg.width > maxDimension ||
-                    fabricImg.height > maxDimension
-                ) {
-                    fabricImg.scaleToWidth(maxDimension);
-                }
-
-                fabricImg.set({
-                    left:
-                        canvas.width / 2 -
-                        fabricImg.getScaledWidth() / 2,
-                    top:
-                        canvas.height / 2 -
-                        fabricImg.getScaledHeight() / 2,
-                    cornerColor: "#3B82F6",
-                    cornerStrokeColor: "#1E40AF",
-                    transparentCorners: false,
-                    cornerSize: 10
-                });
-
-                canvas.add(fabricImg);
-                canvas.setActiveObject(fabricImg);
-                canvas.requestRenderAll();
-            });
-        };
-
-        reader.readAsDataURL(file);
-        this.value = "";
-    });
-}
-
-// Load whiteboard and listen for events
-setTimeout(() => {
     canvas.setDimensions({
         width: whiteboardContainer.clientWidth,
         height: whiteboardContainer.clientHeight
     });
 
-    if (savedWhiteboard) {
-        try {
-            const whiteboardData =
-                typeof savedWhiteboard === "string"
-                    ? JSON.parse(savedWhiteboard)
-                    : savedWhiteboard;
+    canvas.backgroundColor = "#ffffff";
+    canvas.renderAll();
 
-            canvas.loadFromJSON(whiteboardData, () => {
-                canvas.calcOffset();
-                canvas.requestRenderAll();
+    const brushSizeControl = document.getElementById("brush-size-control");
+    const brushSizeSlider = document.getElementById("brush-size");
+    const brushSizeValue = document.getElementById("brush-size-value");
 
-                canvas.on("object:added", scheduleSave);
-                canvas.on("object:modified", scheduleSave);
-                canvas.on("object:removed", scheduleSave);
-            });
-        } catch (error) {
-            console.error("Error loading whiteboard:", error);
+    const tools = document.querySelectorAll(".tool");
+    const colours = document.querySelectorAll(".colour");
+
+    function clearToolState() {
+        canvas.isDrawingMode = false;
+        canvas.selection = true;
+
+        if (canvas.freeDrawingBrush) {
+            canvas.freeDrawingBrush.color = currentColour;
+            canvas.freeDrawingBrush.width = currentBrushSize;
         }
-    } else {
-        canvas.on("object:added", scheduleSave);
-        canvas.on("object:modified", scheduleSave);
-        canvas.on("object:removed", scheduleSave);
     }
-}, 100);
 
+    function setActiveTool(tool) {
+        tools.forEach(button => {
+            button.classList.remove("active");
+        });
+
+        tool.classList.add("active");
+    }
+
+    if (!viewOnly) {
+        if (brushSizeControl) {
+            brushSizeControl.addEventListener("pointerdown", event => {
+                event.stopPropagation();
+            });
+
+            brushSizeControl.addEventListener("mousedown", event => {
+                event.stopPropagation();
+            });
+        }
+
+        if (brushSizeSlider) {
+            brushSizeSlider.addEventListener("pointerdown", event => {
+                event.stopPropagation();
+            });
+
+            brushSizeSlider.addEventListener("mousedown", event => {
+                event.stopPropagation();
+            });
+
+            brushSizeSlider.addEventListener("click", event => {
+                event.stopPropagation();
+            });
+
+            brushSizeSlider.addEventListener("input", () => {
+                currentBrushSize = Number(brushSizeSlider.value);
+
+                if (canvas.freeDrawingBrush) {
+                    canvas.freeDrawingBrush.width = currentBrushSize;
+                }
+
+                if (brushSizeValue) {
+                    brushSizeValue.textContent = `${currentBrushSize}px`;
+                }
+            });
+        }
+
+        tools.forEach(tool => {
+            tool.addEventListener("click", () => {
+                setActiveTool(tool);
+                clearToolState();
+
+                if (brushSizeControl) {
+                    brushSizeControl.style.display =
+                        tool.id === "pen" ? "flex" : "none";
+                }
+
+                if (tool.id === "pen") {
+                    canvas.isDrawingMode = true;
+                    canvas.selection = false;
+
+                    if (!canvas.freeDrawingBrush) {
+                        canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+                    }
+
+                    canvas.freeDrawingBrush.color = currentColour;
+                    canvas.freeDrawingBrush.width = currentBrushSize;
+                }
+
+                if (tool.id === "eraser") {
+                    canvas.isDrawingMode = false;
+
+                    const activeObjects = canvas.getActiveObjects();
+
+                    activeObjects.forEach(object => {
+                        canvas.remove(object);
+                    });
+
+                    canvas.discardActiveObject();
+                    canvas.renderAll();
+                }
+
+                if (tool.id === "square") {
+                    const rect = new fabric.Rect({
+                        left: 100,
+                        top: 100,
+                        width: 100,
+                        height: 100,
+                        fill: "transparent",
+                        stroke: currentColour,
+                        strokeWidth: 3,
+                        strokeUniform: true
+                    });
+
+                    canvas.add(rect);
+                    canvas.setActiveObject(rect);
+                }
+
+                if (tool.id === "circle") {
+                    const circle = new fabric.Circle({
+                        left: 100,
+                        top: 100,
+                        radius: 50,
+                        fill: "transparent",
+                        stroke: currentColour,
+                        strokeWidth: 3,
+                        strokeUniform: true
+                    });
+
+                    canvas.add(circle);
+                    canvas.setActiveObject(circle);
+                }
+
+                if (tool.id === "text") {
+                    const text = new fabric.IText("Text", {
+                        left: 100,
+                        top: 100,
+                        fill: currentColour,
+                        fontSize: 24
+                    });
+
+                    canvas.add(text);
+                    canvas.setActiveObject(text);
+                    text.enterEditing();
+                }
+
+                if (tool.id === "arrow") {
+                    let startX = 0;
+                    let startY = 0;
+                    let isDrawingArrow = false;
+
+                    const mouseDown = options => {
+                        const pointer = canvas.getPointer(options.e);
+
+                        startX = pointer.x;
+                        startY = pointer.y;
+                        isDrawingArrow = true;
+                    };
+
+                    const mouseMove = options => {
+                        if (!isDrawingArrow) {
+                            return;
+                        }
+
+                        const pointer = canvas.getPointer(options.e);
+
+                        const dx = pointer.x - startX;
+                        const dy = pointer.y - startY;
+
+                        const angle = Math.atan2(dy, dx);
+                        const headLength = 12;
+
+                        const x1 =
+                            pointer.x -
+                            headLength * Math.cos(angle - Math.PI / 6);
+
+                        const y1 =
+                            pointer.y -
+                            headLength * Math.sin(angle - Math.PI / 6);
+
+                        const x2 =
+                            pointer.x -
+                            headLength * Math.cos(angle + Math.PI / 6);
+
+                        const y2 =
+                            pointer.y -
+                            headLength * Math.sin(angle + Math.PI / 6);
+
+                        canvas.clear();
+
+                        const line = new fabric.Line(
+                            [startX, startY, pointer.x, pointer.y],
+                            {
+                                stroke: currentColour,
+                                strokeWidth: 3,
+                                selectable: false,
+                                strokeUniform: true
+                            }
+                        );
+
+                        const arrowHead = new fabric.Polyline(
+                            [
+                                { x: pointer.x, y: pointer.y },
+                                { x: x1, y: y1 },
+                                { x: x2, y: y2 }
+                            ],
+                            {
+                                fill: currentColour,
+                                stroke: currentColour,
+                                strokeWidth: 3,
+                                selectable: false
+                            }
+                        );
+
+                        canvas.add(line, arrowHead);
+                        canvas.renderAll();
+                    };
+
+                    const mouseUp = () => {
+                        isDrawingArrow = false;
+
+                        canvas.off("mouse:down", mouseDown);
+                        canvas.off("mouse:move", mouseMove);
+                        canvas.off("mouse:up", mouseUp);
+                    };
+
+                    canvas.on("mouse:down", mouseDown);
+                    canvas.on("mouse:move", mouseMove);
+                    canvas.on("mouse:up", mouseUp);
+                }
+
+                if (tool.id === "image") {
+                    const imageLoader = document.getElementById("image-loader");
+
+                    if (imageLoader) {
+                        imageLoader.click();
+                    }
+                }
+            });
+        });
+
+        colours.forEach(colour => {
+            colour.addEventListener("click", () => {
+                currentColour = colour.dataset.color;
+
+                if (canvas.freeDrawingBrush) {
+                    canvas.freeDrawingBrush.color = currentColour;
+                }
+
+                colours.forEach(button => {
+                    button.classList.remove("active");
+                });
+
+                colour.classList.add("active");
+            });
+        });
+
+        const imageLoader = document.getElementById("image-loader");
+
+        if (imageLoader) {
+            imageLoader.addEventListener("change", event => {
+                const file = event.target.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = event => {
+                    fabric.FabricImage.fromURL(event.target.result).then(image => {
+                        image.scaleToWidth(250);
+
+                        image.set({
+                            left: 100,
+                            top: 100
+                        });
+
+                        canvas.add(image);
+                        canvas.setActiveObject(image);
+                        canvas.renderAll();
+                    });
+                };
+
+                reader.readAsDataURL(file);
+                imageLoader.value = "";
+            });
+        }
+    }
+
+    if (typeof savedWhiteboard !== "undefined" && savedWhiteboard) {
+        setTimeout(() => {
+            try {
+                canvas.loadFromJSON(savedWhiteboard).then(() => {
+                    if (viewOnly) {
+                        canvas.isDrawingMode = false;
+                        canvas.selection = false;
+
+                        canvas.forEachObject(object => {
+                            object.selectable = false;
+                            object.evented = false;
+                        });
+
+                        canvas.discardActiveObject();
+                    }
+
+                    canvas.renderAll();
+                });
+            } catch (error) {
+                console.error("Failed to load whiteboard:", error);
+            }
+        }, 100);
+    }
+
+    if (!viewOnly) {
+        let saveTimeout;
+
+        function saveWhiteboard() {
+            clearTimeout(saveTimeout);
+
+            saveTimeout = setTimeout(() => {
+                fetch(saveWhiteboardUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        whiteboard: JSON.stringify(canvas.toJSON())
+                    })
+                }).catch(error => {
+                    console.error("Failed to save whiteboard:", error);
+                });
+            }, 500);
+        }
+
+        canvas.on("object:added", saveWhiteboard);
+        canvas.on("object:modified", saveWhiteboard);
+        canvas.on("object:removed", saveWhiteboard);
+        canvas.on("path:created", saveWhiteboard);
+    }
+
+    window.addEventListener("resize", () => {
+        canvas.setDimensions({
+            width: whiteboardContainer.clientWidth,
+            height: whiteboardContainer.clientHeight
+        });
+
+        canvas.renderAll();
+    });
 }

@@ -64,6 +64,12 @@
           Other
         </a>
 
+        {% if view_only %}
+        <span class="badge bg-secondary">
+          View only
+        </span>
+        {% endif %}
+
       </div>
 
       {% if flights %}
@@ -135,7 +141,7 @@
       {% else %}
       <div class="booking-empty-state">
         <h3>No flights booked</h3>
-        <p>Flights added to this trip will appear here.</p>
+        <p class="mt-3 text-secondary">Flights added to this trip will appear here.</p>
       </div>
       {% endif %}
     </main>
