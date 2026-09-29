@@ -1,95 +1,71 @@
-const itineraryPage =
-    document.querySelector("#itinerary-page");
-
-const previousDayButton =
-    document.querySelector("#previous-day");
-
-const nextDayButton =
-    document.querySelector("#next-day");
-
-const nativeDate =
-    document.querySelector("#nativeDate");
+const itineraryPage = document.querySelector("#itinerary-page");
+const previousDayButton = document.querySelector("#previous-day");
+const nextDayButton = document.querySelector("#next-day");
+const nativeDate = document.querySelector("#nativeDate");
 
 if (itineraryPage) {
 
-    const currentDay =
-        parseInt(
-            itineraryPage.dataset.currentDay,
-            10
-        );
+    const currentDay = parseInt(
+        itineraryPage.dataset.currentDay,
+        10
+    );
 
-    const maxDay =
-        parseInt(
-            itineraryPage.dataset.maxDay,
-            10
-        );
+    const maxDay = parseInt(
+        itineraryPage.dataset.maxDay,
+        10
+    );
 
     const itineraryUrl =
         itineraryPage.dataset.itineraryUrl;
 
     if (previousDayButton) {
 
-        previousDayButton.disabled =
-            currentDay <= 1;
+        previousDayButton.addEventListener("click", () => {
 
-        previousDayButton.addEventListener(
-            "click",
-            () => {
+            if (currentDay > 1) {
 
-                if (currentDay > 1) {
-
-                    window.location.href =
-                        itineraryUrl +
-                        "?day=" +
-                        (currentDay - 1);
-
-                }
+                window.location.href =
+                    itineraryUrl +
+                    "?day=" +
+                    (currentDay - 1);
 
             }
-        );
+
+        });
 
     }
 
     if (nextDayButton) {
 
-        nextDayButton.disabled =
-            currentDay >= maxDay;
+        nextDayButton.addEventListener("click", () => {
 
-        nextDayButton.addEventListener(
-            "click",
-            () => {
+            if (currentDay < maxDay) {
 
-                if (currentDay < maxDay) {
-
-                    window.location.href =
-                        itineraryUrl +
-                        "?day=" +
-                        (currentDay + 1);
-
-                }
+                window.location.href =
+                    itineraryUrl +
+                    "?day=" +
+                    (currentDay + 1);
 
             }
-        );
+
+        });
 
     }
 
     if (nativeDate) {
 
-        nativeDate.addEventListener(
-            "change",
-            () => {
+        nativeDate.addEventListener("change", () => {
 
-                if (nativeDate.value) {
+            if (nativeDate.value) {
 
-                    window.location.href =
-                        itineraryUrl +
-                        "?date=" +
-                        nativeDate.value;
-
-                }
+                window.location.href =
+                    itineraryUrl +
+                    "?date=" +
+                    nativeDate.value;
 
             }
-        );
+
+        });
 
     }
 
@@ -1120,73 +1096,138 @@ if (unassignedActivities) {
 
 }
 
-window.addEventListener(
-    "load",
-    () => {
-
-        const savedScroll =
-            sessionStorage.getItem(
-                "itineraryScrollTop"
-            );
-
-        if (!savedScroll) {
-            return;
-        }
-
-        const scrollContainer =
-            document.querySelector(
-                ".overflow-auto"
-            );
-
-        if (scrollContainer) {
-
-            scrollContainer.scrollTop =
-                parseInt(
-                    savedScroll,
-                    10
-                );
-
-        }
-
-        sessionStorage.removeItem(
-            "itineraryScrollTop"
-        );
-
-    }
-);
-
 
 function scrollToFirstActivity() {
     const calendar = document.getElementById("itinerary-scroll");
-    const activities = document.querySelectorAll(
-        "#itinerary-timeline .activity-card"
-    );
+    const timeline = document.getElementById("itinerary-timeline");
 
-    if (!calendar || activities.length === 0) return;
+    if (!calendar || !timeline) return;
 
-    let firstActivity = null;
-    let earliestTime = null;
+    // Get every item positioned on the calendar,
+    // including activities, flights, hotels, etc.
+    const items = timeline.querySelectorAll(".position-absolute");
 
-    activities.forEach((activity) => {
-        const startTime = activity.dataset.startTime;
+    if (items.length === 0) return;
 
-        if (!startTime) return;
+    let firstItem = null;
+    let smallestTop = Infinity;
 
-        if (earliestTime === null || startTime < earliestTime) {
-            earliestTime = startTime;
-            firstActivity = activity;
+    items.forEach((item) => {
+        const top = parseFloat(item.style.top);
+
+        if (!Number.isNaN(top) && top < smallestTop) {
+            smallestTop = top;
+            firstItem = item;
         }
     });
 
-    if (!firstActivity) return;
+    if (!firstItem) return;
 
-    // Scroll so the first activity is near the top
     calendar.scrollTo({
-        top: firstActivity.offsetTop - 20,
+        top: Math.max(0, firstItem.offsetTop - 20),
         behavior: "smooth"
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    scrollToFirstActivity();
+
+// Only restore a saved position when it actually exists.
+// Otherwise go to the first activity.
+window.addEventListener("load", () => {
+    const calendar = document.getElementById("itinerary-scroll");
+
+    if (!calendar) {
+        return;
+    }
+
+    const savedScroll = sessionStorage.getItem(
+        "itineraryScrollTop"
+    );
+
+    if (savedScroll !== null) {
+        calendar.scrollTop = parseInt(savedScroll, 10);
+        sessionStorage.removeItem("itineraryScrollTop");
+
+        return;
+    }
+
+    // Initial page load / normal day navigation
+    setTimeout(() => {
+        scrollToFirstActivity();
+    }, 100);
+});
+
+function scrollOverviewToFirstActivity() {
+
+    const calendar =
+        document.getElementById("overview-itinerary-scroll");
+
+    if (!calendar) {
+        return;
+    }
+
+    // Find every actual itinerary item inside the timeline.
+    const items =
+        calendar.querySelectorAll(
+            ".position-absolute[data-start-time]"
+        );
+
+    if (items.length === 0) {
+        return;
+    }
+
+    let firstItem = null;
+    let earliestTime = null;
+
+    items.forEach(item => {
+
+        const startTime =
+            item.dataset.startTime;
+
+        if (!startTime) {
+            return;
+        }
+
+        if (
+            earliestTime === null ||
+            startTime < earliestTime
+        ) {
+            earliestTime = startTime;
+            firstItem = item;
+        }
+
+    });
+
+    if (!firstItem) {
+        return;
+    }
+
+    // Get the item's actual position relative to the scrolling container.
+    const calendarRect =
+        calendar.getBoundingClientRect();
+
+    const itemRect =
+        firstItem.getBoundingClientRect();
+
+    const scrollPosition =
+        itemRect.top -
+        calendarRect.top +
+        calendar.scrollTop -
+        20;
+
+    calendar.scrollTo({
+        top: Math.max(0, scrollPosition),
+        behavior: "smooth"
+    });
+
+}
+
+
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        scrollOverviewToFirstActivity();
+
+    }, 300);
+
 });
