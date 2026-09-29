@@ -1130,3 +1130,39 @@ window.addEventListener(
 
     }
 );
+
+
+function scrollToFirstActivity() {
+    const calendar = document.getElementById("itinerary-scroll");
+    const activities = document.querySelectorAll(
+        "#itinerary-timeline .activity-card"
+    );
+
+    if (!calendar || activities.length === 0) return;
+
+    let firstActivity = null;
+    let earliestTime = null;
+
+    activities.forEach((activity) => {
+        const startTime = activity.dataset.startTime;
+
+        if (!startTime) return;
+
+        if (earliestTime === null || startTime < earliestTime) {
+            earliestTime = startTime;
+            firstActivity = activity;
+        }
+    });
+
+    if (!firstActivity) return;
+
+    // Scroll so the first activity is near the top
+    calendar.scrollTo({
+        top: firstActivity.offsetTop - 20,
+        behavior: "smooth"
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    scrollToFirstActivity();
+});
