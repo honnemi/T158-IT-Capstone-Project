@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from flask import Blueprint, render_template, abort
 from flask_login import login_required, current_user
+from datetime import datetime
 
 from app.models import Trip, Flight, Accommodation, Other, Tour, Cruise
 
@@ -142,10 +143,12 @@ def _render_booking_page(template_name, trip_id):
     trip = _get_trip_for_current_user(trip_id)
     booking_data = _get_booking_data(trip_id)
     grouped_timeline = _build_booking_timeline(booking_data)
+    is_past_trip = datetime.now().date() > trip.end_date
 
     return render_template(
         template_name,
         trip=trip,
+        view_only=is_past_trip,
         grouped_timeline=grouped_timeline,
         **booking_data,
     )

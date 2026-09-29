@@ -64,11 +64,17 @@
           Other
         </a>
 
+        {% if view_only %}
+        <span class="badge bg-secondary">
+          View only
+        </span>
+        {% endif %}
+
       </div>
 
       {% if cruises %}
       {% for cruise in cruises %}
-      <div class="flight-card cruise-card">
+      <div class="flight-card">
         <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
           <div>
             <h5>{{ cruise.name }}</h5>
@@ -143,7 +149,7 @@
       {% else %}
       <div class="booking-empty-state">
         <h3>No cruises booked</h3>
-        <p>Cruises added to this trip will appear here.</p>
+        <p class="mt-3 text-secondary">Cruises added to this trip will appear here.</p>
       </div>
       {% endif %}
     </main>

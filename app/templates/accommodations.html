@@ -63,11 +63,17 @@
           Other
         </a>
 
+        {% if view_only %}
+        <span class="badge bg-secondary">
+          View only
+        </span>
+        {% endif %}
+
       </div>
 
       {% if accommodations %}
       {% for accommodation in accommodations %}
-      <div class="flight-card accommodation-card">
+      <div class="flight-card">
         <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap">
           <h5>{{ accommodation.name }}</h5>
 
@@ -155,7 +161,7 @@
       {% else %}
       <div class="booking-empty-state">
         <h3>No accommodation booked</h3>
-        <p>Accommodation added to this trip will appear here.</p>
+        <p class="mt-3 text-secondary">Accommodation added to this trip will appear here.</p>
       </div>
       {% endif %}
     </main>

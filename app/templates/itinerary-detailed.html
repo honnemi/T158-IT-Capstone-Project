@@ -2,17 +2,15 @@
 
 {% block title %}Itinerary - Detailed{% endblock %}
 
-{% block active_tab %}
-<a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab active">Itinerary</a>
-<a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">Bookings</a>
-<a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a>
-<a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
+{% block active_tab %} <a href="{{ url_for('itinerary.show_itinerary_overview', trip_id=trip.id) }}" class="nav-tab active">Itinerary</a> <a href="{{ url_for('bookings.show_flights', trip_id=trip.id) }}" class="nav-tab">Bookings</a> <a href="{{ url_for('inspo.show_inspo', trip_id=trip.id) }}" class="nav-tab">Inspo</a> <a href="{{ url_for('budget.show_budget', trip_id=trip.id) }}" class="nav-tab">Budget</a>
 {% endblock %}
 
 {% block content %}
+
 <div class="container py-4 mt-3">
 
   <!-- Trip name -->
+
   <div class="row mb-4 text-center text-md-start">
     <div class="col-12">
       <div class="d-flex flex-row align-items-center gap-4">
@@ -25,19 +23,27 @@
           </button>
         </a>
 
-        <h1 class="display-6 fw-bold">{{ trip.name }}</h1>
+        <h1 class="display-6">{{ trip.name }}</h1>
+
+        {% if is_past_trip %}
+        <span class="badge bg-secondary">
+          View only
+        </span>
+        {% endif %}
+
       </div>
     </div>
   </div>
 
   <!-- Navigate between days -->
+
   <div class="row mb-4">
     <div class="col-12 d-flex justify-content-center">
       <div class="card shadow-sm d-flex flex-row align-items-center gap-3 gap-sm-4 p-2">
 
         <button
           id="previous-day"
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          class="btn btn primary-white-btn d-inline-flex align-items-center justify-content-center"
           aria-label="Previous Day"
         >
           <i class="bi bi-caret-left-fill"></i>
@@ -60,7 +66,7 @@
 
         <button
           id="next-day"
-          class="btn btn-outline-primary d-inline-flex align-items-center justify-content-center"
+          class="btn btn primary-white-btn d-inline-flex align-items-center justify-content-center"
           aria-label="Next Day"
         >
           <i class="bi bi-caret-right-fill"></i>
@@ -77,12 +83,13 @@
     data-max-day="{{ max_day|default(1) }}"
     data-start-date="{{ trip.start_date.strftime('%Y-%m-%d') }}"
     data-itinerary-url="{{ url_for('itinerary.show_itinerary_detailed', trip_id=trip.id) }}"
+    data-view-only="{{ 'true' if is_past_trip else 'false' }}"
   >
 
     <div class="row g-4 mb-4">
 
       <!-- Daily itinerary -->
-      <div class="col-12 col-lg-8">
+      <div class="{% if is_past_trip %}col-12{% else %}col-12 col-lg-8{% endif %}">
         <div
           id="itinerary-scroll"
           class="border rounded p-3 p-md-4 md-gray-text text-center overflow-auto"
@@ -123,7 +130,11 @@
             </div>
 
             <!-- Activity cards -->
-            <div id="itinerary-timeline" class="col position-relative py-2">
+            <div
+              id="itinerary-timeline"
+              class="col position-relative py-2"
+              style="overflow: visible;"
+            >
 
               {% for activity in calendar_items %}
 
@@ -134,13 +145,14 @@
                 data-activity-id="{{ activity.id }}"
                 data-start-time="{{ activity.start_time.strftime('%H:%M') }}"
                 data-end-time="{{ activity.end_time.strftime('%H:%M') }}"
-                draggable="true"
+                draggable="{{ 'false' if is_past_trip else 'true' }}"
                 style="
                   top: {{ activity.top_percent }}%;
                   height: {{ activity.height_percent }}%;
                   left: {{ activity.left_percent }}%;
                   width: {{ activity.width_percent }}%;
                   z-index: 10;
+                  {% if is_past_trip %}cursor: default;{% else %}cursor: grab;{% endif %}
                 "
               >
 
@@ -155,7 +167,6 @@
                       class="btn btn-link link-light p-0 border-0 lh-1"
                       type="button"
                       data-bs-toggle="dropdown"
-                      data-bs-popper-config='{"strategy":"fixed"}'
                       aria-expanded="false"
                       aria-label="Activity options"
                     >
@@ -176,14 +187,20 @@
                           data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
-                          data-created-by="{{ activity.created_by or '' }}"
+                          data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
                           data-notes="{{ activity.notes or '' }}"
-                          data-updated-by="{{ activity.updated_by or '' }}"
+                          data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else activity.updated_by or '' }}"
                           data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
                         </a>
+                      </li>
+
+                      {% if not is_past_trip %}
+
+                      <li>
+                        <hr class="dropdown-divider">
                       </li>
 
                       <li>
@@ -225,11 +242,12 @@
                         </a>
                       </li>
 
+                      {% endif %}
+
                     </ul>
                   </div>
                 </div>
 
-                <!-- Activity duration -->
                 <div class="d-flex align-items-center text-white-50 small gap-2">
                   <i class="bi bi-clock"></i>
                   <span>
@@ -242,7 +260,6 @@
                   </span>
                 </div>
 
-                <!-- Activity location -->
                 {% if activity.location %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-geo-alt"></i>
@@ -250,17 +267,15 @@
                 </div>
                 {% endif %}
 
-                <!-- Created by -->
-                {% if activity.created_by %}
+                {% if activity.created_by_user %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
-                    Created by {{ activity.created_by }}
+                    Created by {{ activity.created_by_user.name }}
                   </span>
                 </div>
                 {% endif %}
 
-                <!-- Updated -->
                 {% if activity.updated_by or activity.updated_at %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-clock-history"></i>
@@ -285,6 +300,7 @@
                   left: {{ activity.left_percent }}%;
                   width: {{ activity.width_percent }}%;
                   z-index: 10;
+                  cursor: default;
                 "
               >
 
@@ -299,7 +315,6 @@
                       class="btn btn-link link-light p-0 border-0 lh-1"
                       type="button"
                       data-bs-toggle="dropdown"
-                      data-bs-popper-config='{"strategy":"fixed"}'
                       aria-expanded="false"
                       aria-label="Activity options"
                     >
@@ -320,32 +335,13 @@
                           data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
-                          data-created-by="{{ activity.created_by or '' }}"
+                          data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
                           data-notes="{{ activity.notes or '' }}"
-                          data-updated-by="{{ activity.updated_by or '' }}"
+                          data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else activity.updated_by or '' }}"
                           data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
-                        </a>
-                      </li>
-
-                      <li>
-                        <hr class="dropdown-divider">
-                      </li>
-
-                      <li>
-                        <a
-                          href="#"
-                          class="dropdown-item text-danger d-flex align-items-center gap-2 delete-activity-btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteModal"
-                          data-activity-id="{{ activity.id }}"
-                          data-current-day="{{ current_day }}"
-                          data-activity-name="{{ activity.name }}"
-                        >
-                          <i class="bi bi-trash"></i>
-                          Delete Activity
                         </a>
                       </li>
 
@@ -374,11 +370,11 @@
                 </div>
                 {% endif %}
 
-                {% if activity.created_by %}
+                {% if activity.created_by_user %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
-                    Booked by {{ activity.created_by }}
+                    Booked by {{ activity.created_by_user.name }}
                   </span>
                 </div>
                 {% endif %}
@@ -406,6 +402,7 @@
         </div>
       </div>
 
+      {% if not is_past_trip %}
       <!-- Unassigned activities -->
       <div class="col-12 col-lg-4">
         <div
@@ -418,6 +415,7 @@
           >
             <h5 class="mb-0">Activities</h5>
 
+            {% if not is_past_trip %}
             <button
               class="btn primary-white-btn d-inline-flex align-items-center justify-content-center"
               aria-label="Add activity"
@@ -426,6 +424,8 @@
             >
               <i class="bi bi-plus-lg"></i>
             </button>
+            {% endif %}
+
           </div>
 
           <div
@@ -437,10 +437,11 @@
 
             <div
               class="card w-100 shadow-sm border unassigned-activity"
-              draggable="true"
+              draggable="{{ 'false' if is_past_trip else 'true' }}"
               data-activity-id="{{ activity.id }}"
               data-start-time="{{ activity.start_time.strftime('%H:%M') if activity.start_time else '' }}"
               data-end-time="{{ activity.end_time.strftime('%H:%M') if activity.end_time else '' }}"
+              style="{% if is_past_trip %}cursor: default;{% else %}cursor: grab;{% endif %}"
             >
 
               <div class="card-body">
@@ -456,7 +457,6 @@
                       class="btn btn-link text-body p-0 border-0 lh-1"
                       type="button"
                       data-bs-toggle="dropdown"
-                      data-bs-popper-config='{"strategy":"fixed"}'
                       aria-expanded="false"
                       aria-label="Activity options"
                     >
@@ -477,15 +477,17 @@
                           data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
-                          data-created-by="{{ activity.created_by or '' }}"
+                          data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
                           data-notes="{{ activity.notes or '' }}"
-                          data-updated-by="{{ activity.updated_by or '' }}"
+                          data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else activity.updated_by or '' }}"
                           data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
                         </a>
                       </li>
+
+                      {% if not is_past_trip %}
 
                       <li>
                         <hr class="dropdown-divider">
@@ -506,14 +508,16 @@
                         </a>
                       </li>
 
+                      {% endif %}
+
                     </ul>
                   </div>
                 </div>
 
                 {% if activity.start_time and activity.end_time %}
-                <div class="d-flex flex-row align-items-center gap-2 mb-1">
+                <div class="d-flex flex-row align-items-center gap-2 mb-1 text-secondary">
                   <i class="bi bi-clock"></i>
-                  <small class="md-gray-text">
+                  <small>
                     {{ activity.start_time.strftime('%I:%M %p') }}
                     -
                     {{ activity.end_time.strftime('%I:%M %p') }}
@@ -525,19 +529,31 @@
                 {% endif %}
 
                 {% if activity.location %}
-                <div class="d-flex flex-row align-items-center gap-2 mb-1">
+                <div class="d-flex flex-row align-items-center gap-2 mb-1 text-secondary">
                   <i class="bi bi-geo-alt"></i>
-                  <small class="md-gray-text">
+                  <small>
                     {{ activity.location }}
                   </small>
                 </div>
                 {% endif %}
 
                 {% if activity.created_by_user %}
-                <div class="d-flex flex-row align-items-center gap-2">
+                <div class="d-flex flex-row align-items-center gap-2 mb-1 text-secondary">
                   <i class="bi bi-person-circle"></i>
-                  <small class="text-body-secondary">
+                  <small>
                     Created by {{ activity.created_by_user.name }}
+                  </small>
+                </div>
+                {% endif %}
+
+                {% if activity.updated_by or activity.updated_at %}
+                <div class="d-flex flex-row align-items-center gap-2 text-secondary">
+                  <i class="bi bi-clock-history"></i>
+                  <small>
+                    Last Updated:
+                    {% if activity.updated_at %}
+                      {{ activity.updated_at.strftime("%Y-%m-%d %H:%M") }}
+                    {% endif %}
                   </small>
                 </div>
                 {% endif %}
@@ -550,11 +566,14 @@
           </div>
         </div>
       </div>
+      {% endif %}
 
     </div>
+
   </main>
 
   <!-- Details Modal -->
+
   <div
     class="modal fade"
     id="detailsModal"
@@ -593,7 +612,7 @@
                 <h6 class="m-0">Start Time:</h6>
               </div>
 
-              <p id="detailsStartTime"></p>
+              <p id="detailsStartTime" class="text-secondary"></p>
             </div>
 
             <div class="col-6">
@@ -602,7 +621,7 @@
                 <h6 class="m-0">End Time:</h6>
               </div>
 
-              <p id="detailsEndTime"></p>
+              <p id="detailsEndTime" class="text-secondary"></p>
             </div>
 
           </div>
@@ -616,7 +635,7 @@
                 <h6 class="m-0">Location:</h6>
               </div>
 
-              <p id="detailsLocation"></p>
+              <p id="detailsLocation" class="text-secondary"></p>
             </div>
 
             <div class="col-6">
@@ -625,7 +644,7 @@
                 <h6 class="m-0">Address:</h6>
               </div>
 
-              <p id="detailsAddress"></p>
+              <p id="detailsAddress" class="text-secondary"></p>
             </div>
 
           </div>
@@ -639,7 +658,7 @@
                 <h6 class="m-0">Updated by:</h6>
               </div>
 
-              <p id="detailsUpdatedBy"></p>
+              <p id="detailsUpdatedBy" class="text-secondary"></p>
             </div>
 
             <div class="col-6">
@@ -648,7 +667,7 @@
                 <h6 class="m-0">Updated at:</h6>
               </div>
 
-              <p id="detailsUpdatedAt"></p>
+              <p id="detailsUpdatedAt" class="text-secondary"></p>
             </div>
 
           </div>
@@ -662,7 +681,7 @@
                 <h6 class="m-0">Created by:</h6>
               </div>
 
-              <p id="detailsCreatedBy"></p>
+              <p id="detailsCreatedBy" class="text-secondary"></p>
             </div>
 
           </div>
@@ -675,7 +694,7 @@
             </div>
 
             <div class="col-12">
-              <p id="detailsNotes"></p>
+              <p id="detailsNotes" class="text-secondary"></p>
             </div>
 
           </div>
@@ -699,6 +718,7 @@
   </div>
 
   <!-- Add Activity Modal -->
+
   <div
     class="modal fade"
     id="addActivityModal"
@@ -831,6 +851,7 @@
   </div>
 
   <!-- Edit Activity Modal -->
+
   <div
     class="modal fade"
     id="editActivityModal"
@@ -1003,6 +1024,7 @@
   </div>
 
   <!-- Delete Confirmation Modal -->
+
   <div
     class="modal fade"
     id="deleteModal"
@@ -1071,6 +1093,9 @@
 {% endblock %}
 
 {% block scripts %}
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 <script src="{{ url_for('static', filename='js/itinerary.js') }}"></script>
+
 {% endblock %}

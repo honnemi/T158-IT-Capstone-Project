@@ -426,22 +426,13 @@ footer {
 /* Flight cards */
 .flight-card {
     background: #fff;
-    border: 1px solid #A60107;
+    border: 1px solid #dee2e6;
     border-radius: 12px;
     padding: 20px 24px;
     margin-bottom: 18px;
     max-width: 850px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
-
-.accommodation-card {
-    border: 1px solid #F97316;
-}
-
-.other-card {
-    border: 1px solid #3B82F6;
-}
-
 
 /* Flight card heading */
 .flight-card h2 {
@@ -805,7 +796,7 @@ body {
 }
 
 .social-btn i {
-    font-size: 50px;
+    font-size: 30px;
     line-height: 1;
 }
 
