@@ -148,7 +148,8 @@ if (whiteboardElement && whiteboardContainer) {
                         left: 100,
                         top: 100,
                         fill: currentColour,
-                        fontSize: 24
+                        fontSize: 24,
+                        fontFamily: "Arial"
                     });
 
                     canvas.add(text);
@@ -156,10 +157,13 @@ if (whiteboardElement && whiteboardContainer) {
                     text.enterEditing();
                 }
 
+                
                 if (tool.id === "arrow") {
                     let startX = 0;
                     let startY = 0;
                     let isDrawingArrow = false;
+                    let previewLine = null;
+                    let previewHead = null;
 
                     const mouseDown = options => {
                         const pointer = canvas.getPointer(options.e);
@@ -167,79 +171,132 @@ if (whiteboardElement && whiteboardContainer) {
                         startX = pointer.x;
                         startY = pointer.y;
                         isDrawingArrow = true;
-                    };
 
-                    const mouseMove = options => {
-                        if (!isDrawingArrow) {
-                            return;
-                        }
-
-                        const pointer = canvas.getPointer(options.e);
-
-                        const dx = pointer.x - startX;
-                        const dy = pointer.y - startY;
-
-                        const angle = Math.atan2(dy, dx);
-                        const headLength = 12;
-
-                        const x1 =
-                            pointer.x -
-                            headLength * Math.cos(angle - Math.PI / 6);
-
-                        const y1 =
-                            pointer.y -
-                            headLength * Math.sin(angle - Math.PI / 6);
-
-                        const x2 =
-                            pointer.x -
-                            headLength * Math.cos(angle + Math.PI / 6);
-
-                        const y2 =
-                            pointer.y -
-                            headLength * Math.sin(angle + Math.PI / 6);
-
-                        canvas.clear();
-
-                        const line = new fabric.Line(
-                            [startX, startY, pointer.x, pointer.y],
+                        previewLine = new fabric.Line(
+                            [startX, startY, startX, startY],
                             {
                                 stroke: currentColour,
                                 strokeWidth: 3,
                                 selectable: false,
-                                strokeUniform: true
+                                evented: false
                             }
                         );
 
-                        const arrowHead = new fabric.Polyline(
+                        previewHead = new fabric.Polyline(
                             [
-                                { x: pointer.x, y: pointer.y },
-                                { x: x1, y: y1 },
-                                { x: x2, y: y2 }
+                                { x: startX, y: startY },
+                                { x: startX, y: startY },
+                                { x: startX, y: startY }
                             ],
                             {
                                 fill: currentColour,
                                 stroke: currentColour,
                                 strokeWidth: 3,
-                                selectable: false
+                                selectable: false,
+                                evented: false
                             }
                         );
 
-                        canvas.add(line, arrowHead);
-                        canvas.renderAll();
+                        canvas.add(previewLine, previewHead);
+                    };
+
+                    const mouseMove = options => {
+                        if (!isDrawingArrow || !previewLine || !previewHead) {
+                            return;
+                        }
+
+                        const pointer = canvas.getPointer(options.e);
+                        const dx = pointer.x - startX;
+                        const dy = pointer.y - startY;
+                        const angle = Math.atan2(dy, dx);
+                        const headLength = 12;
+
+                        const x1 =
+                            pointer.x - headLength * Math.cos(angle - Math.PI / 6);
+                        const y1 =
+                            pointer.y - headLength * Math.sin(angle - Math.PI / 6);
+
+                        const x2 =
+                            pointer.x - headLength * Math.cos(angle + Math.PI / 6);
+                        const y2 =
+                            pointer.y - headLength * Math.sin(angle + Math.PI / 6);
+
+                        previewLine.set({
+                            x1: startX,
+                            y1: startY,
+                            x2: pointer.x,
+                            y2: pointer.y
+                        });
+
+                        previewHead.set({
+                            points: [
+                                { x: pointer.x, y: pointer.y },
+                                { x: x1, y: y1 },
+                                { x: x2, y: y2 }
+                            ]
+                        });
+
+                        canvas.requestRenderAll();
                     };
 
                     const mouseUp = () => {
+                        if (!isDrawingArrow) {
+                            return;
+                        }
+
                         isDrawingArrow = false;
+
+                        if (previewLine && previewHead) {
+                            const line = new fabric.Line(
+                                [
+                                    previewLine.x1,
+                                    previewLine.y1,
+                                    previewLine.x2,
+                                    previewLine.y2
+                                ],
+                                {
+                                    stroke: currentColour,
+                                    strokeWidth: 3,
+                                    strokeUniform: true
+                                }
+                            );
+
+                            const arrowHead = new fabric.Polyline(
+                                previewHead.points.map(point => ({
+                                    x: point.x,
+                                    y: point.y
+                                })),
+                                {
+                                    fill: currentColour,
+                                    stroke: currentColour,
+                                    strokeWidth: 3,
+                                    strokeLineJoin: "round",
+                                    strokeUniform: true
+                                }
+                            );
+
+                            canvas.remove(previewLine, previewHead);
+                            canvas.add(line, arrowHead);
+                            canvas.setActiveObject(
+                                new fabric.ActiveSelection([line, arrowHead], { canvas })
+                            );
+                        }
+
+                        previewLine = null;
+                        previewHead = null;
 
                         canvas.off("mouse:down", mouseDown);
                         canvas.off("mouse:move", mouseMove);
                         canvas.off("mouse:up", mouseUp);
+
+                        canvas.requestRenderAll();
                     };
 
                     canvas.on("mouse:down", mouseDown);
                     canvas.on("mouse:move", mouseMove);
                     canvas.on("mouse:up", mouseUp);
                 }
+
 
                 if (tool.id === "image") {
                     const imageLoader = document.getElementById("image-loader");

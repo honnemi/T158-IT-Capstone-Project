@@ -189,8 +189,9 @@
                           data-address="{{ activity.address or '' }}"
                           data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
                           data-notes="{{ activity.notes or '' }}"
-                          data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else activity.updated_by or '' }}"
-                          data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
+                          data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
+                          data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else '' }}"
+                          data-updated-at="{{ activity.updated_at.strftime('%d %b %Y, %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
@@ -267,11 +268,11 @@
                 </div>
                 {% endif %}
 
-                {% if activity.created_by_user %}
+                {% if activity.created_by %}
                 <div class="d-flex align-items-center text-white-50 small gap-2 text-truncate">
                   <i class="bi bi-person-circle"></i>
                   <span>
-                    Created by {{ activity.created_by_user.name }}
+                    Created by {{ activity.created_by }}
                   </span>
                 </div>
                 {% endif %}
@@ -335,10 +336,11 @@
                           data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
-                          data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
+                          data-created-by="{{ activity.created_by if activity.created_by else '' }}"
                           data-notes="{{ activity.notes or '' }}"
-                          data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else activity.updated_by or '' }}"
-                          data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
+                          data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
+                          data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else '' }}"
+                          data-updated-at="{{ activity.updated_at.strftime('%d %b %Y, %H:%M') if activity.updated_at else '' }}"
                         >
                           <i class="bi bi-info-circle"></i>
                           View Details
@@ -477,7 +479,7 @@
                           data-timezone="{{ activity.timezone or '' }}"
                           data-location="{{ activity.location or '' }}"
                           data-address="{{ activity.address or '' }}"
-                          data-created-by="{{ activity.created_by_user.name if activity.created_by_user else '' }}"
+                          data-created-by="{{ activity.created_by if activity.created_by else '' }}"
                           data-notes="{{ activity.notes or '' }}"
                           data-updated-by="{{ activity.updated_by_user.name if activity.updated_by_user else activity.updated_by or '' }}"
                           data-updated-at="{{ activity.updated_at.strftime('%Y-%m-%d %H:%M') if activity.updated_at else '' }}"
