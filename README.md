@@ -1,11 +1,11 @@
 # Proof of Concept - Collaborative Itinerary Web Application
 
 To run the demo locally, first set up your virtual environment:
-python -m venv .venv
-pip install -r requirements.txt
-.\.venv\Scripts\Activate.ps1
+1. python -m venv .venv
+2. pip install -r requirements.txt
+3. .\.venv\Scripts\Activate.ps1
 
-Then run the following files in the specified order:
+Then run the following files:
 1. create_db.py
 2. seed.py
 3. run.py
